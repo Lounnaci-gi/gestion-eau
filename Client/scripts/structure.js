@@ -147,7 +147,7 @@ document.querySelector('#creation_structure').addEventListener('click', () => {
     creationSection.scrollIntoView({ behavior: 'smooth' });
 });
 
-document.querySelector('#cc').addEventListener('submit', async (e) => {
+document.querySelector('#create_structure').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
     const raison_sociale = document.getElementById("structureNom").value.trim();
     const prefixe = document.getElementById("structurePrefixe").value.trim().toUpperCase();
