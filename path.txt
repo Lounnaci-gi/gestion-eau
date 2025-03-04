@@ -1,0 +1,19 @@
+mon-projet/
+├── client/
+│   ├── public/
+│   │   └── images/
+│   ├── scripts/
+│   │   └── main.js
+│   ├── styles/
+│   │   └── style.css
+│   ├── index.html
+│   └── package.json
+├── server/
+│   ├── models/
+│   ├── routes/
+│   ├── controllers/
+│   ├── config/
+│   ├── server.js
+│   └── package.json
+├── .env
+└── README.md
