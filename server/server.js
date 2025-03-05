@@ -3,8 +3,7 @@ const app = express();
 const port = 3000;
 const path = require("path");
 const connectdb = require("./config/db");
-require("dotenv").config();
-
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 // Connexion à MongoDB
 connectdb();
 
