@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="./Styles/styles.css"> <!-- Lien vers le fichier CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Font Awesome -->
-     <!-- Ajout de méta-données SEO -->
+    <!-- Ajout de méta-données SEO -->
     <meta name="description"
-    content="Solution de gestion clientèle spécialisée dans le suivi des branchements - Création de devis, facturation et suivi technique">
-<meta name="keywords" content="gestion client, branchements, devis, facturation, suivi technique">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        content="Solution de gestion clientèle spécialisée dans le suivi des branchements - Création de devis, facturation et suivi technique">
+    <meta name="keywords" content="gestion client, branchements, devis, facturation, suivi technique">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -96,96 +96,97 @@
             </div>
         </div>
         <div class="dashboard-grid">
-         <!-- Carte 5 : Commandes en attente -->
-         <div class="dashboard-card">
-            <div class="card-header">
-                <i class="fas fa-shopping-cart"></i>
-                <h3>Commandes en Attente</h3>
+            <!-- Carte 5 : Commandes en attente -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Commandes en Attente</h3>
+                </div>
+                <div class="card-content">
+                    <p>Commandes à traiter : <strong>8</strong></p>
+                    <p>Délai moyen : <strong>2 jours</strong></p>
+                </div>
             </div>
-            <div class="card-content">
-                <p>Commandes à traiter : <strong>8</strong></p>
-                <p>Délai moyen : <strong>2 jours</strong></p>
+            <!-- Carte 6 : Commandes en attente -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Commandes en Attente</h3>
+                </div>
+                <div class="card-content">
+                    <p>Commandes à traiter : <strong>8</strong></p>
+                    <p>Délai moyen : <strong>2 jours</strong></p>
+                </div>
             </div>
-        </div>
-         <!-- Carte 6 : Commandes en attente -->
-         <div class="dashboard-card">
-            <div class="card-header">
-                <i class="fas fa-shopping-cart"></i>
-                <h3>Commandes en Attente</h3>
+            <!-- Carte 7 : Commandes en attente -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Commandes en Attente</h3>
+                </div>
+                <div class="card-content">
+                    <p>Commandes à traiter : <strong>8</strong></p>
+                    <p>Délai moyen : <strong>2 jours</strong></p>
+                </div>
             </div>
-            <div class="card-content">
-                <p>Commandes à traiter : <strong>8</strong></p>
-                <p>Délai moyen : <strong>2 jours</strong></p>
+            <!-- Carte 8 : Commandes en attente -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Commandes en Attente</h3>
+                </div>
+                <div class="card-content">
+                    <p>Commandes à traiter : <strong>8</strong></p>
+                    <p>Délai moyen : <strong>2 jours</strong></p>
+                </div>
             </div>
-        </div>
- <!-- Carte 7 : Commandes en attente -->
- <div class="dashboard-card">
-    <div class="card-header">
-        <i class="fas fa-shopping-cart"></i>
-        <h3>Commandes en Attente</h3>
-    </div>
-    <div class="card-content">
-        <p>Commandes à traiter : <strong>8</strong></p>
-        <p>Délai moyen : <strong>2 jours</strong></p>
-    </div>
-</div>
- <!-- Carte 8 : Commandes en attente -->
- <div class="dashboard-card">
-    <div class="card-header">
-        <i class="fas fa-shopping-cart"></i>
-        <h3>Commandes en Attente</h3>
-    </div>
-    <div class="card-content">
-        <p>Commandes à traiter : <strong>8</strong></p>
-        <p>Délai moyen : <strong>2 jours</strong></p>
-    </div>
-</div>
 
 
         </div>
     </section>
-<!-- Ajoutez ceci juste avant la balise </body> dans index.html -->
-<div class="auth-modal" id="authModal">
-    <div class="auth-content">
-        <span class="close-auth">&times;</span>
-        
-        <!-- Formulaire de Connexion -->
-        <form class="auth-form active" id="loginForm">
-            <h2>Connexion</h2>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" required>
-            </div>
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" required>
-            </div>
-            <button type="submit">Se connecter</button>
-            <p class="auth-switch">Pas de compte ? <span>Créer un compte</span></p>
-        </form>
+    <!-- Ajoutez ceci juste avant la balise </body> dans index.html -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <span class="close-auth">&times;</span>
 
-        <!-- Formulaire d'Inscription -->
-        <form class="auth-form" id="registerForm">
-            <h2>Inscription</h2>
-            <div class="form-group">
-                <label>Nom complet</label>
-                <input type="text" required>
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" required>
-            </div>
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" required>
-            </div>
-            <button type="submit">S'inscrire</button>
-            <p class="auth-switch">Déjà un compte ? <span>Se connecter</span></p>
-        </form>
+            <!-- Formulaire de Connexion -->
+            <form class="auth-form active" id="loginForm">
+                <h2>Connexion</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" required maxlength="20">
+                </div>
+                <button type="submit">Se connecter</button>
+                <p class="auth-switch">Pas de compte ? <span>Créer un compte</span></p>
+            </form>
+
+            <!-- Formulaire d'Inscription -->
+            <form class="auth-form" id="registerForm">
+                <h2>Inscription</h2>
+                <div class="form-group">
+                    <label>Nom complet</label>
+                    <input type="text" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" required maxlength="20">
+                </div>
+                <button type="submit">S'inscrire</button>
+                <p class="auth-switch">Déjà un compte ? <span>Se connecter</span></p>
+            </form>
+
+        </div>
     </div>
-</div>
 
-<script src="./scripts/main.js"></script>
+    <script src="./scripts/main.js"></script>
 </body>
 
 </html>

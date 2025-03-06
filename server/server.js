@@ -9,8 +9,6 @@ connectdb();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
 // Servir les fichiers statiques du dossier "client"
 app.use(express.static(path.join(__dirname, '../client')));
 
@@ -19,6 +17,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+// Importer les routes
+app.use('/', require("./routes/authRoutes"));
 
 // Démarrage du serveur
 app.listen(port, () => {

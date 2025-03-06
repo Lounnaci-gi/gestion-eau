@@ -14,6 +14,8 @@ const navLinks = document.getElementById('nav-links');
 authToggle.addEventListener('click', () => {
     authToggle.classList.toggle('active');
     authModal.classList.add('show');
+    document.getElementById('loginForm').reset();
+    document.getElementById('registerForm').reset();
 
     if (authToggle.classList.contains('active')) {
         authToggle.querySelector('span').textContent = "Sign Up";
@@ -60,3 +62,58 @@ registerForm.addEventListener('submit', (e) => {
     authModal.classList.remove('show');
     // Ajouter logique d'inscription
 });
+
+//--------------------login-----------------
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    // Vérification des champs vides
+    if (!email || !password) {
+        showAlert('Erreur', 'Veuillez remplir tous les champs.', 'warning');
+        return;
+    }
+    // Envoi des données de connexion
+    const data = { email: email, motDePasse: password };
+    try {
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        // Vérifier si la réponse est OK
+        if (!response.ok) {
+            showAlert('Erreur', result.message, 'error');
+            return;
+        }
+
+        // Connexion réussie, stocker les données utilisateur
+        if (response.ok) {
+            showAlert("Succès", "Connexion réussie !", "success");
+        }
+
+    } catch (error) {
+        if (error instanceof TypeError && error.message === "Failed to fetch") {
+            showAlert('Erreur', 'Problème de connexion au serveur.', 'error');
+        } else {
+            console.error('Erreur de connexion:', error);
+            showAlert('Erreur', 'Une erreur est survenue lors de la connexion.', 'error');
+        }
+    }
+
+});
+
+
+
+function showAlert(title, text, icon) {
+    return Swal.fire({
+        title,
+        text,
+        icon,
+        confirmButtonText: 'OK'
+    });
+}
