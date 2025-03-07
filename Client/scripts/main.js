@@ -107,6 +107,46 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
 });
 
+//---Creation d'un nouveau utilisateur
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nomComplet = document.getElementById('nomComplet').value.trim();
+    const email = document.getElementById('email_ins').value.trim();
+    const password = document.getElementById('password_ins').value.trim();
+
+    // Vérification des champs vides
+    if (!nomComplet || !email || !password) {
+        showAlert('Erreur', 'Veuillez remplir tous les champs.', 'warning');
+        return;
+    }
+
+    const data = { nomComplet: nomComplet, email: email, motDePasse: password };
+                                    
+    try {
+        const response = await fetch('http://localhost:3000/user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        // Vérifier si la réponse est OK
+        if (!response.ok) {
+            showAlert('Erreur', result.message, 'error');
+            return;
+        }
+        // Connexion réussie, stocker les données utilisateur
+        if (response.ok) {
+            console.log(result.message);
+            showAlert("Succès", "Connexion réussie !", "success");
+        }
+
+    } catch (error) {
+
+    }
+
+
+});
 
 
 function showAlert(title, text, icon) {

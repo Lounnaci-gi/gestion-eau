@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
-
+//----Login------------------------------------
 module.exports.login = async (req, res) => {
     try {
         const { email, motDePasse } = req.body;
@@ -43,3 +43,9 @@ module.exports.login = async (req, res) => {
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
     }
 };
+
+//--Créer utilisateur---------------------
+module.exports.new_user = async (req,res)=>{
+    res.status(200).json({data:req.body});
+    
+}
