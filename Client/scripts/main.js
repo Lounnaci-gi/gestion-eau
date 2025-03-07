@@ -119,9 +119,17 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         showAlert('Erreur', 'Veuillez remplir tous les champs.', 'warning');
         return;
     }
-
+    // Afficher un indicateur de chargement
+    Swal.fire({
+        title: 'Inscription en cours...',
+        html: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     const data = { nomComplet: nomComplet, email: email, motDePasse: password };
-                                    
+
     try {
         const response = await fetch('http://localhost:3000/user', {
             method: 'POST',
@@ -132,17 +140,23 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         const result = await response.json();
         // Vérifier si la réponse est OK
         if (!response.ok) {
-            showAlert('Erreur', result.message, 'error');
-            return;
+            const errorMessage = result.errors
+                ? result.errors.map(err => `• ${err.msg}`).join("\n") // 🔥 Ajoute une puce `•` pour chaque erreur
+                : result.message || "Erreur lors de l'inscription.";
+                showAlert("Erreur", errorMessage, "error");
+
+            // showAlert('Erreur', result.message, 'error');
+            // return;
         }
         // Connexion réussie, stocker les données utilisateur
         if (response.ok) {
-            console.log(result.message);
-            showAlert("Succès", "Connexion réussie !", "success");
+            Swal.close();
+            showAlert("Succès", result.message, "success");
         }
 
-    } catch (error) {
-
+    } catch (err) {
+        console.error("Erreur de requête :", err);
+        showAlert("Erreur", `Une erreur s'est produite : ${err.message}`, "error");
     }
 
 
