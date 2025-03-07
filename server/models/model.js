@@ -67,7 +67,7 @@ const clientSchema = mongoose.Schema(
 const userSchema = mongoose.Schema(
     {
         nomComplet: { type: String, required: true },
-        nomUtilisateur: { type: String, required: false, unique: true },
+        nomUtilisateur: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
         motDePasse: { type: String, required: true },
         role: {

@@ -111,6 +111,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nomComplet = document.getElementById('nomComplet').value.trim();
+    const Utilisateur = document.getElementById('Utilisateur').value.trim();
     const email = document.getElementById('email_ins').value.trim();
     const password = document.getElementById('password_ins').value.trim();
 
@@ -128,8 +129,8 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
             Swal.showLoading();
         }
     });
-    const data = { nomComplet: nomComplet, email: email, motDePasse: password };
-
+    const data = { nomComplet: nomComplet,nomUtilisateur:Utilisateur, email: email, motDePasse: password };
+    
     try {
         const response = await fetch('http://localhost:3000/user', {
             method: 'POST',

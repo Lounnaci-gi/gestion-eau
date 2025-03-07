@@ -39,7 +39,7 @@ module.exports.login = async (req, res) => {
             }
         });
 
-    } catch {
+    } catch (err) { // Ajoutez `err` ici
         console.error("Erreur de connexion:", err);
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
     }
@@ -54,7 +54,7 @@ module.exports.new_user = async (req, res) => {
     const { nomComplet, nomUtilisateur, email, motDePasse, role, secretCode } = req.body;
     try {
         // Vérifier si l'utilisateur ou l'email existe déjà
-        const existingUser = await User.findOne({ $or: [{ nomComplet }, { email }] });
+        const existingUser = await User.findOne({ $or: [{ nomUtilisateur }, { email }] });
         if (existingUser) {
             return res.status(400).json({ success: false, message: "Le nom d'utilisateur ou l'email est déjà utilisé." });
         }
