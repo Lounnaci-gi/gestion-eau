@@ -3,13 +3,15 @@ const { validationResult } = require("express-validator");
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const rateLimit = require("express-rate-limit");
 
 //----Login------------------------------------
 module.exports.login = async (req, res) => {
     try {
         const { email, motDePasse } = req.body;
         const user = await User.findOne({ email });
- 
+
+
         if (!user) {
             return res.status(401).json({ success: false, message: "email d'utilisateur ou mot de passe incorrect." });
         }
@@ -23,6 +25,7 @@ module.exports.login = async (req, res) => {
         if (!process.env.JWT_SECRET) {
             throw new Error("❌ JWT_SECRET manquant ! Impossible de générer un token.");
         }
+        
 
         const token = jwt.sign(
             { userId: user._id, nomUtilisateur: user.nomUtilisateur },

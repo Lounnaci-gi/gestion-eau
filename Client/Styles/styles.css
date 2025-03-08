@@ -13,7 +13,7 @@ nav {
     background: linear-gradient(135deg, #87CEEB, #00BFFF);
     color: white;
     padding: 10px 20px;
-    width: 90%;
+    width: 95%;
     margin: 20px auto;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -224,7 +224,7 @@ nav ul li a {
 .dashboard {
     padding: 20px;
     margin: 20px auto;
-    width: 90%;
+    width: 95%;
     background-color: white;
     border-radius: 10px;
     box-shadow: var(--box-shadow);

@@ -1,48 +1,66 @@
 // Sélection des éléments
-const authToggle = document.getElementById('authToggle');
-const authModal = document.getElementById('authModal');
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-const authSwitches = document.querySelectorAll('.auth-switch span');
-const closeAuth = document.querySelector('.close-auth');
+const authToggle = document.getElementById("authToggle");
+const authModal = document.getElementById("authModal");
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+const authSwitches = document.querySelectorAll(".auth-switch span");
+const closeAuth = document.querySelector(".close-auth");
 
-// ✅ Mise à jour de l'affichage connexion/déconnexion
-function updateLogin() {
-    const authText = authToggle.querySelector('span');
-    const authIcon = authToggle.querySelector('i');
-    const logo = document.getElementsByClassName('company-name')[0];
-    const token = sessionStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user"));
+// ✅ Fonction pour mettre à jour le bouton "Sign In" / "Sign Out"
+function setAuthButton(state) {
+    const authText = authToggle.querySelector("span");
+    const authIcon = authToggle.querySelector("i");
 
-    if (!authText || !authIcon || !logo) return;
-
-    if (token && user) {
+    if (state === "connected") {
         authText.textContent = "Sign Out";
         authIcon.className = "fas fa-sign-out-alt";
-        logo.textContent = user.nomUtilisateur || "Utilisateur";
     } else {
         authText.textContent = "Sign In";
         authIcon.className = "fas fa-sign-in-alt";
+    }
+}
+
+// ✅ Mise à jour de l'affichage connexion/déconnexion
+function updateLogin() {
+    const logo = document.getElementsByClassName("company-name")[0];
+    const token = sessionStorage.getItem("token");
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
+    if (!logo) return;
+
+    if (token && user) {
+        setAuthButton("connected");
+        logo.textContent = user.nomUtilisateur || "Utilisateur";
+    } else {
+        setAuthButton("disconnected");
         logo.textContent = "Logo";
     }
 }
 
-// 🔄 Mettre à jour au chargement de la page
-document.addEventListener("DOMContentLoaded", updateLogin);
-
-// ✅ Gestion du bouton connexion/déconnexion
+// ✅ Gestion du bouton connexion/déconnexion avec confirmation
 authToggle.addEventListener("click", () => {
-    const authText = authToggle.querySelector('span').textContent;
+    const authText = authToggle.querySelector("span").textContent;
 
     if (authText === "Sign In") {
         authModal.classList.add("show");
         loginForm.classList.add("active");
         registerForm.classList.remove("active");
     } else {
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("user");
-        updateLogin();
-        showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
+        Swal.fire({
+            title: "Déconnexion",
+            text: "Êtes-vous sûr de vouloir vous déconnecter ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Oui, me déconnecter",
+            cancelButtonText: "Annuler",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sessionStorage.removeItem("token");
+                sessionStorage.removeItem("user");
+                updateLogin();
+                showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
+            }
+        });
     }
 });
 
@@ -51,15 +69,8 @@ closeAuth.addEventListener("click", () => {
     authModal.classList.remove("show");
 });
 
-// ✅ Fermer le modal si on clique à l'extérieur
-window.addEventListener("click", (e) => {
-    if (e.target === authModal) {
-        authModal.classList.remove("show");
-    }
-});
-
 // ✅ Basculer entre connexion et inscription
-authSwitches.forEach(link => {
+authSwitches.forEach((link) => {
     link.addEventListener("click", () => {
         if (loginForm.classList.contains("active")) {
             loginForm.classList.remove("active");
@@ -67,9 +78,16 @@ authSwitches.forEach(link => {
         } else {
             registerForm.classList.remove("active");
             loginForm.classList.add("active");
+            resetForms();
         }
     });
 });
+
+// ✅ Fonction pour réinitialiser les formulaires
+function resetForms() {
+    loginForm.reset();
+    registerForm.reset();
+}
 
 // ✅ Gestion de la soumission du formulaire de connexion
 loginForm.addEventListener("submit", async (e) => {
@@ -92,7 +110,7 @@ loginForm.addEventListener("submit", async (e) => {
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
-        }
+        },
     });
 
     const data = { email: email, motDePasse: password };
@@ -105,6 +123,7 @@ loginForm.addEventListener("submit", async (e) => {
         });
 
         const result = await response.json();
+        resetForms(); // Réinitialisation des formulaires après soumission
 
         if (!response.ok) {
             showAlert("Erreur", result.message, "error");
@@ -131,7 +150,6 @@ loginForm.addEventListener("submit", async (e) => {
 
         Swal.close();
         showAlert("Succès", "Connexion réussie !", "success");
-
     } catch (error) {
         showAlert("Erreur", "Une erreur est survenue lors de la connexion.", "error");
     }
@@ -145,6 +163,13 @@ registerForm.addEventListener("submit", async (e) => {
     const email = document.getElementById("email_ins").value.trim();
     const password = document.getElementById("password_ins").value.trim();
 
+    // 🔥 Vérification de la sécurité du mot de passe
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        showAlert("Erreur", "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (@, $, !, %, *, ?, &).", "error");
+        return;
+    }
+
     if (!nomComplet || !utilisateur || !email || !password) {
         showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
         return;
@@ -156,7 +181,7 @@ registerForm.addEventListener("submit", async (e) => {
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
-        }
+        },
     });
 
     const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password };
@@ -169,10 +194,11 @@ registerForm.addEventListener("submit", async (e) => {
         });
 
         const result = await response.json();
+        resetForms(); // Réinitialisation des formulaires après soumission
 
         if (!response.ok) {
             const errorMessage = result.errors
-                ? result.errors.map(err => `• ${err.msg}`).join("\n")
+                ? result.errors.map((err) => `• ${err.msg}`).join("\n")
                 : result.message || "Erreur lors de l'inscription.";
             showAlert("Erreur", errorMessage, "error");
             return;
@@ -184,18 +210,20 @@ registerForm.addEventListener("submit", async (e) => {
         // ✅ Après inscription, on affiche directement le formulaire de connexion
         registerForm.classList.remove("active");
         loginForm.classList.add("active");
-
     } catch (err) {
         showAlert("Erreur", `Une erreur s'est produite : ${err.message}`, "error");
     }
 });
 
-// ✅ Fonction showAlert (pour afficher les alertes)
+// ✅ Fonction pour afficher une alerte
 function showAlert(title, text, icon) {
     return Swal.fire({
         title,
         text,
         icon,
-        confirmButtonText: "OK"
+        confirmButtonText: "OK",
     });
 }
+
+// 🔄 Mettre à jour au chargement de la page
+document.addEventListener("DOMContentLoaded", updateLogin);
