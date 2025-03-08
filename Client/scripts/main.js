@@ -1,4 +1,4 @@
-// Gestion de l'authentification
+// Sélection des éléments
 const authToggle = document.getElementById('authToggle');
 const authModal = document.getElementById('authModal');
 const loginForm = document.getElementById('loginForm');
@@ -6,169 +6,196 @@ const registerForm = document.getElementById('registerForm');
 const authSwitches = document.querySelectorAll('.auth-switch span');
 const closeAuth = document.querySelector('.close-auth');
 
-// Menu hamburger
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
+// ✅ Mise à jour de l'affichage connexion/déconnexion
+function updateLogin() {
+    const authText = authToggle.querySelector('span');
+    const authIcon = authToggle.querySelector('i');
+    const logo = document.getElementsByClassName('company-name')[0];
+    const token = sessionStorage.getItem("token");
+    const user = JSON.parse(sessionStorage.getItem("user"));
 
-// Toggle auth button
-authToggle.addEventListener('click', () => {
-    authToggle.classList.toggle('active');
-    authModal.classList.add('show');
-    document.getElementById('loginForm').reset();
-    document.getElementById('registerForm').reset();
+    if (!authText || !authIcon || !logo) return;
 
-    if (authToggle.classList.contains('active')) {
-        authToggle.querySelector('span').textContent = "Sign Up";
-        authToggle.querySelector('i').className = "fas fa-sign-out-alt";
+    if (token && user) {
+        authText.textContent = "Sign Out";
+        authIcon.className = "fas fa-sign-out-alt";
+        logo.textContent = user.nomUtilisateur || "Utilisateur";
     } else {
-        authToggle.querySelector('span').textContent = "Sign In";
-        authToggle.querySelector('i').className = "fas fa-sign-in-alt";
+        authText.textContent = "Sign In";
+        authIcon.className = "fas fa-sign-in-alt";
+        logo.textContent = "Logo";
+    }
+}
+
+// 🔄 Mettre à jour au chargement de la page
+document.addEventListener("DOMContentLoaded", updateLogin);
+
+// ✅ Gestion du bouton connexion/déconnexion
+authToggle.addEventListener("click", () => {
+    const authText = authToggle.querySelector('span').textContent;
+
+    if (authText === "Sign In") {
+        authModal.classList.add("show");
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+    } else {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
+        updateLogin();
+        showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
     }
 });
 
-// Menu hamburger
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
+// ✅ Fermeture du modal d'authentification
+closeAuth.addEventListener("click", () => {
+    authModal.classList.remove("show");
 });
 
-// Gestion du modal d'authentification
-closeAuth.addEventListener('click', () => {
-    authModal.classList.remove('show');
-});
-
-window.addEventListener('click', (e) => {
+// ✅ Fermer le modal si on clique à l'extérieur
+window.addEventListener("click", (e) => {
     if (e.target === authModal) {
-        authModal.classList.remove('show');
+        authModal.classList.remove("show");
     }
 });
 
-// Basculer entre les formulaires
+// ✅ Basculer entre connexion et inscription
 authSwitches.forEach(link => {
-    link.addEventListener('click', () => {
-        loginForm.classList.toggle('active');
-        registerForm.classList.toggle('active');
+    link.addEventListener("click", () => {
+        if (loginForm.classList.contains("active")) {
+            loginForm.classList.remove("active");
+            registerForm.classList.add("active");
+        } else {
+            registerForm.classList.remove("active");
+            loginForm.classList.add("active");
+        }
     });
 });
 
-// Soumission des formulaires
-loginForm.addEventListener('submit', (e) => {
+// ✅ Gestion de la soumission du formulaire de connexion
+loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    authModal.classList.remove('show');
-    // Ajouter logique de connexion
-});
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    authModal.classList.remove('show');
-    // Ajouter logique d'inscription
-});
-
-//--------------------login-----------------
-
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    // Vérification des champs vides
     if (!email || !password) {
-        showAlert('Erreur', 'Veuillez remplir tous les champs.', 'warning');
+        showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
         return;
     }
-    // Envoi des données de connexion
-    const data = { email: email, motDePasse: password };
-    try {
-        const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
 
-        const result = await response.json();
-
-        // Vérifier si la réponse est OK
-        if (!response.ok) {
-            showAlert('Erreur', result.message, 'error');
-            return;
-        }
-
-        // Connexion réussie, stocker les données utilisateur
-        if (response.ok) {
-            showAlert("Succès", "Connexion réussie !", "success");
-        }
-
-    } catch (error) {
-        if (error instanceof TypeError && error.message === "Failed to fetch") {
-            showAlert('Erreur', 'Problème de connexion au serveur.', 'error');
-        } else {
-            console.error('Erreur de connexion:', error);
-            showAlert('Erreur', 'Une erreur est survenue lors de la connexion.', 'error');
-        }
+    if (!navigator.onLine) {
+        return showAlert("Problème de connexion", "Vous êtes hors ligne.", "error");
     }
 
-});
-
-//---Creation d'un nouveau utilisateur
-document.getElementById('registerForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const nomComplet = document.getElementById('nomComplet').value.trim();
-    const Utilisateur = document.getElementById('Utilisateur').value.trim();
-    const email = document.getElementById('email_ins').value.trim();
-    const password = document.getElementById('password_ins').value.trim();
-
-    // Vérification des champs vides
-    if (!nomComplet || !email || !password) {
-        showAlert('Erreur', 'Veuillez remplir tous les champs.', 'warning');
-        return;
-    }
-    // Afficher un indicateur de chargement
     Swal.fire({
-        title: 'Inscription en cours...',
-        html: 'Veuillez patienter...',
+        title: "Connexion en cours...",
+        html: "Veuillez patienter...",
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
         }
     });
-    const data = { nomComplet: nomComplet,nomUtilisateur:Utilisateur, email: email, motDePasse: password };
-    
+
+    const data = { email: email, motDePasse: password };
+
     try {
-        const response = await fetch('http://localhost:3000/user', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
 
         const result = await response.json();
-        // Vérifier si la réponse est OK
+
         if (!response.ok) {
-            const errorMessage = result.errors
-                ? result.errors.map(err => `• ${err.msg}`).join("\n") // 🔥 Ajoute une puce `•` pour chaque erreur
-                : result.message || "Erreur lors de l'inscription.";
-                showAlert("Erreur", errorMessage, "error");
-
-            // showAlert('Erreur', result.message, 'error');
-            // return;
-        }
-        // Connexion réussie, stocker les données utilisateur
-        if (response.ok) {
-            Swal.close();
-            showAlert("Succès", result.message, "success");
+            showAlert("Erreur", result.message, "error");
+            return;
         }
 
-    } catch (err) {
-        console.error("Erreur de requête :", err);
-        showAlert("Erreur", `Une erreur s'est produite : ${err.message}`, "error");
+        if (!result.token) {
+            throw new Error("Token non reçu, problème d'authentification.");
+        }
+
+        if (!result.data || !result.data.email) {
+            throw new Error("Données utilisateur invalides.");
+        }
+
+        // 🔥 Stocker les infos utilisateur
+        sessionStorage.setItem("token", result.token);
+        sessionStorage.setItem("user", JSON.stringify(result.data));
+
+        // ✅ Mettre à jour le bouton immédiatement
+        updateLogin();
+
+        // ✅ Fermer le formulaire après connexion
+        authModal.classList.remove("show");
+
+        Swal.close();
+        showAlert("Succès", "Connexion réussie !", "success");
+
+    } catch (error) {
+        showAlert("Erreur", "Une erreur est survenue lors de la connexion.", "error");
     }
-
-
 });
 
+// ✅ Gestion de la soumission du formulaire d'inscription
+registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nomComplet = document.getElementById("nomComplet").value.trim();
+    const utilisateur = document.getElementById("Utilisateur").value.trim();
+    const email = document.getElementById("email_ins").value.trim();
+    const password = document.getElementById("password_ins").value.trim();
 
+    if (!nomComplet || !utilisateur || !email || !password) {
+        showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
+        return;
+    }
+
+    Swal.fire({
+        title: "Inscription en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password };
+
+    try {
+        const response = await fetch("http://localhost:3000/user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            const errorMessage = result.errors
+                ? result.errors.map(err => `• ${err.msg}`).join("\n")
+                : result.message || "Erreur lors de l'inscription.";
+            showAlert("Erreur", errorMessage, "error");
+            return;
+        }
+
+        Swal.close();
+        showAlert("Succès", result.message, "success");
+
+        // ✅ Après inscription, on affiche directement le formulaire de connexion
+        registerForm.classList.remove("active");
+        loginForm.classList.add("active");
+
+    } catch (err) {
+        showAlert("Erreur", `Une erreur s'est produite : ${err.message}`, "error");
+    }
+});
+
+// ✅ Fonction showAlert (pour afficher les alertes)
 function showAlert(title, text, icon) {
     return Swal.fire({
         title,
         text,
         icon,
-        confirmButtonText: 'OK'
+        confirmButtonText: "OK"
     });
 }
