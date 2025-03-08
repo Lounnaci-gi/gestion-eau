@@ -225,5 +225,69 @@ function showAlert(title, text, icon) {
     });
 }
 
+// Gestion du lien "Mot de passe oublié"
+document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
+    e.preventDefault();
+    // Fermer le modal de connexion
+    document.getElementById("authModal").classList.remove("show");
+    // Ouvrir le modal de récupération de mot de passe
+    document.getElementById("forgotPasswordModal").style.display = "flex";
+});
+
+// Gestion de la fermeture du modal de récupération de mot de passe
+document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
+    document.getElementById("forgotPasswordModal").style.display = "none";
+});
+
+// Gestion du retour à la connexion depuis le modal de récupération de mot de passe
+document.querySelector("#forgotPasswordModal .auth-switch").addEventListener("click", () => {
+    document.getElementById("forgotPasswordModal").style.display = "none";
+    document.getElementById("authModal").classList.add("show");
+});
+
+
+// Gestion de la soumission du formulaire de récupération de mot de passe
+document.getElementById("forgotPasswordForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("forgotPasswordEmail").value.trim();
+
+    if (!email) {
+        showAlert("Erreur", "Veuillez entrer votre email.", "warning");
+        return;
+    }
+
+    Swal.fire({
+        title: "Envoi en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
+    try {
+        const response = await fetch("http://localhost:3000/forgot-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            showAlert("Erreur", result.message, "error");
+            return;
+        }
+
+        Swal.close();
+        showAlert("Succès", result.message, "success");
+
+        // Fermer le modal de récupération de mot de passe
+        document.getElementById("forgotPasswordModal").style.display = "none";
+    } catch (error) {
+        showAlert("Erreur", "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
+    }
+});
+
 // 🔄 Mettre à jour au chargement de la page
 document.addEventListener("DOMContentLoaded", updateLogin);

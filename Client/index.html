@@ -163,8 +163,11 @@
                 </div>
                 <button type="submit">Se connecter</button>
                 <p class="auth-switch">Pas de compte ? <span>Créer un compte</span></p>
+                <!-- Ajouter un lien "Mot de passe oublié" -->
+                <p class="forgot-password">
+                    <a href="#" id="forgotPasswordLink">Mot de passe oublié ?</a>
+                </p>
             </form>
-
             <!-- Formulaire d'Inscription -->
             <form class="auth-form" id="registerForm">
                 <h2>Inscription</h2>
@@ -190,7 +193,21 @@
 
         </div>
     </div>
-
+    <!-- Modal pour la récupération de mot de passe -->
+    <div class="auth-modal" id="forgotPasswordModal">
+        <div class="auth-content">
+            <span class="close-auth">&times;</span>
+            <form class="auth-form" id="forgotPasswordForm">
+                <h2>Mot de passe oublié</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="forgotPasswordEmail" required maxlength="50">
+                </div>
+                <button type="submit">Envoyer le lien de réinitialisation</button>
+                <p class="auth-switch"><span>Retour à la connexion</span></p>
+            </form>
+        </div>
+    </div>
     <script src="./scripts/main.js"></script>
 </body>
 
