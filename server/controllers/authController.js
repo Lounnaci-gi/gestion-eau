@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
+// Importer le limiteur de requêtes
+const { loginLimiter } = require("./validator");
 
 //----Login------------------------------------
 module.exports.login = async (req, res) => {
@@ -32,6 +34,9 @@ module.exports.login = async (req, res) => {
             process.env.JWT_SECRET, // 🔒 Utiliser uniquement la variable d'environnement
             { expiresIn: "1h" } // ⏳ Réduit la durée de validité à 1 heure
         );
+
+        // Réinitialiser le compteur de tentatives pour cette IP
+        loginLimiter.resetKey(req.ip);
 
         // ✅ Renvoyer le token et les infos utilisateur
         res.status(200).json({
