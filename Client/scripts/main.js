@@ -78,8 +78,8 @@ authSwitches.forEach((link) => {
         } else {
             registerForm.classList.remove("active");
             loginForm.classList.add("active");
-            resetForms();
         }
+        resetForms(); // Réinitialiser les formulaires après basculement
     });
 });
 
@@ -243,8 +243,9 @@ document.querySelector("#forgotPasswordModal .close-auth").addEventListener("cli
 document.querySelector("#forgotPasswordModal .auth-switch").addEventListener("click", () => {
     document.getElementById("forgotPasswordModal").style.display = "none";
     document.getElementById("authModal").classList.add("show");
+    loginForm.classList.add("active"); // Afficher le formulaire de connexion
+    registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
 });
-
 
 // Gestion de la soumission du formulaire de récupération de mot de passe
 document.getElementById("forgotPasswordForm").addEventListener("submit", async (e) => {
