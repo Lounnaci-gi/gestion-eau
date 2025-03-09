@@ -3,10 +3,21 @@ const { validationResult } = require("express-validator");
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-require("express-rate-limit");
-// Importer le limiteur de requêtes
+const rateLimit = require("express-rate-limit");
 const { loginLimiter } = require("./validator");
+const nodemailer = require("nodemailer");
+
+// Configuration du transporteur d'e-mails
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL_USER, // Utilisez la variable d'environnement
+        pass: process.env.EMAIL_PASSWORD, // Utilisez la variable d'environnement
+    },
+    tls: {
+        rejectUnauthorized: false, // Ignore les erreurs SSL
+    }
+});
 
 //----Login------------------------------------
 module.exports.login = async (req, res) => {
@@ -14,9 +25,8 @@ module.exports.login = async (req, res) => {
         const { email, motDePasse } = req.body;
         const user = await User.findOne({ email });
 
-
         if (!user) {
-            return res.status(401).json({ success: false, message: "email d'utilisateur ou mot de passe incorrect." });
+            return res.status(401).json({ success: false, message: "Email d'utilisateur ou mot de passe incorrect." });
         }
 
         // Comparer le mot de passe fourni avec le mot de passe hashé
@@ -28,8 +38,8 @@ module.exports.login = async (req, res) => {
         if (!process.env.JWT_SECRET) {
             throw new Error("❌ JWT_SECRET manquant ! Impossible de générer un token.");
         }
-        
 
+        // Générer un token JWT
         const token = jwt.sign(
             { userId: user._id, nomUtilisateur: user.nomUtilisateur },
             process.env.JWT_SECRET, // 🔒 Utiliser uniquement la variable d'environnement
@@ -41,14 +51,16 @@ module.exports.login = async (req, res) => {
 
         // ✅ Renvoyer le token et les infos utilisateur
         res.status(200).json({
-            success: true, token, data: {
+            success: true,
+            token,
+            data: {
                 nomUtilisateur: user.nomUtilisateur,
                 email: user.email,
                 nomComplet: user.nomComplet
             }
         });
 
-    } catch (err) { // Ajoutez `err` ici
+    } catch (err) {
         console.error("Erreur de connexion:", err);
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
     }
@@ -87,29 +99,21 @@ module.exports.new_user = async (req, res) => {
         console.error("Erreur dans newuser :", err);
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la création de l'utilisateur." });
     }
+};
 
-}
-
-//--nodemailer---------
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USER, // Utilisez la variable d'environnement
-        pass: process.env.EMAIL_PASSWORD, // Utilisez la variable d'environnement
-    },
-    tls: {
-        rejectUnauthorized: false, // Ignore les erreurs SSL
-    }
-});
 //--Récupération mot de passe------------
-
 module.exports.forgot_password = async (req, res) => {
     const { email } = req.body;
+
+    // Vérifier si l'email est fourni
+    if (!email) {
+        return res.status(400).json({ success: false, message: "L'email est requis." });
+    }
 
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).json({ message: `Utilisateur non trouvé.` });
+            return res.status(404).json({ success: false, message: "Utilisateur non trouvé." });
         }
 
         // 🔒 Générer un token et stocker sa version hachée
@@ -120,7 +124,7 @@ module.exports.forgot_password = async (req, res) => {
         user.resetTokenExpire = Date.now() + 3600000; // Expire après 1h
         await user.save();
 
-        // 📩 Envoyer le token brut par email (car en base, on stocke uniquement la version hachée)
+        // 📩 Envoyer le lien de réinitialisation par e-mail
         const resetLink = `http://localhost:3000/users/reset-password/${resetToken}`;
 
         await transporter.sendMail({
@@ -128,15 +132,17 @@ module.exports.forgot_password = async (req, res) => {
             to: user.email,
             subject: "Réinitialisation du mot de passe",
             text: `Cliquez sur le lien suivant pour réinitialiser votre mot de passe : ${resetLink}`,
+            html: `<p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="${resetLink}">${resetLink}</a></p>`,
         });
 
         res.json({
+            success: true,
             message: `Un e-mail de réinitialisation a été envoyé à ${user.email}.`
         });
 
     } catch (err) {
-        console.error("Erreur dans recupass :", err);
-        res.status(500).json({ message: "Erreur serveur." });
+        console.error("Erreur dans forgot_password :", err);
+        res.status(500).json({ success: false, message: "Erreur serveur." });
     }
 };
 
@@ -147,7 +153,7 @@ module.exports.resetPassword = async (req, res) => {
 
     try {
         if (!newPassword || newPassword.length < 8) {
-            return res.status(400).json({ message: "Le mot de passe doit contenir au moins 8 caractères." });
+            return res.status(400).json({ success: false, message: "Le mot de passe doit contenir au moins 8 caractères." });
         }
 
         // 🔍 Hacher le token reçu pour le comparer avec la version stockée
@@ -160,7 +166,7 @@ module.exports.resetPassword = async (req, res) => {
         });
 
         if (!user) {
-            return res.status(400).json({ message: "Token invalide ou expiré." });
+            return res.status(400).json({ success: false, message: "Token invalide ou expiré." });
         }
 
         // 🔒 Hasher le nouveau mot de passe avant de l'enregistrer
@@ -169,26 +175,28 @@ module.exports.resetPassword = async (req, res) => {
 
         // 📌 Mettre à jour les informations utilisateur avant la sauvegarde
         user.tokenVersion = (user.tokenVersion || 0) + 1; // 🔥 Invalider les anciens JWT
-        user.resetToken = undefined; // Supprime le token de réinitialisation
+        user.resetToken = undefined; // Supprimer le token de réinitialisation
         user.resetTokenExpire = undefined;
-        await user.save(); // ✅ Un seul `save()`
+        await user.save();
 
-        // 📩 Envoyer un email de confirmation
+        // 📩 Envoyer un e-mail de confirmation
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: user.email,
             subject: "Votre mot de passe a été réinitialisé",
             text: "Bonjour,\n\nVotre mot de passe a été réinitialisé avec succès. Si vous n'êtes pas à l'origine de cette demande, veuillez contacter notre support immédiatement.\n\nCordialement,\nL'équipe de support",
+            html: `<p>Bonjour,</p><p>Votre mot de passe a été réinitialisé avec succès. Si vous n'êtes pas à l'origine de cette demande, veuillez contacter notre support immédiatement.</p><p>Cordialement,<br>L'équipe de support</p>`,
         });
 
         // ✅ Répondre au frontend pour forcer la déconnexion
         res.json({
+            success: true,
             message: "Mot de passe réinitialisé avec succès ! Vous devez vous reconnecter.",
             forceLogout: true
         });
 
     } catch (err) {
         console.error("Erreur lors de la réinitialisation du mot de passe :", err);
-        res.status(500).json({ message: "Erreur serveur." });
+        res.status(500).json({ success: false, message: "Erreur serveur." });
     }
 };
