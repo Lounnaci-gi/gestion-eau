@@ -158,12 +158,14 @@ loginForm.addEventListener("submit", async (e) => {
 // ✅ Gestion de la soumission du formulaire d'inscription
 registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const nomComplet = document.getElementById("nomComplet").value.trim();
     const utilisateur = document.getElementById("Utilisateur").value.trim();
     const email = document.getElementById("email_ins").value.trim();
     const password = document.getElementById("password_ins").value.trim();
+    const role = document.getElementById("role").value;
 
-    // 🔥 Vérification de la sécurité du mot de passe
+    // Vérification de la sécurité du mot de passe
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
         showAlert("Erreur", "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (@, $, !, %, *, ?, &).", "error");
@@ -175,6 +177,7 @@ registerForm.addEventListener("submit", async (e) => {
         return;
     }
 
+    // Afficher un loader pendant l'inscription
     Swal.fire({
         title: "Inscription en cours...",
         html: "Veuillez patienter...",
@@ -184,7 +187,7 @@ registerForm.addEventListener("submit", async (e) => {
         },
     });
 
-    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password };
+    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password, role, secretCode };
 
     try {
         const response = await fetch("http://localhost:3000/user", {
@@ -204,10 +207,11 @@ registerForm.addEventListener("submit", async (e) => {
             return;
         }
 
+        // Afficher un message de succès
         Swal.close();
-        showAlert("Succès", result.message, "success");
+        showAlert("Succès", "Inscription réussie !", "success");
 
-        // ✅ Après inscription, on affiche directement le formulaire de connexion
+        // Après inscription, on affiche directement le formulaire de connexion
         registerForm.classList.remove("active");
         loginForm.classList.add("active");
     } catch (err) {
@@ -290,5 +294,33 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
     }
 });
 
+let secretCode = null; // Variable globale pour stocker le code secret
+const roleSelect = document.getElementById("role");
+roleSelect.addEventListener("change", async () => {
+    if (roleSelect.value === "admin") {
+        const { value: enteredCode } = await Swal.fire({
+            title: "Code secret requis",
+            input: "password",
+            inputLabel: "Entrez le code secret pour créer un compte admin",
+            inputPlaceholder: "Code secret",
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return "Le code secret est requis !";
+                }
+            },
+        });
+        if (enteredCode) {
+            secretCode = enteredCode; // Stocker le code secret dans la variable globale
+        } else {
+            roleSelect.value = "utilisateur"; // Réinitialiser le rôle si l'utilisateur annule
+            secretCode = null; // Réinitialiser le code secret
+        }
+    } else {
+        secretCode = null;
+    }
+});
+
 // 🔄 Mettre à jour au chargement de la page
 document.addEventListener("DOMContentLoaded", updateLogin);
+

@@ -19,8 +19,10 @@ nav {
     border-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Ajustement pour le responsive */
-    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+    justify-content: space-between;
+    /* Ajustement pour le responsive */
+    flex-wrap: wrap;
+    /* Permet aux éléments de passer à la ligne */
 }
 
 nav ul {
@@ -134,17 +136,20 @@ nav ul li a {
 /* Pour les écrans de taille moyenne (tablettes) */
 @media (max-width: 768px) {
     nav {
-        flex-direction: column; /* Les éléments s'empilent verticalement */
+        flex-direction: column;
+        /* Les éléments s'empilent verticalement */
         align-items: flex-start;
         padding: 10px;
     }
 
     .company-name {
-        margin-bottom: 10px; /* Espace sous le logo */
+        margin-bottom: 10px;
+        /* Espace sous le logo */
     }
 
     .nav-links {
-        flex-direction: column; /* Les liens s'empilent verticalement */
+        flex-direction: column;
+        /* Les liens s'empilent verticalement */
         gap: 10px;
         margin-left: 0;
         margin-right: 0;
@@ -152,17 +157,20 @@ nav ul li a {
     }
 
     .nav-links li {
-        width: 50%; /* Les liens prennent toute la largeur */
+        width: 50%;
+        /* Les liens prennent toute la largeur */
         text-align: center;
     }
 
     .search-container {
-        margin: 10px 0; /* Espace autour de la barre de recherche */
+        margin: 10px 0;
+        /* Espace autour de la barre de recherche */
         width: 25%;
     }
 
     .search-input {
-        width: 100%; /* La barre de recherche prend toute la largeur */
+        width: 100%;
+        /* La barre de recherche prend toute la largeur */
     }
 
     .auth-buttons {
@@ -174,29 +182,36 @@ nav ul li a {
 /* Pour les petits écrans (smartphones) */
 @media (max-width: 480px) {
     nav {
-        width: 50%; /* La barre de navigation prend toute la largeur */
-        margin: 10px 0; /* Réduire la marge */
+        width: 50%;
+        /* La barre de navigation prend toute la largeur */
+        margin: 10px 0;
+        /* Réduire la marge */
     }
 
     .company-name {
-        font-size: 1.2em; /* Réduire la taille du texte */
+        font-size: 1.2em;
+        /* Réduire la taille du texte */
     }
 
     .nav-links li a {
-        padding: 8px 10px; /* Réduire le padding des liens */
+        padding: 8px 10px;
+        /* Réduire le padding des liens */
     }
 
     .search-input {
-        font-size: 0.9em; /* Réduire la taille de la police */
+        font-size: 0.9em;
+        /* Réduire la taille de la police */
     }
 
     .auth-toggle-button {
-        font-size: 0.8em; /* Réduire la taille du bouton */
+        font-size: 0.8em;
+        /* Réduire la taille du bouton */
     }
 }
 
 .hamburger {
-    display: none; /* Caché par défaut */
+    display: none;
+    /* Caché par défaut */
     background: none;
     border: none;
     color: white;
@@ -206,16 +221,19 @@ nav ul li a {
 
 @media (max-width: 768px) {
     .hamburger {
-        display: block; /* Afficher le bouton hamburger */
+        display: block;
+        /* Afficher le bouton hamburger */
     }
 
     .nav-links {
-        display: none; /* Cacher les liens par défaut */
+        display: none;
+        /* Cacher les liens par défaut */
         width: 50%;
     }
 
     .nav-links.active {
-        display: flex; /* Afficher les liens lorsque le menu est ouvert */
+        display: flex;
+        /* Afficher les liens lorsque le menu est ouvert */
         flex-direction: column;
     }
 }
@@ -249,7 +267,7 @@ nav ul li a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 .dashboard-card:hover {
@@ -339,13 +357,18 @@ nav ul li a {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
+    width: 100%;
+    position: relative;
 }
+
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: 500;
     color: #333;
+    margin-bottom: 0.4rem;
 }
 
 .form-group input {
@@ -354,6 +377,69 @@ nav ul li a {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
+}
+
+/* Style pour le sélecteur (select) */
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    appearance: none;
+    /* Supprime le style par défaut du navigateur */
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+/* Style pour le sélecteur au survol */
+.form-group select:hover {
+    border-color: #666;
+}
+
+/* Style pour le sélecteur lorsqu'il est actif ou focus */
+.form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Style pour les options du sélecteur */
+.form-group select option {
+    padding: 0.5rem;
+    background-color: #fff;
+    color: #333;
+}
+
+
+.form-group::after {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+/* Style pour le sélecteur désactivé */
+.form-group select:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .form-group select {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-group::after {
+        right: 0.5rem;
+        font-size: 0.7rem;
+    }
 }
 
 .auth-form button {
@@ -385,6 +471,7 @@ nav ul li a {
     cursor: pointer;
     text-decoration: underline;
 }
+
 .forgot-password a {
     color: #00BFFF;
     cursor: pointer;
@@ -396,6 +483,7 @@ nav ul li a {
         transform: translateY(-50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -412,18 +500,21 @@ nav ul li a {
 }
 
 .swal2-title {
-    color: #00BFFF; /* Couleur du titre */
+    color: #00BFFF;
+    /* Couleur du titre */
     font-size: 1.5em;
     margin-bottom: 15px;
 }
 
 .swal2-content {
-    color: #555; /* Couleur du texte */
+    color: #555;
+    /* Couleur du texte */
     font-size: 1em;
 }
 
 .swal2-confirm {
-    background-color: #00BFFF !important; /* Couleur du bouton de confirmation */
+    background-color: #00BFFF !important;
+    /* Couleur du bouton de confirmation */
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -432,11 +523,13 @@ nav ul li a {
 }
 
 .swal2-confirm:hover {
-    background-color: #009ACD !important; /* Couleur au survol */
+    background-color: #009ACD !important;
+    /* Couleur au survol */
 }
 
 .swal2-cancel {
-    background-color: #f8f8f8 !important; /* Couleur du bouton d'annulation */
+    background-color: #f8f8f8 !important;
+    /* Couleur du bouton d'annulation */
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px 20px;
@@ -446,8 +539,10 @@ nav ul li a {
 }
 
 .swal2-cancel:hover {
-    background-color: #e0e0e0 !important; /* Couleur au survol */
+    background-color: #e0e0e0 !important;
+    /* Couleur au survol */
 }
+
 /* Style pour le modal de récupération de mot de passe */
 #forgotPasswordModal {
     display: none;
@@ -461,13 +556,17 @@ nav ul li a {
     justify-content: center;
     align-items: center;
 }
+
 #forgotPasswordModal .auth-form input {
-    width: 100%; /* Assurez-vous que l'input prend toute la largeur disponible */
-    padding: 10px; /* Ajustez le padding si nécessaire */
+    width: 100%;
+    /* Assurez-vous que l'input prend toute la largeur disponible */
+    padding: 10px;
+    /* Ajustez le padding si nécessaire */
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
+    box-sizing: border-box;
+    /* Inclut le padding et la bordure dans la largeur */
 }
 
 #forgotPasswordModal .auth-content {
@@ -476,7 +575,8 @@ nav ul li a {
     border-radius: 8px;
     width: 300px;
     text-align: center;
-    animation: slideIn 0.3s ease; /* Ajouter l'animation */
+    animation: slideIn 0.3s ease;
+    /* Ajouter l'animation */
 }
 
 #forgotPasswordModal .close-auth {
@@ -505,9 +605,40 @@ nav ul li a {
     color: #00BFFF;
     cursor: pointer;
     text-decoration: underline;
-    transition: color 0.3s ease; /* Ajouter une transition */
+    transition: color 0.3s ease;
+    /* Ajouter une transition */
 }
 
 .forgot-password a:hover {
-    color: #009ACD; /* Changer la couleur au survol */
+    color: #009ACD;
+    /* Changer la couleur au survol */
+}
+
+#secretCodeGroup {
+    margin-top: 1rem;
+    transition: opacity 0.3s ease;
+}
+
+#secretCodeGroup label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+#secretCodeGroup input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+#secretCodeGroup input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }

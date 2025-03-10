@@ -74,6 +74,19 @@ module.exports.new_user = async (req, res) => {
     }
     const { nomComplet, nomUtilisateur, email, motDePasse, role, secretCode } = req.body;
     try {
+        const existingAdmin = await User.findOne({ role: "admin" });
+        if (role === "admin") {
+            if (existingAdmin) {
+                return res.status(403).json({ message: "Un admin existe déjà." });
+            }
+            if (email !== process.env.ADMIN_EMAIL) {
+                return res.status(403).json({ message: "Seul l'administrateur désigné peut créer un compte admin." });
+            }
+            if (secretCode !== process.env.ADMIN_SECRET) {
+                return res.status(403).json({ message: "Code secret incorrect." });
+            }
+        }
+
         // Vérifier si l'utilisateur ou l'email existe déjà
         const existingUser = await User.findOne({ $or: [{ nomUtilisateur }, { email }] });
         if (existingUser) {
