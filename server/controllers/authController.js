@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
 const { loginLimiter } = require("./validator");
 const nodemailer = require("nodemailer");
+const cookieParser = require('cookie-parser');
 
 // Configuration du transporteur d'e-mails
 const transporter = nodemailer.createTransport({
@@ -23,33 +24,36 @@ const transporter = nodemailer.createTransport({
 module.exports.login = async (req, res) => {
     try {
         const { email, motDePasse } = req.body;
-        const user = await User.findOne({ email });
 
-        if (!user) {
-            return res.status(401).json({ success: false, message: "Email d'utilisateur ou mot de passe incorrect." });
+        // Validation des entrées
+        if (!email || !motDePasse) {
+            return res.status(400).json({ success: false, message: "Email et mot de passe sont requis." });
         }
 
-        // Comparer le mot de passe fourni avec le mot de passe hashé
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
+        }
+
         const isPasswordValid = await bcrypt.compare(motDePasse, user.motDePasse);
         if (!isPasswordValid) {
-            return res.status(401).json({ success: false, message: "Nom d'utilisateur ou mot de passe incorrect." });
+            return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
         }
 
-        if (!process.env.JWT_SECRET) {
-            throw new Error("❌ JWT_SECRET manquant ! Impossible de générer un token.");
-        }
-
-        // Générer un token JWT
         const token = jwt.sign(
             { userId: user._id, nomUtilisateur: user.nomUtilisateur },
-            process.env.JWT_SECRET, // 🔒 Utiliser uniquement la variable d'environnement
-            { expiresIn: "1h" } // ⏳ Réduit la durée de validité à 1 heure
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
         );
 
-        // Réinitialiser le compteur de tentatives pour cette IP
-        loginLimiter.resetKey(req.ip);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 3600000,
+            path: '/',
+        });
 
-        // ✅ Renvoyer le token et les infos utilisateur
         res.status(200).json({
             success: true,
             token,
@@ -59,13 +63,11 @@ module.exports.login = async (req, res) => {
                 nomComplet: user.nomComplet
             }
         });
-
     } catch (err) {
         console.error("Erreur de connexion:", err);
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
     }
 };
-
 //--Créer utilisateur---------------------
 module.exports.new_user = async (req, res) => {
     const errors = validationResult(req);

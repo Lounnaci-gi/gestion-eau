@@ -6,6 +6,120 @@ const registerForm = document.getElementById("registerForm");
 const authSwitches = document.querySelectorAll(".auth-switch span");
 const closeAuth = document.querySelector(".close-auth");
 
+
+// Gestion du lien "Mot de passe oublié"
+document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
+    e.preventDefault(); // Empêcher le comportement par défaut du lien
+    document.getElementById("authModal").classList.remove("show"); // Fermer le modal de connexion
+    document.getElementById("forgotPasswordModal").style.display = "flex"; // Afficher le modal de récupération de mot de passe
+});
+
+
+// Gestion de la soumission du formulaire d'inscription
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault(); // Empêcher le comportement par défaut du formulaire
+
+    const nomComplet = document.getElementById("nomComplet").value.trim();
+    const utilisateur = document.getElementById("Utilisateur").value.trim();
+    const email = document.getElementById("email_ins").value.trim();
+    const password = document.getElementById("password_ins").value.trim();
+    const role = document.getElementById("role").value;
+
+    // Vérification de la sécurité du mot de passe
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        showAlert("Erreur", "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (@, $, !, %, *, ?, &).", "error");
+        return;
+    }
+
+    if (!nomComplet || !utilisateur || !email || !password) {
+        showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
+        return;
+    }
+
+    // Afficher un loader pendant l'inscription
+    Swal.fire({
+        title: "Inscription en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
+    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password, role };
+
+    try {
+        const response = await fetch("http://localhost:3000/user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de l'inscription.");
+        }
+
+        const result = await response.json();
+        Swal.close();
+        showAlert("Succès", "Inscription réussie !", "success");
+
+        // Réinitialiser les formulaires après soumission
+        resetForms();
+
+        // Afficher le formulaire de connexion après inscription
+        registerForm.classList.remove("active");
+        loginForm.classList.add("active");
+    } catch (error) {
+        showAlert("Erreur", error.message || "Une erreur s'est produite lors de l'inscription.", "error");
+    }
+});
+
+
+// Gestion de la soumission du formulaire de récupération de mot de passe
+document.getElementById("forgotPasswordForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("forgotPasswordEmail").value.trim();
+
+    if (!email) {
+        showAlert("Erreur", "Veuillez entrer votre email.", "warning");
+        return;
+    }
+
+    Swal.fire({
+        title: "Envoi en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
+    try {
+        const response = await fetch("http://localhost:3000/forgot-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de l'envoi du lien de réinitialisation.");
+        }
+
+        const result = await response.json();
+        Swal.close();
+        showAlert("Succès", result.message, "success");
+
+        // Fermer le modal de récupération de mot de passe
+        document.getElementById("forgotPasswordModal").style.display = "none";
+    } catch (error) {
+        showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
+    }
+});
 // ✅ Fonction pour mettre à jour le bouton "Sign In" / "Sign Out"
 function setAuthButton(state) {
     const authText = authToggle.querySelector("span");
@@ -23,17 +137,16 @@ function setAuthButton(state) {
 // ✅ Mise à jour de l'affichage connexion/déconnexion
 function updateLogin() {
     const logo = document.getElementsByClassName("company-name")[0];
-    const token = sessionStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user")); // Récupérer l'utilisateur depuis sessionStorage
 
     if (!logo) return;
 
-    if (token && user) {
+    if (user && user.nomUtilisateur) {
         setAuthButton("connected");
-        logo.textContent = user.nomUtilisateur || "Utilisateur";
+        logo.textContent = user.nomUtilisateur; // Mettre à jour le nom d'utilisateur
     } else {
         setAuthButton("disconnected");
-        logo.textContent = "Logo";
+        logo.textContent = "Logo"; // Revenir à "Logo" si l'utilisateur n'est pas connecté
     }
 }
 
@@ -42,10 +155,12 @@ authToggle.addEventListener("click", () => {
     const authText = authToggle.querySelector("span").textContent;
 
     if (authText === "Sign In") {
+        // Si l'utilisateur n'est pas connecté, afficher le modal de connexion
         authModal.classList.add("show");
         loginForm.classList.add("active");
         registerForm.classList.remove("active");
     } else {
+        // Si l'utilisateur est connecté, demander une confirmation de déconnexion
         Swal.fire({
             title: "Déconnexion",
             text: "Êtes-vous sûr de vouloir vous déconnecter ?",
@@ -55,9 +170,14 @@ authToggle.addEventListener("click", () => {
             cancelButtonText: "Annuler",
         }).then((result) => {
             if (result.isConfirmed) {
-                sessionStorage.removeItem("token");
+                // Supprimer les données de l'utilisateur de sessionStorage
                 sessionStorage.removeItem("user");
+                sessionStorage.removeItem("token");
+
+                // Mettre à jour l'interface utilisateur
                 updateLogin();
+
+                // Afficher un message de succès
                 showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
             }
         });
@@ -120,102 +240,38 @@ loginForm.addEventListener("submit", async (e) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: 'include', // Inclure les cookies
         });
 
-        const result = await response.json();
-        resetForms(); // Réinitialisation des formulaires après soumission
-
         if (!response.ok) {
-            showAlert("Erreur", result.message, "error");
-            return;
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de la connexion");
         }
+
+        const result = await response.json();
+        resetForms();
 
         if (!result.token) {
             throw new Error("Token non reçu, problème d'authentification.");
         }
 
-        if (!result.data || !result.data.email) {
+        if (!result.data || !result.data.nomUtilisateur) {
             throw new Error("Données utilisateur invalides.");
         }
 
-        // 🔥 Stocker les infos utilisateur
-        sessionStorage.setItem("token", result.token);
+        // Stocker les infos utilisateur dans sessionStorage
         sessionStorage.setItem("user", JSON.stringify(result.data));
 
-        // ✅ Mettre à jour le bouton immédiatement
+        // Mettre à jour l'interface utilisateur
         updateLogin();
 
-        // ✅ Fermer le formulaire après connexion
+        // Fermer le modal de connexion
         authModal.classList.remove("show");
 
         Swal.close();
         showAlert("Succès", "Connexion réussie !", "success");
     } catch (error) {
-        showAlert("Erreur", "Une erreur est survenue lors de la connexion.", "error");
-    }
-});
-
-// ✅ Gestion de la soumission du formulaire d'inscription
-registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const nomComplet = document.getElementById("nomComplet").value.trim();
-    const utilisateur = document.getElementById("Utilisateur").value.trim();
-    const email = document.getElementById("email_ins").value.trim();
-    const password = document.getElementById("password_ins").value.trim();
-    const role = document.getElementById("role").value;
-
-    // Vérification de la sécurité du mot de passe
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
-        showAlert("Erreur", "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (@, $, !, %, *, ?, &).", "error");
-        return;
-    }
-
-    if (!nomComplet || !utilisateur || !email || !password) {
-        showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
-        return;
-    }
-
-    // Afficher un loader pendant l'inscription
-    Swal.fire({
-        title: "Inscription en cours...",
-        html: "Veuillez patienter...",
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        },
-    });
-
-    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password, role, secretCode };
-
-    try {
-        const response = await fetch("http://localhost:3000/user", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
-
-        const result = await response.json();
-        resetForms(); // Réinitialisation des formulaires après soumission
-
-        if (!response.ok) {
-            const errorMessage = result.errors
-                ? result.errors.map((err) => `• ${err.msg}`).join("\n")
-                : result.message || "Erreur lors de l'inscription.";
-            showAlert("Erreur", errorMessage, "error");
-            return;
-        }
-
-        // Afficher un message de succès
-        Swal.close();
-        showAlert("Succès", "Inscription réussie !", "success");
-
-        // Après inscription, on affiche directement le formulaire de connexion
-        registerForm.classList.remove("active");
-        loginForm.classList.add("active");
-    } catch (err) {
-        showAlert("Erreur", `Une erreur s'est produite : ${err.message}`, "error");
+        showAlert("Erreur", error.message || "Une erreur est survenue lors de la connexion.", "error");
     }
 });
 
@@ -229,98 +285,5 @@ function showAlert(title, text, icon) {
     });
 }
 
-// Gestion du lien "Mot de passe oublié"
-document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
-    e.preventDefault();
-    // Fermer le modal de connexion
-    document.getElementById("authModal").classList.remove("show");
-    // Ouvrir le modal de récupération de mot de passe
-    document.getElementById("forgotPasswordModal").style.display = "flex";
-});
-
-// Gestion de la fermeture du modal de récupération de mot de passe
-document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
-    document.getElementById("forgotPasswordModal").style.display = "none";
-});
-
-// Gestion du retour à la connexion depuis le modal de récupération de mot de passe
-document.querySelector("#forgotPasswordModal .auth-switch").addEventListener("click", () => {
-    document.getElementById("forgotPasswordModal").style.display = "none";
-    document.getElementById("authModal").classList.add("show");
-    loginForm.classList.add("active"); // Afficher le formulaire de connexion
-    registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
-});
-
-// Gestion de la soumission du formulaire de récupération de mot de passe
-document.getElementById("forgotPasswordForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("forgotPasswordEmail").value.trim();
-
-    if (!email) {
-        showAlert("Erreur", "Veuillez entrer votre email.", "warning");
-        return;
-    }
-
-    Swal.fire({
-        title: "Envoi en cours...",
-        html: "Veuillez patienter...",
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        },
-    });
-
-    try {
-        const response = await fetch("http://localhost:3000/forgot-password", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-            showAlert("Erreur", result.message, "error");
-            return;
-        }
-
-        Swal.close();
-        showAlert("Succès", result.message, "success");
-
-        // Fermer le modal de récupération de mot de passe
-        document.getElementById("forgotPasswordModal").style.display = "none";
-    } catch (error) {
-        showAlert("Erreur", "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
-    }
-});
-
-let secretCode = null; // Variable globale pour stocker le code secret
-const roleSelect = document.getElementById("role");
-roleSelect.addEventListener("change", async () => {
-    if (roleSelect.value === "admin") {
-        const { value: enteredCode } = await Swal.fire({
-            title: "Code secret requis",
-            input: "password",
-            inputLabel: "Entrez le code secret pour créer un compte admin",
-            inputPlaceholder: "Code secret",
-            showCancelButton: true,
-            inputValidator: (value) => {
-                if (!value) {
-                    return "Le code secret est requis !";
-                }
-            },
-        });
-        if (enteredCode) {
-            secretCode = enteredCode; // Stocker le code secret dans la variable globale
-        } else {
-            roleSelect.value = "utilisateur"; // Réinitialiser le rôle si l'utilisateur annule
-            secretCode = null; // Réinitialiser le code secret
-        }
-    } else {
-        secretCode = null;
-    }
-});
-
-// 🔄 Mettre à jour au chargement de la page
+// Mettre à jour l'interface au chargement de la page
 document.addEventListener("DOMContentLoaded", updateLogin);
-
