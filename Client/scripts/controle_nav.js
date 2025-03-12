@@ -12,20 +12,23 @@ function showAlert(title, text, icon) {
 let logoutTimer;
 
 function resetTimer() {
-    // ✅ Vérifier si le token existe encore avant d'afficher l'alerte
-    if (!sessionStorage.getItem("token")) {
-        return; // ⛔ Stopper l'exécution ici
+    // ✅ Vérifier si le cookie "token" existe encore avant d'afficher l'alerte
+    const token = document.cookie.split("; ").find(row => row.startsWith("token="));
+    if (!token) {
+        return; // ⛔ Stopper l'exécution ici si le token n'existe pas
     }
-    clearTimeout(logoutTimer);
+
+    clearTimeout(logoutTimer); // Réinitialiser le timer existant
     logoutTimer = setTimeout(() => {
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("user");
+        // Supprimer le cookie "token"
+        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httpOnly; secure; sameSite=strict";
+
+        // Afficher une alerte et rediriger vers la page de connexion
         showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
             window.location.href = "index.html"; // 🔄 Redirige immédiatement vers la page de connexion
         });
     }, 15 * 60 * 1000); // ⏳ Déconnecte après 15 minutes d'inactivité
 }
-
 
 // 🔄 Réinitialise le timer à chaque activité de l’utilisateur
 document.addEventListener("mousemove", resetTimer);

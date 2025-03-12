@@ -21,24 +21,39 @@ function setAuthButton(state) {
 }
 
 // ✅ Mise à jour de l'affichage connexion/déconnexion
-function updateLogin() {
+async function updateLogin() {
     const logo = document.getElementsByClassName("company-name")[0];
-    const token = sessionStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user"));
 
-    if (!logo) return;
+    if (!logo) {
+        console.error("Logo element with class 'company-name' not found!");
+        return;
+    }
 
-    if (token && user) {
-        setAuthButton("connected");
-        logo.textContent = user.nomUtilisateur || "Utilisateur";
-    } else {
+    try {
+        // Envoyer une requête au serveur pour vérifier l'état de connexion
+        const response = await fetch("http://localhost:3000/check-auth", {
+            method: "GET",
+            credentials: "include", // Inclure les cookies HTTP-Only
+        });
+
+        const result = await response.json();
+
+        if (result.isAuthenticated) {
+            setAuthButton("connected");
+            logo.textContent = result.user.nomUtilisateur || "Utilisateur";
+        } else {
+            setAuthButton("disconnected");
+            logo.textContent = "Logo";
+        }
+    } catch (error) {
+        console.error("Erreur lors de la vérification de l'authentification:", error);
         setAuthButton("disconnected");
         logo.textContent = "Logo";
     }
 }
 
 // ✅ Gestion du bouton connexion/déconnexion avec confirmation
-authToggle.addEventListener("click", () => {
+authToggle.addEventListener("click", async () => {
     const authText = authToggle.querySelector("span").textContent;
 
     if (authText === "Sign In") {
@@ -53,12 +68,25 @@ authToggle.addEventListener("click", () => {
             showCancelButton: true,
             confirmButtonText: "Oui, me déconnecter",
             cancelButtonText: "Annuler",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("user");
-                updateLogin();
-                showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
+                try {
+                    // Envoyer une requête au serveur pour déconnecter l'utilisateur
+                    const response = await fetch("http://localhost:3000/logout", {
+                        method: "POST",
+                        credentials: "include", // Inclure les cookies HTTP-Only
+                    });
+
+                    if (response.ok) {
+                        updateLogin();
+                        showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
+                    } else {
+                        throw new Error("Erreur lors de la déconnexion.");
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la déconnexion:", error);
+                    showAlert("Erreur", "Une erreur est survenue lors de la déconnexion.", "error");
+                }
             }
         });
     }
@@ -120,6 +148,7 @@ loginForm.addEventListener("submit", async (e) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include", // Inclure les cookies HTTP-Only
         });
 
         const result = await response.json();
@@ -133,14 +162,6 @@ loginForm.addEventListener("submit", async (e) => {
         if (!result.token) {
             throw new Error("Token non reçu, problème d'authentification.");
         }
-
-        if (!result.data || !result.data.email) {
-            throw new Error("Données utilisateur invalides.");
-        }
-
-        // 🔥 Stocker les infos utilisateur
-        sessionStorage.setItem("token", result.token);
-        sessionStorage.setItem("user", JSON.stringify(result.data));
 
         // ✅ Mettre à jour le bouton immédiatement
         updateLogin();
@@ -324,3 +345,29 @@ roleSelect.addEventListener("change", async () => {
 // 🔄 Mettre à jour au chargement de la page
 document.addEventListener("DOMContentLoaded", updateLogin);
 
+// Gestion du timer d'inactivité
+let logoutTimer1;
+
+function resetTimer() {
+    // ✅ Vérifier si le cookie "token" existe encore avant d'afficher l'alerte
+    const token = document.cookie.split("; ").find(row => row.startsWith("token="));
+    if (!token) {
+        return; // ⛔ Stopper l'exécution ici si le token n'existe pas
+    }
+
+    clearTimeout(logoutTimer1); // Réinitialiser le timer existant
+    logoutTimer1 = setTimeout(() => {
+        // Supprimer les cookies
+        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httpOnly; secure; sameSite=strict";
+        document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httpOnly; secure; sameSite=strict";
+
+        // Afficher une alerte et rediriger vers la page de connexion
+        showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
+            window.location.href = "index.html"; // 🔄 Redirige immédiatement vers la page de connexion
+        });
+    }, 15 * 60 * 1000); // ⏳ Déconnecte après 15 minutes d'inactivité
+}
+
+// Réinitialiser le timer lors des interactions utilisateur
+document.addEventListener("click", resetTimer);
+document.addEventListener("keypress", resetTimer);

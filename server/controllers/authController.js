@@ -46,8 +46,17 @@ module.exports.login = async (req, res) => {
             { expiresIn: "1h" } // ⏳ Réduit la durée de validité à 1 heure
         );
 
+
         // Réinitialiser le compteur de tentatives pour cette IP
         loginLimiter.resetKey(req.ip);
+
+        // Envoyer le token dans un cookie HTTP-Only et Secure
+        res.cookie("token", token, {
+            httpOnly: true, // Empêche l'accès au cookie via JavaScript
+            secure: process.env.NODE_ENV === "production", // Envoi uniquement sur HTTPS en production
+            sameSite: "strict", // Protection contre les attaques CSRF
+            maxAge: 3600000, // Durée de validité du cookie (1 heure)
+        });
 
         // ✅ Renvoyer le token et les infos utilisateur
         res.status(200).json({
@@ -148,6 +157,14 @@ module.exports.forgot_password = async (req, res) => {
             html: `<p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="${resetLink}">${resetLink}</a></p>`,
         });
 
+        // Stocker le token de réinitialisation dans un cookie HTTP-Only et Secure
+        res.cookie("resetToken", resetToken, {
+            httpOnly: true, // Empêche l'accès au cookie via JavaScript
+            secure: process.env.NODE_ENV === "production", // Envoi uniquement sur HTTPS en production
+            sameSite: "strict", // Protection contre les attaques CSRF
+            maxAge: 3600000, // Durée de validité du cookie (1 heure)
+        });
+
         res.json({
             success: true,
             message: `Un e-mail de réinitialisation a été envoyé à ${user.email}.`
@@ -163,10 +180,16 @@ module.exports.forgot_password = async (req, res) => {
 module.exports.resetPassword = async (req, res) => {
     const { token } = req.params; // Token envoyé dans l'URL
     const { newPassword } = req.body; // Nouveau mot de passe soumis
+    const resetTokenFromCookie = req.cookies.resetToken; // Récupérer le token du cookie
 
     try {
         if (!newPassword || newPassword.length < 8) {
             return res.status(400).json({ success: false, message: "Le mot de passe doit contenir au moins 8 caractères." });
+        }
+
+        // Vérifier que le token de l'URL correspond au token du cookie
+        if (token !== resetTokenFromCookie) {
+            return res.status(400).json({ success: false, message: "Token de réinitialisation invalide." });
         }
 
         // 🔍 Hacher le token reçu pour le comparer avec la version stockée
@@ -175,7 +198,7 @@ module.exports.resetPassword = async (req, res) => {
         // 📌 Vérifier si l'utilisateur existe avec ce token et qu'il n'a pas expiré
         const user = await User.findOne({
             resetToken: hashedToken,
-            resetTokenExpire: { $gt: Date.now() }
+            resetTokenExpire: { $gt: Date.now() },
         });
 
         if (!user) {
@@ -201,11 +224,18 @@ module.exports.resetPassword = async (req, res) => {
             html: `<p>Bonjour,</p><p>Votre mot de passe a été réinitialisé avec succès. Si vous n'êtes pas à l'origine de cette demande, veuillez contacter notre support immédiatement.</p><p>Cordialement,<br>L'équipe de support</p>`,
         });
 
+        // Supprimer le cookie de réinitialisation
+        res.clearCookie("resetToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
         // ✅ Répondre au frontend pour forcer la déconnexion
         res.json({
             success: true,
             message: "Mot de passe réinitialisé avec succès ! Vous devez vous reconnecter.",
-            forceLogout: true
+            forceLogout: true,
         });
 
     } catch (err) {
