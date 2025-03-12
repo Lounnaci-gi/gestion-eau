@@ -137,16 +137,16 @@ function setAuthButton(state) {
 // Vérifier et renvoie l'état d'authentification & ✅ Mise à jour de l'affichage connexion/déconnexion
 async function updateLogin() {
     const logo = document.getElementsByClassName("company-name")[0];
-    
+
     try {
-        const response = await fetch("http://localhost:3000/check-auth", { 
-            credentials: "include" 
+        const response = await fetch("http://localhost:3000/check-auth", {
+            credentials: "include"
         });
-        
+
         if (!response.ok) throw new Error("Erreur réseau");
-        
+
         const data = await response.json();
-        
+
         if (data.authenticated && data.user?.nomUtilisateur) {
             setAuthButton("connected");
             logo.textContent = data.user.nomUtilisateur;
@@ -155,7 +155,7 @@ async function updateLogin() {
             logo.textContent = "Logo";
             document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         }
-        
+
     } catch (error) {
         console.error("Erreur de vérification :", error);
         setAuthButton("disconnected");
@@ -199,7 +199,7 @@ authToggle.addEventListener("click", () => {
                     sessionStorage.clear();
                     updateLogin();
                     authModal.classList.remove("show");
-                    
+
                     return { success: true };
                 } catch (error) {
                     Swal.showValidationMessage(
@@ -245,6 +245,7 @@ loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
+    resetForms();
 
     if (!email || !password) {
         showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
@@ -280,7 +281,6 @@ loginForm.addEventListener("submit", async (e) => {
         }
 
         const result = await response.json();
-        resetForms();
 
         if (!result.token) {
             throw new Error("Token non reçu, problème d'authentification.");
