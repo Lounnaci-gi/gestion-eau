@@ -134,33 +134,48 @@ function setAuthButton(state) {
     }
 }
 
-// ✅ Mise à jour de l'affichage connexion/déconnexion
-function updateLogin() {
+// Vérifier et renvoie l'état d'authentification & ✅ Mise à jour de l'affichage connexion/déconnexion
+async function updateLogin() {
     const logo = document.getElementsByClassName("company-name")[0];
-    const user = JSON.parse(sessionStorage.getItem("user")); // Récupérer l'utilisateur depuis sessionStorage
-
-    if (!logo) return;
-
-    if (user && user.nomUtilisateur) {
-        setAuthButton("connected");
-        logo.textContent = user.nomUtilisateur; // Mettre à jour le nom d'utilisateur
-    } else {
+    
+    try {
+        const response = await fetch("http://localhost:3000/check-auth", { 
+            credentials: "include" 
+        });
+        
+        if (!response.ok) throw new Error("Erreur réseau");
+        
+        const data = await response.json();
+        
+        if (data.authenticated && data.user?.nomUtilisateur) {
+            setAuthButton("connected");
+            logo.textContent = data.user.nomUtilisateur;
+        } else {
+            setAuthButton("disconnected");
+            logo.textContent = "Logo";
+            document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+        
+    } catch (error) {
+        console.error("Erreur de vérification :", error);
         setAuthButton("disconnected");
-        logo.textContent = "Logo"; // Revenir à "Logo" si l'utilisateur n'est pas connecté
+        logo.textContent = "Logo";
     }
 }
+
+
 
 // ✅ Gestion du bouton connexion/déconnexion avec confirmation
 authToggle.addEventListener("click", () => {
     const authText = authToggle.querySelector("span").textContent;
 
     if (authText === "Sign In") {
-        // Si l'utilisateur n'est pas connecté, afficher le modal de connexion
+        // Afficher le modal de connexion
         authModal.classList.add("show");
         loginForm.classList.add("active");
         registerForm.classList.remove("active");
     } else {
-        // Si l'utilisateur est connecté, demander une confirmation de déconnexion
+        // Confirmation de déconnexion
         Swal.fire({
             title: "Déconnexion",
             text: "Êtes-vous sûr de vouloir vous déconnecter ?",
@@ -168,22 +183,38 @@ authToggle.addEventListener("click", () => {
             showCancelButton: true,
             confirmButtonText: "Oui, me déconnecter",
             cancelButtonText: "Annuler",
+            showLoaderOnConfirm: true,
+            preConfirm: async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || "Échec de la déconnexion");
+                    }
+
+                    sessionStorage.clear();
+                    updateLogin();
+                    authModal.classList.remove("show");
+                    
+                    return { success: true };
+                } catch (error) {
+                    Swal.showValidationMessage(
+                        `Échec de la déconnexion: ${error.message}`
+                    );
+                    return { success: false };
+                }
+            }
         }).then((result) => {
-            if (result.isConfirmed) {
-                // Supprimer les données de l'utilisateur de sessionStorage
-                sessionStorage.removeItem("user");
-                sessionStorage.removeItem("token");
-
-                // Mettre à jour l'interface utilisateur
-                updateLogin();
-
-                // Afficher un message de succès
-                showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
+            if (result.value?.success) {
+                showAlert("Déconnecté", "Déconnexion réussie !", "success");
             }
         });
     }
 });
-
 // ✅ Fermeture du modal d'authentification
 closeAuth.addEventListener("click", () => {
     authModal.classList.remove("show");
@@ -258,9 +289,6 @@ loginForm.addEventListener("submit", async (e) => {
         if (!result.data || !result.data.nomUtilisateur) {
             throw new Error("Données utilisateur invalides.");
         }
-
-        // Stocker les infos utilisateur dans sessionStorage
-        sessionStorage.setItem("user", JSON.stringify(result.data));
 
         // Mettre à jour l'interface utilisateur
         updateLogin();

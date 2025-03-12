@@ -75,6 +75,7 @@ const userSchema = mongoose.Schema(
             enum: ["admin", "chef_centre", "chef_agence", "chef_tech_com", "juriste", "utilisateur"], // 🔥 6 rôles
             default: "utilisateur" // L'utilisateur de base a un accès limité
         },
+        tokenVersion: { type: Number, default: 0 }, // Ajoutez cette ligne
         resetToken: { type: String, default: null },
         resetTokenExpire: { type: Date, default: null },
     },

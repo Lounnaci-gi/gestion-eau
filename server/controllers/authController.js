@@ -41,7 +41,11 @@ module.exports.login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user._id, nomUtilisateur: user.nomUtilisateur },
+            {
+                userId: user._id,
+                nomUtilisateur: user.nomUtilisateur,
+                tokenVersion: user.tokenVersion // Ajoutez cette ligne
+            },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -63,6 +67,9 @@ module.exports.login = async (req, res) => {
                 nomComplet: user.nomComplet
             }
         });
+
+        // Réinitialiser le compteur de loginLimiter en cas de connexion réussie
+        loginLimiter.resetKey(req.ip);
     } catch (err) {
         console.error("Erreur de connexion:", err);
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
@@ -213,5 +220,52 @@ module.exports.resetPassword = async (req, res) => {
     } catch (err) {
         console.error("Erreur lors de la réinitialisation du mot de passe :", err);
         res.status(500).json({ success: false, message: "Erreur serveur." });
+    }
+};
+
+// Route pour vérifier l'authentification
+module.exports.check_auth = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (!token) return res.json({ authenticated: false });
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId).select('-motDePasse');
+
+        if (!user || user.tokenVersion !== decoded.tokenVersion) {
+            return res.json({ authenticated: false });
+        }
+
+        res.json({
+            authenticated: true,
+            user: {
+                _id: user._id,
+                nomUtilisateur: user.nomUtilisateur,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error("Erreur check_auth:", error);
+        res.json({ authenticated: false });
+    }
+};
+
+// Route pour la déconnexion
+module.exports.logout = async (req, res) => {
+    try {
+        res.cookie('token', '', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            expires: new Date(0),
+            path: '/',
+        });
+        res.status(200).json({ success: true });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Erreur serveur lors de la déconnexion"
+        });
     }
 };
