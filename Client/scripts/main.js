@@ -3,182 +3,21 @@ const authToggle = document.getElementById("authToggle");
 const authModal = document.getElementById("authModal");
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
+const forgotPasswordModal = document.getElementById("forgotPasswordModal");
 const authSwitches = document.querySelectorAll(".auth-switch span");
 const closeAuth = document.querySelector(".close-auth");
 
-// ✅ Fonction pour mettre à jour le bouton "Sign In" / "Sign Out"
-function setAuthButton(state) {
-    const authText = authToggle.querySelector("span");
-    const authIcon = authToggle.querySelector("i");
-
-    if (state === "connected") {
-        authText.textContent = "Sign Out";
-        authIcon.className = "fas fa-sign-out-alt";
-    } else {
-        authText.textContent = "Sign In";
-        authIcon.className = "fas fa-sign-in-alt";
-    }
-}
-
-// ✅ Mise à jour de l'affichage connexion/déconnexion
-async function updateLogin() {
-    const logo = document.getElementsByClassName("company-name")[0];
-
-    if (!logo) {
-        console.error("Logo element with class 'company-name' not found!");
-        return;
-    }
-
-    try {
-        // Envoyer une requête au serveur pour vérifier l'état de connexion
-        const response = await fetch("http://localhost:3000/check-auth", {
-            method: "GET",
-            credentials: "include", // Inclure les cookies HTTP-Only
-        });
-
-        const result = await response.json();
-
-        if (result.isAuthenticated) {
-            setAuthButton("connected");
-            logo.textContent = result.user.nomUtilisateur || "Utilisateur";
-        } else {
-            setAuthButton("disconnected");
-            logo.textContent = "Logo";
-        }
-    } catch (error) {
-        console.error("Erreur lors de la vérification de l'authentification:", error);
-        setAuthButton("disconnected");
-        logo.textContent = "Logo";
-    }
-}
-
-// ✅ Gestion du bouton connexion/déconnexion avec confirmation
-authToggle.addEventListener("click", async () => {
-    const authText = authToggle.querySelector("span").textContent;
-
-    if (authText === "Sign In") {
-        authModal.classList.add("show");
-        loginForm.classList.add("active");
-        registerForm.classList.remove("active");
-    } else {
-        Swal.fire({
-            title: "Déconnexion",
-            text: "Êtes-vous sûr de vouloir vous déconnecter ?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Oui, me déconnecter",
-            cancelButtonText: "Annuler",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    // Envoyer une requête au serveur pour déconnecter l'utilisateur
-                    const response = await fetch("http://localhost:3000/logout", {
-                        method: "POST",
-                        credentials: "include", // Inclure les cookies HTTP-Only
-                    });
-
-                    if (response.ok) {
-                        updateLogin();
-                        showAlert("Déconnecté", "Vous avez été déconnecté avec succès.", "success");
-                    } else {
-                        throw new Error("Erreur lors de la déconnexion.");
-                    }
-                } catch (error) {
-                    console.error("Erreur lors de la déconnexion:", error);
-                    showAlert("Erreur", "Une erreur est survenue lors de la déconnexion.", "error");
-                }
-            }
-        });
-    }
+// Gestion du lien "Mot de passe oublié"
+document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
+    e.preventDefault(); // Empêcher le comportement par défaut du lien
+    loginForm.classList.remove("active"); // Masquer le formulaire de connexion
+    registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
+    forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
 });
 
-// ✅ Fermeture du modal d'authentification
-closeAuth.addEventListener("click", () => {
-    authModal.classList.remove("show");
-});
-
-// ✅ Basculer entre connexion et inscription
-authSwitches.forEach((link) => {
-    link.addEventListener("click", () => {
-        if (loginForm.classList.contains("active")) {
-            loginForm.classList.remove("active");
-            registerForm.classList.add("active");
-        } else {
-            registerForm.classList.remove("active");
-            loginForm.classList.add("active");
-        }
-        resetForms(); // Réinitialiser les formulaires après basculement
-    });
-});
-
-// ✅ Fonction pour réinitialiser les formulaires
-function resetForms() {
-    loginForm.reset();
-    registerForm.reset();
-}
-
-// ✅ Gestion de la soumission du formulaire de connexion
-loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!email || !password) {
-        showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
-        return;
-    }
-
-    if (!navigator.onLine) {
-        return showAlert("Problème de connexion", "Vous êtes hors ligne.", "error");
-    }
-
-    Swal.fire({
-        title: "Connexion en cours...",
-        html: "Veuillez patienter...",
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        },
-    });
-
-    const data = { email: email, motDePasse: password };
-
-    try {
-        const response = await fetch("http://localhost:3000/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-            credentials: "include", // Inclure les cookies HTTP-Only
-        });
-
-        const result = await response.json();
-        resetForms(); // Réinitialisation des formulaires après soumission
-
-        if (!response.ok) {
-            showAlert("Erreur", result.message, "error");
-            return;
-        }
-
-        if (!result.token) {
-            throw new Error("Token non reçu, problème d'authentification.");
-        }
-
-        // ✅ Mettre à jour le bouton immédiatement
-        updateLogin();
-
-        // ✅ Fermer le formulaire après connexion
-        authModal.classList.remove("show");
-
-        Swal.close();
-        showAlert("Succès", "Connexion réussie !", "success");
-    } catch (error) {
-        showAlert("Erreur", "Une erreur est survenue lors de la connexion.", "error");
-    }
-});
-
-// ✅ Gestion de la soumission du formulaire d'inscription
-registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// Gestion de la soumission du formulaire d'inscription
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault(); // Empêcher le comportement par défaut du formulaire
 
     const nomComplet = document.getElementById("nomComplet").value.trim();
     const utilisateur = document.getElementById("Utilisateur").value.trim();
@@ -208,68 +47,34 @@ registerForm.addEventListener("submit", async (e) => {
         },
     });
 
-    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password, role, secretCode };
+    const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password, role };
 
     try {
         const response = await fetch("http://localhost:3000/user", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: 'include',
         });
 
-        const result = await response.json();
-        resetForms(); // Réinitialisation des formulaires après soumission
-
         if (!response.ok) {
-            const errorMessage = result.errors
-                ? result.errors.map((err) => `• ${err.msg}`).join("\n")
-                : result.message || "Erreur lors de l'inscription.";
-            showAlert("Erreur", errorMessage, "error");
-            return;
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de l'inscription.");
         }
 
-        // Afficher un message de succès
+        const result = await response.json();
         Swal.close();
         showAlert("Succès", "Inscription réussie !", "success");
 
-        // Après inscription, on affiche directement le formulaire de connexion
+        // Réinitialiser les formulaires après soumission
+        resetForms();
+
+        // Afficher le formulaire de connexion après inscription
         registerForm.classList.remove("active");
         loginForm.classList.add("active");
-    } catch (err) {
-        showAlert("Erreur", `Une erreur s'est produite : ${err.message}`, "error");
+    } catch (error) {
+        showAlert("Erreur", error.message || "Une erreur s'est produite lors de l'inscription.", "error");
     }
-});
-
-// ✅ Fonction pour afficher une alerte
-function showAlert(title, text, icon) {
-    return Swal.fire({
-        title,
-        text,
-        icon,
-        confirmButtonText: "OK",
-    });
-}
-
-// Gestion du lien "Mot de passe oublié"
-document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
-    e.preventDefault();
-    // Fermer le modal de connexion
-    document.getElementById("authModal").classList.remove("show");
-    // Ouvrir le modal de récupération de mot de passe
-    document.getElementById("forgotPasswordModal").style.display = "flex";
-});
-
-// Gestion de la fermeture du modal de récupération de mot de passe
-document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
-    document.getElementById("forgotPasswordModal").style.display = "none";
-});
-
-// Gestion du retour à la connexion depuis le modal de récupération de mot de passe
-document.querySelector("#forgotPasswordModal .auth-switch").addEventListener("click", () => {
-    document.getElementById("forgotPasswordModal").style.display = "none";
-    document.getElementById("authModal").classList.add("show");
-    loginForm.classList.add("active"); // Afficher le formulaire de connexion
-    registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
 });
 
 // Gestion de la soumission du formulaire de récupération de mot de passe
@@ -296,78 +101,221 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email }),
+            credentials: 'include',
         });
 
-        const result = await response.json();
-
         if (!response.ok) {
-            showAlert("Erreur", result.message, "error");
-            return;
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de l'envoi du lien de réinitialisation.");
         }
 
+        const result = await response.json();
         Swal.close();
         showAlert("Succès", result.message, "success");
 
         // Fermer le modal de récupération de mot de passe
-        document.getElementById("forgotPasswordModal").style.display = "none";
+        forgotPasswordModal.style.display = "none";
     } catch (error) {
-        showAlert("Erreur", "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
+        showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
     }
 });
 
-let secretCode = null; // Variable globale pour stocker le code secret
-const roleSelect = document.getElementById("role");
-roleSelect.addEventListener("change", async () => {
-    if (roleSelect.value === "admin") {
-        const { value: enteredCode } = await Swal.fire({
-            title: "Code secret requis",
-            input: "password",
-            inputLabel: "Entrez le code secret pour créer un compte admin",
-            inputPlaceholder: "Code secret",
-            showCancelButton: true,
-            inputValidator: (value) => {
-                if (!value) {
-                    return "Le code secret est requis !";
-                }
-            },
-        });
-        if (enteredCode) {
-            secretCode = enteredCode; // Stocker le code secret dans la variable globale
-        } else {
-            roleSelect.value = "utilisateur"; // Réinitialiser le rôle si l'utilisateur annule
-            secretCode = null; // Réinitialiser le code secret
-        }
+// Mettre à jour le bouton "Sign In" / "Sign Out"
+function setAuthButton(state) {
+    const authText = authToggle.querySelector("span");
+    const authIcon = authToggle.querySelector("i");
+
+    if (state === "connected") {
+        authText.textContent = "Sign Out";
+        authIcon.className = "fas fa-sign-out-alt";
     } else {
-        secretCode = null;
+        authText.textContent = "Sign In";
+        authIcon.className = "fas fa-sign-in-alt";
     }
-});
-
-// 🔄 Mettre à jour au chargement de la page
-document.addEventListener("DOMContentLoaded", updateLogin);
-
-// Gestion du timer d'inactivité
-let logoutTimer1;
-
-function resetTimer() {
-    // ✅ Vérifier si le cookie "token" existe encore avant d'afficher l'alerte
-    const token = document.cookie.split("; ").find(row => row.startsWith("token="));
-    if (!token) {
-        return; // ⛔ Stopper l'exécution ici si le token n'existe pas
-    }
-
-    clearTimeout(logoutTimer1); // Réinitialiser le timer existant
-    logoutTimer1 = setTimeout(() => {
-        // Supprimer les cookies
-        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httpOnly; secure; sameSite=strict";
-        document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httpOnly; secure; sameSite=strict";
-
-        // Afficher une alerte et rediriger vers la page de connexion
-        showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
-            window.location.href = "index.html"; // 🔄 Redirige immédiatement vers la page de connexion
-        });
-    }, 15 * 60 * 1000); // ⏳ Déconnecte après 15 minutes d'inactivité
 }
 
-// Réinitialiser le timer lors des interactions utilisateur
-document.addEventListener("click", resetTimer);
-document.addEventListener("keypress", resetTimer);
+// Vérifier et mettre à jour l'état d'authentification
+async function updateLogin() {
+    const logo = document.getElementsByClassName("company-name")[0];
+
+    try {
+        const response = await fetch("http://localhost:3000/check-auth", {
+            credentials: "include"
+        });
+
+        if (!response.ok) throw new Error("Erreur réseau");
+
+        const data = await response.json();
+
+        if (data.authenticated && data.user?.nomUtilisateur) {
+            setAuthButton("connected");
+            logo.textContent = data.user.nomUtilisateur;
+        } else {
+            setAuthButton("disconnected");
+            logo.textContent = "Logo";
+            document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+
+    } catch (error) {
+        console.error("Erreur de vérification :", error);
+        setAuthButton("disconnected");
+        logo.textContent = "Logo";
+    }
+}
+
+// Gestion du bouton connexion/déconnexion avec confirmation
+authToggle.addEventListener("click", async () => {
+    const authText = authToggle.querySelector("span").textContent;
+
+    if (authText === "Sign In") {
+        // Afficher le modal de connexion
+        authModal.classList.add("show");
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+        forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
+    } else {
+        // Confirmation de déconnexion
+        Swal.fire({
+            title: "Déconnexion",
+            text: "Êtes-vous sûr de vouloir vous déconnecter ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Oui, me déconnecter",
+            cancelButtonText: "Annuler",
+            showLoaderOnConfirm: true,
+            preConfirm: async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || "Échec de la déconnexion");
+                    }
+
+                    sessionStorage.clear();
+                    updateLogin();
+                    authModal.classList.remove("show");
+
+                    return { success: true };
+                } catch (error) {
+                    Swal.showValidationMessage(
+                        `Échec de la déconnexion: ${error.message}`
+                    );
+                    return { success: false };
+                }
+            }
+        }).then((result) => {
+            if (result.value?.success) {
+                showAlert("Déconnecté", "Déconnexion réussie !", "success");
+            }
+        });
+    }
+});
+
+// Fermeture du modal d'authentification
+closeAuth.addEventListener("click", () => {
+    authModal.classList.remove("show");
+    forgotPasswordModal.style.display = "none"; // Masquer également le modal de récupération de mot de passe
+});
+
+// Basculer entre connexion, inscription et récupération de mot de passe
+authSwitches.forEach((link) => {
+    link.addEventListener("click", () => {
+        if (loginForm.classList.contains("active")) {
+            loginForm.classList.remove("active");
+            registerForm.classList.add("active");
+            forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
+        } else {
+            registerForm.classList.remove("active");
+            loginForm.classList.add("active");
+            forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
+        }
+        resetForms(); // Réinitialiser les formulaires après basculement
+    });
+});
+
+// Réinitialiser les formulaires
+function resetForms() {
+    loginForm.reset();
+    registerForm.reset();
+    document.getElementById("forgotPasswordForm").reset();
+}
+
+// Gestion de la soumission du formulaire de connexion
+loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    resetForms();
+
+    if (!email || !password) {
+        showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
+        return;
+    }
+
+    if (!navigator.onLine) {
+        return showAlert("Problème de connexion", "Vous êtes hors ligne.", "error");
+    }
+
+    Swal.fire({
+        title: "Connexion en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
+    const data = { email: email, motDePasse: password };
+
+    try {
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            credentials: 'include', // Inclure les cookies
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de la connexion");
+        }
+
+        const result = await response.json();
+
+        if (!result.token) {
+            throw new Error("Token non reçu, problème d'authentification.");
+        }
+
+        if (!result.data || !result.data.nomUtilisateur) {
+            throw new Error("Données utilisateur invalides.");
+        }
+
+        // Mettre à jour l'interface utilisateur
+        updateLogin();
+
+        // Fermer le modal de connexion
+        authModal.classList.remove("show");
+
+        Swal.close();
+        showAlert("Succès", "Connexion réussie !", "success");
+    } catch (error) {
+        showAlert("Erreur", error.message || "Une erreur est survenue lors de la connexion.", "error");
+    }
+});
+
+// Fonction pour afficher une alerte
+function showAlert(title, text, icon) {
+    return Swal.fire({
+        title,
+        text,
+        icon,
+        confirmButtonText: "OK",
+    });
+}
+
+// Mettre à jour l'interface au chargement de la page
+document.addEventListener("DOMContentLoaded", updateLogin());

@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { validation, loginLimiter } = require('../controllers/validator'); // Supprimez `authenticate`
-const { login, new_user, forgot_password, resetPassword } = require('../controllers/authController');
+const { validation, loginLimiter } = require('../controllers/validator');
+const { login, new_user, forgot_password, resetPassword, check_auth, logout } = require('../controllers/authController');
+
+
 
 // Route pour la connexion
 router.post('/login', loginLimiter, login);
@@ -13,6 +15,12 @@ router.post('/user', validation, new_user);
 router.post('/forgot-password', forgot_password);
 
 // Route pour la réinitialisation de mot de passe
-router.post('/reset-password/:token', resetPassword); // Supprimez `authenticate`
+router.post('/reset-password/:token', resetPassword);
+
+//Route pour vérifier l'authentification
+router.get('/check-auth', check_auth);
+
+// Route pour la déconnexion
+router.post('/logout', logout);
 
 module.exports = router;

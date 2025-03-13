@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
 const { loginLimiter } = require("./validator");
 const nodemailer = require("nodemailer");
+const cookieParser = require('cookie-parser');
 
 // Configuration du transporteur d'e-mails
 const transporter = nodemailer.createTransport({
@@ -23,42 +24,40 @@ const transporter = nodemailer.createTransport({
 module.exports.login = async (req, res) => {
     try {
         const { email, motDePasse } = req.body;
-        const user = await User.findOne({ email });
 
-        if (!user) {
-            return res.status(401).json({ success: false, message: "Email d'utilisateur ou mot de passe incorrect." });
+        // Validation des entrées
+        if (!email || !motDePasse) {
+            return res.status(400).json({ success: false, message: "Email et mot de passe sont requis." });
         }
 
-        // Comparer le mot de passe fourni avec le mot de passe hashé
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
+        }
+
         const isPasswordValid = await bcrypt.compare(motDePasse, user.motDePasse);
         if (!isPasswordValid) {
-            return res.status(401).json({ success: false, message: "Nom d'utilisateur ou mot de passe incorrect." });
+            return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
         }
 
-        if (!process.env.JWT_SECRET) {
-            throw new Error("❌ JWT_SECRET manquant ! Impossible de générer un token.");
-        }
-
-        // Générer un token JWT
         const token = jwt.sign(
-            { userId: user._id, nomUtilisateur: user.nomUtilisateur },
-            process.env.JWT_SECRET, // 🔒 Utiliser uniquement la variable d'environnement
-            { expiresIn: "1h" } // ⏳ Réduit la durée de validité à 1 heure
+            {
+                userId: user._id,
+                nomUtilisateur: user.nomUtilisateur,
+                tokenVersion: user.tokenVersion // Ajoutez cette ligne
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
         );
 
-
-        // Réinitialiser le compteur de tentatives pour cette IP
-        loginLimiter.resetKey(req.ip);
-
-        // Envoyer le token dans un cookie HTTP-Only et Secure
-        res.cookie("token", token, {
-            httpOnly: true, // Empêche l'accès au cookie via JavaScript
-            secure: process.env.NODE_ENV === "production", // Envoi uniquement sur HTTPS en production
-            sameSite: "strict", // Protection contre les attaques CSRF
-            maxAge: 3600000, // Durée de validité du cookie (1 heure)
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 3600000,
+            path: '/',
         });
 
-        // ✅ Renvoyer le token et les infos utilisateur
         res.status(200).json({
             success: true,
             token,
@@ -69,12 +68,13 @@ module.exports.login = async (req, res) => {
             }
         });
 
+        // Réinitialiser le compteur de loginLimiter en cas de connexion réussie
+        loginLimiter.resetKey(req.ip);
     } catch (err) {
         console.error("Erreur de connexion:", err);
         res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
     }
 };
-
 //--Créer utilisateur---------------------
 module.exports.new_user = async (req, res) => {
     const errors = validationResult(req);
@@ -241,5 +241,52 @@ module.exports.resetPassword = async (req, res) => {
     } catch (err) {
         console.error("Erreur lors de la réinitialisation du mot de passe :", err);
         res.status(500).json({ success: false, message: "Erreur serveur." });
+    }
+};
+
+// Route pour vérifier l'authentification
+module.exports.check_auth = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (!token) return res.json({ authenticated: false });
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId).select('-motDePasse');
+
+        if (!user || user.tokenVersion !== decoded.tokenVersion) {
+            return res.json({ authenticated: false });
+        }
+
+        res.json({
+            authenticated: true,
+            user: {
+                _id: user._id,
+                nomUtilisateur: user.nomUtilisateur,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error("Erreur check_auth:", error);
+        res.json({ authenticated: false });
+    }
+};
+
+// Route pour la déconnexion
+module.exports.logout = async (req, res) => {
+    try {
+        res.cookie('token', '', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            expires: new Date(0),
+            path: '/',
+        });
+        res.status(200).json({ success: true });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Erreur serveur lors de la déconnexion"
+        });
     }
 };
