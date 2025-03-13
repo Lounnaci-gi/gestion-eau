@@ -115,6 +115,7 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
 
         // Fermer le modal de récupération de mot de passe
         forgotPasswordModal.style.display = "none";
+        forgotPasswordModal.style.display = "none";
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
     }
