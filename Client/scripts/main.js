@@ -10,11 +10,18 @@ const closeAuth = document.querySelector(".close-auth");
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du lien
+    document.getElementsByClassName('auth-content')[0].style = "width:10%";
     loginForm.classList.remove("active"); // Masquer le formulaire de connexion
     registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
     forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
+
 });
 
+document.querySelectorAll("#forgotPasswordModal .close-auth")[0].addEventListener('click', () => {
+    authModal.classList.remove("show");
+    document.getElementsByClassName('auth-content')[0].style = "width:100%";
+    forgotPasswordModal.style.display = "none";
+});
 // Gestion de la soumission du formulaire d'inscription
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du formulaire
@@ -115,7 +122,7 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
 
         // Fermer le modal de récupération de mot de passe
         forgotPasswordModal.style.display = "none";
-        forgotPasswordModal.style.display = "none";
+        document.getElementsByClassName('auth-content')[0].style = "width:100%";
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
     }
@@ -234,6 +241,7 @@ authSwitches.forEach((link) => {
             loginForm.classList.add("active");
             forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
         }
+        document.getElementsByClassName('auth-content')[0].style = "width:100%";
         resetForms(); // Réinitialiser les formulaires après basculement
     });
 });
