@@ -69,4 +69,14 @@ const loginLimiter = rateLimit({
     }
 });
 
-module.exports = { validation, loginLimiter, authenticate };
+// ✅ Middleware d'autorisation (gestion des rôles)
+const authorize = (roles = []) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "⛔ Accès refusé. Vous n'avez pas les permissions nécessaires." });
+        }
+        next();
+    };
+};
+
+module.exports = { validation, loginLimiter, authenticate, authorize };
