@@ -7,8 +7,15 @@
     <title>Gestion Clientels - Suivi des nouveaux branchements</title>
     <link rel="stylesheet" href="./Styles/styles.css"> <!-- Lien vers le fichier CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Font Awesome -->
+    <!-- Ajouter des balises OpenGraph -->
+    <meta property="og:title" content="Gestion Clientèle - Suivi des branchements">
+    <meta property="og:description"
+        content="Optimisez votre gestion clientèle avec notre solution de suivi des branchements.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="URL_DU_SITE">
+
     <!-- Ajout de méta-données SEO -->
+
     <meta name="description"
         content="Solution de gestion clientèle spécialisée dans le suivi des branchements - Création de devis, facturation et suivi technique">
     <meta name="keywords" content="gestion client, branchements, devis, facturation, suivi technique">
@@ -33,7 +40,7 @@
 
         <div class="search-container">
             <i class="fas fa-search search-icon"></i> <!-- Icône de recherche à l'intérieur -->
-            <input type="text" placeholder="Rechercher..." class="search-input">
+            <input type="text" placeholder="Rechercher..." class="search-input" id="search">
         </div>
         <!-- Dans la section auth-buttons -->
         <div class="auth-buttons">
@@ -154,11 +161,11 @@
             <form class="auth-form active" id="loginForm">
                 <h2>Connexion</h2>
                 <div class="form-group">
-                    <label>Email</label>
+                    <label for="email">Email</label>
                     <input type="email" id="email" required maxlength="50">
                 </div>
                 <div class="form-group">
-                    <label>Mot de passe</label>
+                    <label for="password">Mot de passe</label>
                     <input type="password" id="password" required maxlength="20">
                 </div>
                 <button type="submit">Se connecter</button>
@@ -172,23 +179,23 @@
             <form class="auth-form" id="registerForm">
                 <h2>Inscription</h2>
                 <div class="form-group">
-                    <label>Nom complet</label>
+                    <label for="nomComplet">Nom complet</label>
                     <input type="text" id="nomComplet" required maxlength="50">
                 </div>
                 <div class="form-group">
-                    <label>Nom Utilisateur</label>
+                    <label for="Utilisateur">Nom Utilisateur</label>
                     <input type="text" id="Utilisateur" required maxlength="15">
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
+                    <label for="email_ins">Email</label>
                     <input type="email" id="email_ins" required maxlength="50">
                 </div>
                 <div class="form-group">
-                    <label>Mot de passe</label>
+                    <label for="password_ins">Mot de passe</label>
                     <input type="password" id="password_ins" required maxlength="20">
                 </div>
                 <div class="form-group">
-                    <label>Rôle</label>
+                    <label for="role">Rôle</label>
                     <select id="role" required>
                         <option value="utilisateur">Utilisateur</option>
                         <option value="admin">Admin</option>
@@ -208,7 +215,7 @@
                     <form class="auth-form" id="forgotPasswordForm">
                         <h2>Mot de passe oublié</h2>
                         <div class="form-group">
-                            <label>Email</label>
+                            <label for="forgotPasswordEmail">Email</label>
                             <input type="email" id="forgotPasswordEmail" required maxlength="50">
                         </div>
                         <button type="submit">Envoyer le lien de réinitialisation</button>

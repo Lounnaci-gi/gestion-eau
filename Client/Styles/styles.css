@@ -1,4 +1,9 @@
 /* styles.css */
+:root {
+    --primary-color: #00BFFF;
+    --secondary-color: #009ACD;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 /* Styles de base */
 body {
@@ -264,7 +269,7 @@ nav ul li a {
 .dashboard-card {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 10px;
@@ -284,7 +289,7 @@ nav ul li a {
 .card-header i {
     font-size: 1.5em;
     margin-right: 10px;
-    color: #00BFFF;
+    color: var(--primary-color);
 }
 
 .card-header h3 {
@@ -352,7 +357,7 @@ nav ul li a {
 
 .auth-form h2 {
     text-align: center;
-    color: #00BFFF;
+    color: var(--secondary-color);
     margin-bottom: 25px;
 }
 
@@ -445,7 +450,7 @@ nav ul li a {
 .auth-form button {
     width: 100%;
     padding: 12px;
-    background: #00BFFF;
+    background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -456,7 +461,7 @@ nav ul li a {
 }
 
 .auth-form button:hover {
-    background: #009ACD;
+    background: var(--secondary-color);
 }
 
 .auth-switch,
@@ -467,13 +472,13 @@ nav ul li a {
 }
 
 .auth-switch span {
-    color: #00BFFF;
+    color: var(--primary-color);
     cursor: pointer;
     text-decoration: underline;
 }
 
 .forgot-password a {
-    color: #00BFFF;
+    color: var(--primary-color);
     cursor: pointer;
     text-decoration: underline;
 }
@@ -494,13 +499,13 @@ nav ul li a {
 .swal2-popup {
     font-family: Arial, sans-serif;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
     background-color: #fff;
     color: #333;
 }
 
 .swal2-title {
-    color: #00BFFF;
+    color: var(--primary-color);
     /* Couleur du titre */
     font-size: 1.5em;
     margin-bottom: 15px;
@@ -513,7 +518,7 @@ nav ul li a {
 }
 
 .swal2-confirm {
-    background-color: #00BFFF !important;
+    background-color:var(--primary-color) !important;
     /* Couleur du bouton de confirmation */
     border: none;
     border-radius: 5px;
@@ -523,7 +528,7 @@ nav ul li a {
 }
 
 .swal2-confirm:hover {
-    background-color: #009ACD !important;
+    background-color: var(--secondary-color) !important;
     /* Couleur au survol */
 }
 
@@ -601,7 +606,7 @@ nav ul li a {
 }
 
 .forgot-password a {
-    color: #00BFFF;
+    color: var(--primary-color);
     cursor: pointer;
     text-decoration: underline;
     transition: color 0.3s ease;
@@ -609,7 +614,7 @@ nav ul li a {
 }
 
 .forgot-password a:hover {
-    color: #009ACD;
+    color: var(--secondary-color);
     /* Changer la couleur au survol */
 }
 

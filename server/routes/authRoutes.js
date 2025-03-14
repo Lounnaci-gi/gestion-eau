@@ -23,4 +23,5 @@ router.get('/check-auth', check_auth);
 // Route pour la déconnexion
 router.post('/logout', logout);
 
+
 module.exports = router;

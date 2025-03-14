@@ -327,4 +327,4 @@ function showAlert(title, text, icon) {
 }
 
 // Mettre à jour l'interface au chargement de la page
-document.addEventListener("DOMContentLoaded", updateLogin());
+document.addEventListener("DOMContentLoaded", () => updateLogin());
