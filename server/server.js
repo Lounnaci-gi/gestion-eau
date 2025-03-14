@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 app.use('/', require("./routes/authRoutes"));
 
 // Gestion des erreurs
-app.use((req, res, next) => {
+app.get("*", (req, res, next) => {
     res.status(404).render("index"); // Correspond à "views/index.ejs"
 
 });
