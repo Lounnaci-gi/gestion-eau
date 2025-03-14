@@ -72,11 +72,17 @@ const loginLimiter = rateLimit({
 // ✅ Middleware d'autorisation (gestion des rôles)
 const authorize = (roles = []) => {
     return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({ message: "⛔ Accès refusé. Vous n'avez pas les permissions nécessaires." });
+        if (!req.user) {
+            return res.status(401).json({ message: "⚠️ Non authentifié. Connectez-vous d'abord." });
         }
+
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "⛔ Accès refusé. Permissions insuffisantes." });
+        }
+
         next();
     };
 };
+
 
 module.exports = { validation, loginLimiter, authenticate, authorize };

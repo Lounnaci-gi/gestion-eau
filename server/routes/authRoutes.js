@@ -4,12 +4,12 @@ const { validation, loginLimiter, authenticate, authorize } = require('../contro
 const { login, new_user, forgot_password, resetPassword, check_auth, logout } = require('../controllers/authController');
 
 
-
+//authorize(["admin"])
 // Route pour la connexion
 router.post('/login', loginLimiter, login);
 
 // Route pour créer un nouvel utilisateur
-router.post('/user', validation, new_user);
+router.post('/user', validation,new_user);
 
 // Route pour la récupération de mot de passe
 router.post('/forgot-password', forgot_password);
