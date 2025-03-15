@@ -42,7 +42,7 @@ nav {
 nav:hover {
     background: linear-gradient(135deg, var(--primary-color) 30%, var(--secondary-color));
     box-shadow: var(--box-shadow-hover);
-    
+
 }
 
 nav ul {
@@ -747,15 +747,20 @@ nav ul li a:hover {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
-.utilisateurs{
+
+.utilisateurs {
     /* display: none; */
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     justify-content: center;
-    align-items: center; 
-    z-index: 1001;
-    left: 0;
-    top: 0;
+    align-items: center;
+}
+
+.utilisateurs .show {
+    display: flex;
 }
