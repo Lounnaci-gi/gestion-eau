@@ -19,19 +19,19 @@ function resetTimer() {
             method: 'POST',
             credentials: 'include'
         })
-        .then(response => {
-            if (response.ok) {
-                showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
-                    window.location.href = window.location.origin + "/index.html"; // Rediriger proprement
-                });
-            } else {
-                showAlert("Erreur", "Échec de la déconnexion. Essayez à nouveau.", "error");
-            }
-        })
-        .catch(error => {
-            console.error('Erreur réseau:', error);
-            showAlert("Erreur", "Impossible de se déconnecter. Vérifiez votre connexion.", "error");
-        });
+            .then(response => {
+                if (response.ok) {
+                    showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
+                        window.location.href = window.location.origin + "/index.html"; // Rediriger proprement
+                    });
+                } else {
+                    showAlert("Erreur", "Échec de la déconnexion. Essayez à nouveau.", "error");
+                }
+            })
+            .catch(error => {
+                console.error('Erreur réseau:', error);
+                showAlert("Erreur", "Impossible de se déconnecter. Vérifiez votre connexion.", "error");
+            });
     }, 15 * 60 * 1000); // 15 minutes
 }
 
@@ -51,3 +51,15 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener('online', () => {
     showAlert("Connexion rétablie", "Vous êtes de nouveau en ligne.", "success");
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', function () {
+        navLinks.classList.toggle('active');
+    });
+});
+
+

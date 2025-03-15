@@ -2,7 +2,15 @@
 :root {
     --primary-color: #00BFFF;
     --secondary-color: #009ACD;
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --accent-color: #0078D7;
+    --text-color: #333;
+    --text-light: #666;
+    --background-light: #f8f9fa;
+    --background-dark: #e9ecef;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --box-shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --border-radius: 10px;
 }
 
 /* Styles de base */
@@ -10,7 +18,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--background-light);
+    color: var(--text-color);
     scroll-behavior: smooth;
 }
 
@@ -18,15 +27,22 @@ body {
 nav {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 10px 20px;
-    width: 95%;
+    padding: 15px 25px;
+    width: 90%;
     margin: 20px auto;
     box-shadow: var(--box-shadow);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    transition: all var(--transition-speed) ease;
+}
+
+nav:hover {
+    background: linear-gradient(135deg, var(--primary-color) 30%, var(--secondary-color));
+    box-shadow: var(--box-shadow-hover);
+    
 }
 
 nav ul {
@@ -48,9 +64,13 @@ nav ul li a {
     text-decoration: none;
     padding: 12px 18px;
     border-radius: 5px;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: all var(--transition-speed) ease;
 }
 
+nav ul li a:hover {
+    background: var(--primary-color);
+    text-shadow: 0 0 8px white;
+}
 
 /* 📌 Style du bouton "Paramètres" */
 .dropdown>a {
@@ -68,31 +88,30 @@ nav ul li a {
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 110%;
+    top: 100%;
     left: 0;
     min-width: 200px;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     box-shadow: var(--box-shadow);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     list-style: none;
     padding: 8px 0;
     z-index: 100;
-    transition: opacity 0.3s ease, transform 0.2s ease;
-    transform: translateY(10px);
-    opacity: 0;
+    transition: all var(--transition-speed) ease;
+    transform: translateY(5px);
+    overflow: hidden;
 }
 
 /* 📌 Style des liens du sous-menu */
 .dropdown-menu li {
-    padding: 10px;
+    padding: 0;
 }
 
 .dropdown-menu li a {
     display: block;
     color: white;
-    padding: 10px;
     text-decoration: none;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: all var(--transition-speed) ease;
 }
 
 /* 📌 Effet au survol */
@@ -102,6 +121,8 @@ nav ul li a {
 
 .dropdown-menu li:hover a {
     text-shadow: 0 0 8px white;
+    background: rgba(0, 191, 255, 0.1);
+    transform: translateX(5px);
     font-weight: 500;
 }
 
@@ -109,7 +130,7 @@ nav ul li a {
 .dropdown:hover>.dropdown-menu {
     display: block;
     opacity: 1;
-    transform: translateY(0);
+    /* transform: translateY(0); */
 }
 
 /* 📌 Animation de la flèche */
@@ -140,6 +161,11 @@ nav ul li a {
     font-weight: bold;
     margin-left: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all var(--transition-speed) ease;
+}
+
+.company-name:hover {
+    transform: scale(1.05);
 }
 
 .search-container {
@@ -720,4 +746,16 @@ nav ul li a {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+.utilisateurs{
+    /* display: none; */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center; 
+    z-index: 1001;
+    left: 0;
+    top: 0;
 }
