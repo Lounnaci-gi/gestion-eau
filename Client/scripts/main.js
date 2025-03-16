@@ -316,9 +316,7 @@ loginForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Sélection des éléments
-const userTableModal = document.getElementById("userTableModal");
-const userTableBody = document.getElementById("userTableBody");
+// Gestion des utilisateurs
 
 // Gestion du clic sur "Général"
 document.getElementById("general").addEventListener("click", async (e) => {
@@ -330,8 +328,16 @@ document.getElementById("general").addEventListener("click", async (e) => {
         
         if (!response.ok) throw new Error("Erreur de chargement des utilisateurs");
         
-        const users = await response.json();
-        populateUserTable(users);
+        const data = await response.json();
+        console.log(data); // Pour déboguer
+
+        // Accédez à data.data pour obtenir le tableau des utilisateurs
+        if (data.success && Array.isArray(data.data)) {
+            populateUserTable(data.data); // Utilisez data.data
+        } else {
+            throw new Error("Format de données invalide");
+        }
+        
         userTableModal.classList.add("show");
         
     } catch (error) {
@@ -341,11 +347,16 @@ document.getElementById("general").addEventListener("click", async (e) => {
 
 // Remplir le tableau des utilisateurs
 function populateUserTable(users) {
+    if (!Array.isArray(users)) {
+        console.error("Expected an array of users, got:", users);
+        return;
+    }
+
     userTableBody.innerHTML = users.map(user => `
         <tr>
-            <td>${user.nomComplet}</td>
-            <td>${user.email}</td>
-            <td>${user.role}</td>
+            <td>${user.nomComplet || "Non renseigné"}</td>
+            <td>${user.email || "Non renseigné"}</td>
+            <td>${user.role || "Non renseigné"}</td>
             <td class="action-buttons">
                 <button class="edit-btn" onclick="editUser('${user._id}')">
                     <i class="fas fa-edit"></i>
@@ -365,7 +376,7 @@ document.querySelectorAll('.close-auth').forEach(closeBtn => {
     });
 });
 
-// Exemple de fonctions d'action
+// Exemple de fonction de suppression
 async function deleteUser(userId) {
     try {
         const result = await Swal.fire({
@@ -394,11 +405,11 @@ async function deleteUser(userId) {
     }
 }
 
+// Exemple de fonction d'édition
 async function editUser(userId) {
     // Implémentez la logique d'édition ici
     showAlert("Info", "Fonctionnalité d'édition à implémenter", "info");
 }
-
 // Fonction pour afficher une alerte
 function showAlert(title, text, icon) {
     return Swal.fire({
