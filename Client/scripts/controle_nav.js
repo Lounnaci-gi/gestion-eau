@@ -8,50 +8,58 @@ function showAlert(title, text, icon) {
     });
 }
 
+const API_BASE_URL = "http://localhost:3000"; // Remplacer par l'URL réelle en prod
 let logoutTimer;
 
+// Fonction pour réinitialiser le timer
 function resetTimer() {
     clearTimeout(logoutTimer);
     logoutTimer = setTimeout(() => {
-        // Envoyer une requête au serveur pour déconnecter l'utilisateur
-        fetch('/logout', {
+        fetch(`${API_BASE_URL}/logout`, {
             method: 'POST',
-            credentials: 'include' // Inclure les cookies dans la requête
+            credentials: 'include'
         })
-        .then(response => {
-            if (response.ok) {
-                showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
-                    window.location.href = "index.html"; // Rediriger vers la page de connexion
-                });
-            } else {
-                console.error('Erreur lors de la déconnexion');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur réseau:', error);
-        });
-    }, 15 * 60 * 1000); // Déconnecter après 15 minutes d'inactivité
+            .then(response => {
+                if (response.ok) {
+                    showAlert("Déconnexion", "Votre session a expiré pour inactivité.", "info").then(() => {
+                        window.location.href = window.location.origin + "/index.html"; // Rediriger proprement
+                    });
+                } else {
+                    showAlert("Erreur", "Échec de la déconnexion. Essayez à nouveau.", "error");
+                }
+            })
+            .catch(error => {
+                console.error('Erreur réseau:', error);
+                showAlert("Erreur", "Impossible de se déconnecter. Vérifiez votre connexion.", "error");
+            });
+    }, 15 * 60 * 1000); // 15 minutes
 }
 
-// 🔄 Réinitialiser le timer à chaque activité de l’utilisateur
+// 🔄 Réinitialisation automatique du timer au chargement et aux interactions
+document.addEventListener("DOMContentLoaded", resetTimer);
 document.addEventListener("mousemove", resetTimer);
 document.addEventListener("keypress", resetTimer);
 document.addEventListener("click", resetTimer);
 document.addEventListener("scroll", resetTimer);
 
-// Vérification de la connexion
+// Vérification de la connexion au chargement
 document.addEventListener("DOMContentLoaded", () => {
-    // Vérifier si l'utilisateur est déjà hors ligne au chargement
     if (!navigator.onLine) {
         showAlert("Problème de connexion", "Vous êtes hors ligne.", "error");
     }
+});
+window.addEventListener('online', () => {
+    showAlert("Connexion rétablie", "Vous êtes de nouveau en ligne.", "success");
+});
 
-    // Événements pour détecter les changements de connexion en temps réel
-    window.addEventListener('offline', () => {
-        showAlert("Problème de connexion", "Vous êtes hors ligne.", "error");
-    });
 
-    window.addEventListener('online', () => {
-        showAlert("Connexion rétablie", "Vous êtes de nouveau en ligne.", "success");
+document.addEventListener('DOMContentLoaded', function () {
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', function () {
+        navLinks.classList.toggle('active');
     });
 });
+
+

@@ -5,8 +5,13 @@ const path = require("path");
 const connectdb = require("./config/db");
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const cookieParser = require('cookie-parser'); // Importez cookie-parser
+const { title } = require('process');
 // Connexion à MongoDB
 connectdb();
+
+app.set("view engine", "ejs"); // Ou "pug" si tu utilises Pug
+app.set("views", path.join(__dirname, "views"));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,6 +27,12 @@ app.get('/', (req, res) => {
 
 // Importer les routes
 app.use('/', require("./routes/authRoutes"));
+
+// Gestion des erreurs
+app.get("*", (req, res, next) => {
+    res.status(404).render("index"); // Correspond à "views/index.ejs"
+
+});
 
 // Démarrage du serveur
 app.listen(port, () => {

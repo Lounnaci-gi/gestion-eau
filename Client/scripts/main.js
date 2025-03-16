@@ -9,31 +9,18 @@ const closeAuth = document.querySelector(".close-auth");
 
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Empêcher le comportement par défaut du lien
+    document.getElementsByClassName('auth-content')[0].style = "width:10%";
+    loginForm.classList.remove("active"); // Masquer le formulaire de connexion
+    registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
+    forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
+
+});
+
+document.querySelectorAll("#forgotPasswordModal .close-auth")[0].addEventListener('click', () => {
     authModal.classList.remove("show");
-    forgotPasswordModal.style.display = "flex";
-});
-
-// Gestion de la fermeture du modal de récupération de mot de passe
-document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
+    document.getElementsByClassName('auth-content')[0].style = "width:100%";
     forgotPasswordModal.style.display = "none";
-    // Ne pas rouvrir automatiquement le modal d'authentification
-});
-
-// Gestion du lien "Retour à la connexion"
-document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", () => {
-    // Fermer le modal de récupération de mot de passe
-    forgotPasswordModal.style.display = "none";
-    
-    // Ouvrir le modal d'authentification
-    authModal.classList.add("show");
-    
-    // S'assurer que c'est le formulaire de connexion qui est actif
-    loginForm.classList.add("active");
-    registerForm.classList.remove("active");
-    
-    // Réinitialiser le formulaire de récupération de mot de passe
-    document.getElementById("forgotPasswordForm").reset();
 });
 // Gestion de la soumission du formulaire d'inscription
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
@@ -135,11 +122,13 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
 
         // Fermer le modal de récupération de mot de passe
         forgotPasswordModal.style.display = "none";
+        document.getElementsByClassName('auth-content')[0].style = "width:100%";
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
     }
 });
-// ✅ Fonction pour mettre à jour le bouton "Sign In" / "Sign Out"
+
+// Mettre à jour le bouton "Sign In" / "Sign Out"
 function setAuthButton(state) {
     const authText = authToggle.querySelector("span");
     const authIcon = authToggle.querySelector("i");
@@ -153,7 +142,7 @@ function setAuthButton(state) {
     }
 }
 
-// Vérifier et renvoie l'état d'authentification & ✅ Mise à jour de l'affichage connexion/déconnexion
+// Vérifier et mettre à jour l'état d'authentification
 async function updateLogin() {
     const logo = document.getElementsByClassName("company-name")[0];
 
@@ -182,8 +171,8 @@ async function updateLogin() {
     }
 }
 
-// ✅ Gestion du bouton connexion/déconnexion avec confirmation
-authToggle.addEventListener("click", () => {
+// Gestion du bouton connexion/déconnexion avec confirmation
+authToggle.addEventListener("click", async () => {
     const authText = authToggle.querySelector("span").textContent;
 
     if (authText === "Sign In") {
@@ -191,6 +180,7 @@ authToggle.addEventListener("click", () => {
         authModal.classList.add("show");
         loginForm.classList.add("active");
         registerForm.classList.remove("active");
+        forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
     } else {
         // Confirmation de déconnexion
         Swal.fire({
@@ -233,35 +223,37 @@ authToggle.addEventListener("click", () => {
     }
 });
 
-// ✅ Fermeture du modal d'authentification
+// Fermeture du modal d'authentification
 closeAuth.addEventListener("click", () => {
     authModal.classList.remove("show");
-    resetForms();
-    updateLogin();
+    forgotPasswordModal.style.display = "none"; // Masquer également le modal de récupération de mot de passe
 });
 
-// ✅ Basculer entre connexion et inscription
+// Basculer entre connexion, inscription et récupération de mot de passe
 authSwitches.forEach((link) => {
     link.addEventListener("click", () => {
         if (loginForm.classList.contains("active")) {
             loginForm.classList.remove("active");
             registerForm.classList.add("active");
+            forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
         } else {
             registerForm.classList.remove("active");
             loginForm.classList.add("active");
-
+            forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
         }
+        document.getElementsByClassName('auth-content')[0].style = "width:100%";
         resetForms(); // Réinitialiser les formulaires après basculement
     });
 });
 
-// ✅ Fonction pour réinitialiser les formulaires
+// Réinitialiser les formulaires
 function resetForms() {
     loginForm.reset();
     registerForm.reset();
+    document.getElementById("forgotPasswordForm").reset();
 }
 
-// ✅ Gestion de la soumission du formulaire de connexion
+// Gestion de la soumission du formulaire de connexion
 loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value.trim();
@@ -324,7 +316,7 @@ loginForm.addEventListener("submit", async (e) => {
     }
 });
 
-// ✅ Fonction pour afficher une alerte
+// Fonction pour afficher une alerte
 function showAlert(title, text, icon) {
     return Swal.fire({
         title,
@@ -335,4 +327,4 @@ function showAlert(title, text, icon) {
 }
 
 // Mettre à jour l'interface au chargement de la page
-document.addEventListener("DOMContentLoaded", updateLogin);
+document.addEventListener("DOMContentLoaded", () => updateLogin());
