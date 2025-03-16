@@ -7,28 +7,33 @@ const forgotPasswordModal = document.getElementById("forgotPasswordModal");
 const authSwitches = document.querySelectorAll(".auth-switch span");
 const closeAuth = document.querySelector(".close-auth");
 
-
-
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
-    e.preventDefault(); // Empêcher le comportement par défaut du lien
-    authModal.classList.remove("show"); // Fermer le modal de connexion
-    forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
+    e.preventDefault();
+    authModal.classList.remove("show");
+    forgotPasswordModal.style.display = "flex";
 });
-
-// Ajouter après le bloc de code existant pour forgotPasswordForm
 
 // Gestion de la fermeture du modal de récupération de mot de passe
 document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
     forgotPasswordModal.style.display = "none";
+    // Ne pas rouvrir automatiquement le modal d'authentification
 });
 
 // Gestion du lien "Retour à la connexion"
 document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", () => {
+    // Fermer le modal de récupération de mot de passe
     forgotPasswordModal.style.display = "none";
+    
+    // Ouvrir le modal d'authentification
     authModal.classList.add("show");
+    
+    // S'assurer que c'est le formulaire de connexion qui est actif
     loginForm.classList.add("active");
     registerForm.classList.remove("active");
+    
+    // Réinitialiser le formulaire de récupération de mot de passe
+    document.getElementById("forgotPasswordForm").reset();
 });
 // Gestion de la soumission du formulaire d'inscription
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
