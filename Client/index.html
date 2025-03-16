@@ -163,15 +163,17 @@
     <!-- Section utilisateurs -->
     <section class="utilisateurs">
         <div class="auth-content">
-            <span class="close-auth">&times;</span>
+            <!-- <span class="close-auth">&times;</span> -->
             <form class="auth-form active">
                 <h3>Liste des utilisateurs</h3>
                 <div class="form-group">
-                    <p>utilisateurs</p>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required maxlength="50">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required maxlength="20">
                 </div>
             </form>
         </div>
-
     </section>
     <!-- Ajoutez ceci juste avant la balise </body> dans index.html -->
     <div class="auth-modal" id="authModal">

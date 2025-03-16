@@ -749,7 +749,7 @@ nav ul li a:hover {
 }
 
 .utilisateurs {
-    /* display: none; */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
