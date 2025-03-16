@@ -290,3 +290,20 @@ module.exports.logout = async (req, res) => {
         });
     }
 };
+
+
+module.exports.liste_utilisateur = async (req, res) => {
+    try {
+        const users = await User.find().select('-motDePasse');
+
+        if (!users) {
+            return res.status(404).json({ success: false, message: "Aucun utilisateur trouvé." });
+        }
+       
+        res.json({ success: true, data: users });
+
+    } catch (error) {
+        console.error("Erreur liste_utilisateur:", error);
+        res.status(500).json({ success: false, message: "Erreur serveur." });
+    }
+};

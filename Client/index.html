@@ -38,7 +38,7 @@
             <li class="dropdown">
                 <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa-solid fa-person-dots-from-line"></i> Général</a></li>
+                    <li id="general"><a href="#"><i class="fa-solid fa-person-dots-from-line"></i> Général</a></li>
                     <li><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a></li>
                 </ul>
             </li>
@@ -160,21 +160,28 @@
 
         </div>
     </section>
-    <!-- Section utilisateurs -->
-    <section class="utilisateurs">
+    <!-- Section Utilisateur -->
+    <div class="auth-modal" id="userTableModal">
         <div class="auth-content">
             <!-- <span class="close-auth">&times;</span> -->
-            <form class="auth-form active">
-                <h3>Liste des utilisateurs</h3>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required maxlength="50">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" required maxlength="20">
-                </div>
-            </form>
+            <div class="user-table-container">
+                <h2>Gestion des Utilisateurs</h2>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Nom Complet</th>
+                            <th>Email</th>
+                            <th>Rôle</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- Les utilisateurs seront chargés ici -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </section>
+    </div>
     <!-- Ajoutez ceci juste avant la balise </body> dans index.html -->
     <div class="auth-modal" id="authModal">
         <div class="auth-content">

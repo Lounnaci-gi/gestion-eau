@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { validation, loginLimiter, authenticate, authorize } = require('../controllers/validator');
-const { login, new_user, forgot_password, resetPassword, check_auth, logout } = require('../controllers/authController');
+const { login, new_user, forgot_password, resetPassword, check_auth, logout,liste_utilisateur } = require('../controllers/authController');
 
 
 //authorize(["admin"])
@@ -22,6 +22,9 @@ router.get('/check-auth', check_auth);
 
 // Route pour la déconnexion
 router.post('/logout', logout);
+
+// Route pour la liste des utilisateurs
+router.get('/liste',liste_utilisateur);
 
 
 module.exports = router;

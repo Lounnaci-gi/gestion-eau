@@ -316,6 +316,89 @@ loginForm.addEventListener("submit", async (e) => {
     }
 });
 
+// Sélection des éléments
+const userTableModal = document.getElementById("userTableModal");
+const userTableBody = document.getElementById("userTableBody");
+
+// Gestion du clic sur "Général"
+document.getElementById("general").addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch("http://localhost:3000/liste", {
+            credentials: "include"
+        });
+        
+        if (!response.ok) throw new Error("Erreur de chargement des utilisateurs");
+        
+        const users = await response.json();
+        populateUserTable(users);
+        userTableModal.classList.add("show");
+        
+    } catch (error) {
+        showAlert("Erreur", error.message, "error");
+    }
+});
+
+// Remplir le tableau des utilisateurs
+function populateUserTable(users) {
+    userTableBody.innerHTML = users.map(user => `
+        <tr>
+            <td>${user.nomComplet}</td>
+            <td>${user.email}</td>
+            <td>${user.role}</td>
+            <td class="action-buttons">
+                <button class="edit-btn" onclick="editUser('${user._id}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-btn" onclick="deleteUser('${user._id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join("");
+}
+
+// Fermeture du modal
+document.querySelectorAll('.close-auth').forEach(closeBtn => {
+    closeBtn.addEventListener('click', () => {
+        userTableModal.classList.remove("show");
+    });
+});
+
+// Exemple de fonctions d'action
+async function deleteUser(userId) {
+    try {
+        const result = await Swal.fire({
+            title: 'Confirmer la suppression',
+            text: "Cette action est irréversible !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer!'
+        });
+
+        if (result.isConfirmed) {
+            const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            
+            if (!response.ok) throw new Error("Échec de la suppression");
+            
+            showAlert("Succès", "Utilisateur supprimé avec succès", "success");
+            document.getElementById("general").click(); // Recharger le tableau
+        }
+    } catch (error) {
+        showAlert("Erreur", error.message, "error");
+    }
+}
+
+async function editUser(userId) {
+    // Implémentez la logique d'édition ici
+    showAlert("Info", "Fonctionnalité d'édition à implémenter", "info");
+}
+
 // Fonction pour afficher une alerte
 function showAlert(title, text, icon) {
     return Swal.fire({
@@ -325,6 +408,8 @@ function showAlert(title, text, icon) {
         confirmButtonText: "OK",
     });
 }
+
+
 
 // Mettre à jour l'interface au chargement de la page
 document.addEventListener("DOMContentLoaded", () => updateLogin());
