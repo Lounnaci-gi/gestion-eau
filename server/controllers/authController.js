@@ -22,23 +22,26 @@ const transporter = nodemailer.createTransport({
 });
 
 //----Login------------------------------------
-module.exports.login = async (req, res) => {
+module.exports.login = async (req, res, next) => {
     try {
         const { email, motDePasse } = req.body;
 
         // Validation des entrées
         if (!email || !motDePasse) {
-            return res.status(400).json({ success: false, message: "Email et mot de passe sont requis." });
+            res.status(400);
+            throw new Error("Email et mot de passe sont requis.");
         }
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
+            res.status(401);
+            throw new Error("Email ou mot de passe incorrect.");
         }
 
         const isPasswordValid = await bcrypt.compare(motDePasse, user.motDePasse);
         if (!isPasswordValid) {
-            return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
+            res.status(401);
+            throw new Error("Email ou mot de passe incorrect.");
         }
 
         const token = jwt.sign(
@@ -72,8 +75,7 @@ module.exports.login = async (req, res) => {
         // Réinitialiser le compteur de loginLimiter en cas de connexion réussie
         loginLimiter.resetKey(req.ip);
     } catch (err) {
-        console.error("Erreur de connexion:", err);
-        res.status(500).json({ success: false, message: "Une erreur est survenue lors de la connexion." });
+        next(err);
     }
 };
 //--Créer utilisateur---------------------

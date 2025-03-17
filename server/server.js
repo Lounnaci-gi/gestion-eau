@@ -6,6 +6,7 @@ const connectdb = require("./config/db");
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const cookieParser = require('cookie-parser'); // Importez cookie-parser
 const { title } = require('process');
+const errorHandler = require("./middlewares/errorHandler");
 // Connexion à MongoDB
 connectdb();
 
@@ -28,6 +29,8 @@ app.get('/', (req, res) => {
 
 // Importer les routes
 app.use('/', require("./routes/authRoutes"));
+
+app.use(errorHandler);
 
 // Gestion des erreurs
 app.get("*", (req, res, next) => {
