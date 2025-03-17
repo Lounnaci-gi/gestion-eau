@@ -10,19 +10,28 @@ const closeAuth = document.querySelector(".close-auth");
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du lien
-     // Masquer complètement le modal d'authentification
-     authModal.classList.remove("show");
-     // Afficher le modal de récupération de mot de passe
-     forgotPasswordModal.classList.add("show");
-    
+    // Masquer complètement le modal d'authentification
+    authModal.classList.remove("show");
+    // Afficher le modal de récupération de mot de passe
+    forgotPasswordModal.classList.add("show");
+
     // loginForm.classList.remove("active"); // Masquer le formulaire de connexion
     // registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
     // forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
 
 });
 
+// Gestion du retour à la connexion depuis le formulaire de mot de passe oublié
+document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", () => {
+    forgotPasswordModal.classList.remove("show");
+    authModal.classList.add("show");
+    loginForm.classList.add("active");
+});
 
-
+// Fermeture du modal de mot de passe oublié
+document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
+    forgotPasswordModal.classList.remove("show");
+});
 // Gestion de la soumission du formulaire d'inscription
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du formulaire
@@ -123,7 +132,7 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
 
         // Fermer le modal de récupération de mot de passe
         forgotPasswordModal.style.display = "none";
-       
+
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
     }
@@ -242,7 +251,7 @@ authSwitches.forEach((link) => {
             loginForm.classList.add("active");
             forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
         }
-       
+
         resetForms(); // Réinitialiser les formulaires après basculement
     });
 });

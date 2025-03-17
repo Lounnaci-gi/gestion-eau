@@ -426,7 +426,7 @@ nav ul li a:hover {
 }
 
 .auth-modal.show {
-    display: flex;
+    display: flex !important;
 }
 
 .auth-content {
