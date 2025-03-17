@@ -8,6 +8,7 @@ const { loginLimiter } = require("./validator");
 const nodemailer = require("nodemailer");
 const cookieParser = require('cookie-parser');
 
+
 // Configuration du transporteur d'e-mails
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -296,12 +297,11 @@ module.exports.liste_utilisateur = async (req, res) => {
     try {
         const users = await User.find().select('-motDePasse');
 
-        if (!users) {
+        if (users.length === 0) { // Vérifier si le tableau est vide
             return res.status(404).json({ success: false, message: "Aucun utilisateur trouvé." });
         }
-       
-        res.json({ success: true, data: users });
 
+        res.json({ success: true, data: users });
     } catch (error) {
         console.error("Erreur liste_utilisateur:", error);
         res.status(500).json({ success: false, message: "Erreur serveur." });

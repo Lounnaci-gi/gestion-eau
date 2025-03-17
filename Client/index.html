@@ -163,7 +163,7 @@
     <!-- Section Utilisateur -->
     <div class="auth-modal" id="userTableModal">
         <div class="auth-content">
-            <!-- <span class="close-auth">&times;</span> -->
+            <span class="close-auth">&times;</span>
             <div class="user-table-container">
                 <h2>Gestion des Utilisateurs</h2>
                 <table class="user-table">
@@ -238,21 +238,22 @@
                 <button type="submit">S'inscrire</button>
                 <p class="auth-switch">Déjà un compte ? <span>Se connecter</span></p>
             </form>
-            <!-- Modal pour la récupération de mot de passe -->
-            <div class="auth-modal" id="forgotPasswordModal">
-                <div class="auth-content">
-                    <span class="close-auth">&times;</span>
-                    <form class="auth-form" id="forgotPasswordForm">
-                        <h2>Mot de passe oublié</h2>
-                        <div class="form-group">
-                            <label for="forgotPasswordEmail">Email</label>
-                            <input type="email" id="forgotPasswordEmail" required maxlength="50">
-                        </div>
-                        <button type="submit">Envoyer le lien de réinitialisation</button>
-                        <p class="auth-switch"><span>Retour à la connexion</span></p>
-                    </form>
+        </div>
+    </div>
+
+    <!-- Modal pour la récupération de mot de passe -->
+    <div class="auth-modal" id="forgotPasswordModal">
+        <div class="auth-content">
+            <span class="close-auth">&times;</span>
+            <form class="auth-form" id="forgotPasswordForm">
+                <h2>Mot de passe oublié</h2>
+                <div class="form-group">
+                    <label for="forgotPasswordEmail">Email</label>
+                    <input type="email" id="forgotPasswordEmail" required maxlength="50">
                 </div>
-            </div>
+                <button type="submit">Envoyer le lien de réinitialisation</button>
+                <p class="auth-switch"><span>Retour à la connexion</span></p>
+            </form>
         </div>
     </div>
 

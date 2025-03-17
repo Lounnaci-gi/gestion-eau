@@ -18,10 +18,9 @@ const validation = [
 const authenticate = async (req, res, next) => {
     // Récupérer le token depuis le cookie
     const token = req.cookies.token;
-
     // Vérifier si le token est présent
     if (!token) {
-        return res.status(401).json({ message: "Accès refusé. Token manquant." });
+        return res.status(401).json({ message: "Accès refusé. Veuillez vous identifier" });
     }
 
     try {

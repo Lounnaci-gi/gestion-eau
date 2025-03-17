@@ -10,18 +10,19 @@ const closeAuth = document.querySelector(".close-auth");
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du lien
-    document.getElementsByClassName('auth-content')[0].style = "width:10%";
-    loginForm.classList.remove("active"); // Masquer le formulaire de connexion
-    registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
-    forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
+     // Masquer complètement le modal d'authentification
+     authModal.classList.remove("show");
+     // Afficher le modal de récupération de mot de passe
+     forgotPasswordModal.classList.add("show");
+    
+    // loginForm.classList.remove("active"); // Masquer le formulaire de connexion
+    // registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
+    // forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
 
 });
 
-document.querySelectorAll("#forgotPasswordModal .close-auth")[0].addEventListener('click', () => {
-    authModal.classList.remove("show");
-    document.getElementsByClassName('auth-content')[0].style = "width:100%";
-    forgotPasswordModal.style.display = "none";
-});
+
+
 // Gestion de la soumission du formulaire d'inscription
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du formulaire
@@ -122,7 +123,7 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
 
         // Fermer le modal de récupération de mot de passe
         forgotPasswordModal.style.display = "none";
-        document.getElementsByClassName('auth-content')[0].style = "width:100%";
+       
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue lors de l'envoi du lien de réinitialisation.", "error");
     }
@@ -241,7 +242,7 @@ authSwitches.forEach((link) => {
             loginForm.classList.add("active");
             forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
         }
-        document.getElementsByClassName('auth-content')[0].style = "width:100%";
+       
         resetForms(); // Réinitialiser les formulaires après basculement
     });
 });
@@ -323,11 +324,18 @@ document.getElementById("general").addEventListener("click", async (e) => {
     e.preventDefault();
     try {
         const response = await fetch("http://localhost:3000/liste", {
+            method: "GET",
             credentials: "include"
         });
-        
+
+        // Ajouter cette vérification pour les erreurs d'authentification
+        if (response.status === 401 || response.status === 403) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Veuillez vous connecter pour accéder à cette fonctionnalité");
+        }
+
         if (!response.ok) throw new Error("Erreur de chargement des utilisateurs");
-        
+
         const data = await response.json();
         console.log(data); // Pour déboguer
 
@@ -337,9 +345,9 @@ document.getElementById("general").addEventListener("click", async (e) => {
         } else {
             throw new Error("Format de données invalide");
         }
-        
+
         userTableModal.classList.add("show");
-        
+
     } catch (error) {
         showAlert("Erreur", error.message, "error");
     }
@@ -369,10 +377,14 @@ function populateUserTable(users) {
     `).join("");
 }
 
-// Fermeture du modal
-document.querySelectorAll('.close-auth').forEach(closeBtn => {
-    closeBtn.addEventListener('click', () => {
-        userTableModal.classList.remove("show");
+
+
+// Fermeture du modal d'authentification
+document.querySelectorAll(".close-auth").forEach(closeBtn => {
+    closeBtn.addEventListener("click", () => {
+        authModal.classList.remove("show");
+        forgotPasswordModal.style.display = "none";
+        userTableModal.classList.remove("show"); // Ajoutez cette ligne pour fermer le modal des utilisateurs
     });
 });
 
@@ -394,9 +406,9 @@ async function deleteUser(userId) {
                 method: 'DELETE',
                 credentials: 'include'
             });
-            
+
             if (!response.ok) throw new Error("Échec de la suppression");
-            
+
             showAlert("Succès", "Utilisateur supprimé avec succès", "success");
             document.getElementById("general").click(); // Recharger le tableau
         }

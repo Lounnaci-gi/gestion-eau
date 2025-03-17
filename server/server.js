@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 // Utilisez cookie-parser comme middleware
 app.use(cookieParser());
 
+
 // Route par défaut : renvoyer "index.html"
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
