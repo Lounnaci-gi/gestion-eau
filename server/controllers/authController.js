@@ -294,7 +294,7 @@ module.exports.logout = async (req, res) => {
     }
 };
 
-
+//Route Liste des utilisateurs
 module.exports.liste_utilisateur = async (req, res) => {
     try {
         const users = await User.find().select('-motDePasse');
@@ -307,5 +307,27 @@ module.exports.liste_utilisateur = async (req, res) => {
     } catch (error) {
         console.error("Erreur liste_utilisateur:", error);
         res.status(500).json({ success: false, message: "Erreur serveur." });
+    }
+};
+
+// Route pour supprimer utilisateur
+module.exports.delete_user = async (req, res, next) => {
+    try {
+        const user = req.params;
+        if (!user) {
+            res.status(400);
+            throw new Error("utilisateur requis.");
+        }
+
+        const response = await User.findByIdAndDelete(user.id);
+        if (!response) {
+            res.status(404);
+            throw new Error("utilisateur non trouvé.");
+        }
+
+        res.json({ success: true, message: "Utilisateur supprimé avec succès" });
+
+    } catch (err) {
+        next(err)
     }
 };

@@ -406,7 +406,7 @@ async function deleteUser(userId) {
         });
 
         if (result.isConfirmed) {
-            const response = await fetch(`http://localhost:3000/users/${userId}`, {
+            const response = await fetch(`http://localhost:3000/liste/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
