@@ -14,11 +14,6 @@ document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     authModal.classList.remove("show");
     // Afficher le modal de récupération de mot de passe
     forgotPasswordModal.classList.add("show");
-
-    // loginForm.classList.remove("active"); // Masquer le formulaire de connexion
-    // registerForm.classList.remove("active"); // Masquer le formulaire d'inscription
-    // forgotPasswordModal.style.display = "flex"; // Afficher le modal de récupération de mot de passe
-
 });
 
 // Gestion du retour à la connexion depuis le formulaire de mot de passe oublié
@@ -326,7 +321,7 @@ loginForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Gestion des utilisateurs
+
 
 // Gestion du clic sur "Général"
 document.getElementById("general").addEventListener("click", async (e) => {
