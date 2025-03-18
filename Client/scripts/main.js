@@ -7,8 +7,19 @@ const forgotPasswordModal = document.getElementById("forgotPasswordModal");
 const editUserModal = document.getElementById("editUserModal");
 
 const authSwitches = document.querySelectorAll(".auth-switch span");
-const closeAuth = document.querySelector(".close-auth");
+// const closeAuth = document.querySelector(".close-auth");
+const closeAuthButtons = document.querySelectorAll(".close-auth");
 
+// Ajouter un gestionnaire d'événement à chaque bouton de fermeture
+closeAuthButtons.forEach(closeBtn => {
+    closeBtn.addEventListener("click", () => {
+        // Fermer tous les modaux
+        authModal.classList.remove("show");
+        forgotPasswordModal.classList.remove("show");
+        editUserModal.classList.remove("show");
+        userTableModal.classList.remove("show");
+    });
+});
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du lien
@@ -240,11 +251,11 @@ authToggle.addEventListener("click", async () => {
 });
 
 // Fermeture du modal d'authentification
-closeAuth.addEventListener("click", () => {
-    authModal.classList.remove("show");
-    forgotPasswordModal.style.display = "none"; // Masquer également le modal de récupération de mot de passe
-    editUserModal.style.display="none";
-});
+// closeAuth.addEventListener("click", () => {
+//     authModal.classList.remove("show");
+//     forgotPasswordModal.style.display = "none"; // Masquer également le modal de récupération de mot de passe
+//     editUserModal.style.display="none";
+// });
 
 // Basculer entre connexion, inscription et récupération de mot de passe
 authSwitches.forEach((link) => {
