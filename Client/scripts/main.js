@@ -18,6 +18,7 @@ document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     forgotPasswordModal.classList.add("show");
 });
 
+
 // Gestion du retour à la connexion depuis le formulaire de mot de passe oublié
 document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", () => {
     forgotPasswordModal.classList.remove("show");
@@ -29,6 +30,13 @@ document.querySelector("#forgotPasswordModal .auth-switch span").addEventListene
 document.querySelector("#forgotPasswordModal .close-auth").addEventListener("click", () => {
     forgotPasswordModal.classList.remove("show");
 });
+
+// Fermeture du modal de edition utilisteur
+document.querySelector("#editUserModal .close-auth").addEventListener("click", () => {
+    editUserModal.classList.remove("show");
+    document.getElementById("Utilisateurs").click();
+});
+
 // Gestion de la soumission du formulaire d'inscription
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du formulaire
@@ -188,6 +196,7 @@ authToggle.addEventListener("click", async () => {
         loginForm.classList.add("active");
         registerForm.classList.remove("active");
         forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
+        editUserModal.style.display ="none";
     } else {
         // Confirmation de déconnexion
         Swal.fire({
@@ -234,6 +243,7 @@ authToggle.addEventListener("click", async () => {
 closeAuth.addEventListener("click", () => {
     authModal.classList.remove("show");
     forgotPasswordModal.style.display = "none"; // Masquer également le modal de récupération de mot de passe
+    editUserModal.style.display="none";
 });
 
 // Basculer entre connexion, inscription et récupération de mot de passe
