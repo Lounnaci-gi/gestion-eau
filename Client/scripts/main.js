@@ -411,7 +411,10 @@ async function deleteUser(userId) {
                 credentials: 'include'
             });
 
-            if (!response.ok) throw new Error("Échec de la suppression");
+            if (!response.ok) {   
+                const data = await response.json();             
+                throw new Error(data.message || "Échec de la suppression");
+            } 
 
             showAlert("Succès", "Utilisateur supprimé avec succès", "success");
             document.getElementById("Utilisateurs").click(); // Recharger le tableau

@@ -320,6 +320,7 @@ module.exports.delete_user = async (req, res, next) => {
         }
 
         const response = await User.findByIdAndDelete(user.id);
+
         if (!response) {
             res.status(404);
             throw new Error("utilisateur non trouvé.");

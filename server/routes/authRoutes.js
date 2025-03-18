@@ -24,7 +24,7 @@ router.get('/check-auth', check_auth);
 router.post('/logout', logout);
 
 // Route pour la liste des utilisateurs
-router.get('/liste', authenticate, authorize(["admin"]), liste_utilisateur);
+router.get('/liste', authenticate, authorize(["admin","chef_centre"]), liste_utilisateur);
 
 // Route pour supprimer utilisateur
 router.delete('/liste/:id', authenticate, authorize(["admin"]), delete_user);
