@@ -4,6 +4,8 @@ const authModal = document.getElementById("authModal");
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
 const forgotPasswordModal = document.getElementById("forgotPasswordModal");
+const editUserModal = document.getElementById("editUserModal");
+
 const authSwitches = document.querySelectorAll(".auth-switch span");
 const closeAuth = document.querySelector(".close-auth");
 
@@ -424,11 +426,100 @@ async function deleteUser(userId) {
     }
 }
 
-// Exemple de fonction d'édition
-async function editUser(userId) {
-    // Implémentez la logique d'édition ici
-    showAlert("Info", "Fonctionnalité d'édition à implémenter", "info");
+
+// Modifier la fonction editUser
+function editUser(userId) {
+    try {
+        // Afficher un loader pendant le chargement des données
+        Swal.fire({
+            title: "Chargement des données...",
+            html: "Veuillez patienter...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        // Récupérer les détails de l'utilisateur
+        fetch(`http://localhost:3000/liste/${userId}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Échec de la récupération des données");
+            return response.json();
+        })
+        .then(data => {
+            Swal.close();
+            
+            // Remplir le formulaire avec les données de l'utilisateur
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editNomComplet').value = data.data.nomComplet;
+            document.getElementById('editEmail').value = data.data.email;
+            document.getElementById('editRole').value = data.data.role;
+            
+            // Afficher le modal d'édition
+            document.getElementById('editUserModal').classList.add('show');
+        })
+        .catch(error => {
+            Swal.close();
+            showAlert("Erreur", error.message, "error");
+        });
+    } catch (error) {
+        showAlert("Erreur", "Une erreur est survenue", "error");
+    }
 }
+
+// Gérer la soumission du formulaire d'édition
+document.getElementById("editUserForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    editUserModal.classList.add('show');
+    const userId = document.getElementById('editUserId').value;
+    const nomComplet = document.getElementById('editNomComplet').value.trim();
+    const email = document.getElementById('editEmail').value.trim();
+    const role = document.getElementById('editRole').value;
+    
+    // Validation
+    if (!nomComplet || !email) {
+        return showAlert("Erreur", "Veuillez remplir tous les champs requis", "warning");
+    }
+    
+    // Afficher le loader
+    Swal.fire({
+        title: "Mise à jour en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+    
+    try {
+        const response = await fetch(`http://localhost:3000/liste/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nomComplet, email, role }),
+            credentials: 'include'
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de la mise à jour");
+        }
+        
+        Swal.close();
+        showAlert("Succès", "Utilisateur mis à jour avec succès", "success");
+        
+        // Fermer le modal et rafraîchir la liste
+        document.getElementById('editUserModal').classList.remove('show');
+        document.getElementById("Utilisateurs").click();
+    } catch (error) {
+        Swal.close();
+        showAlert("Erreur", error.message, "error");
+    }
+});
+
 // Fonction pour afficher une alerte
 function showAlert(title, text, icon) {
     return Swal.fire({

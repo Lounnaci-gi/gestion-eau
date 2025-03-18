@@ -310,6 +310,32 @@ module.exports.liste_utilisateur = async (req, res) => {
     }
 };
 
+// Récupérer un utilisateur par ID
+module.exports.get_user = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId).select('-motDePasse');
+        
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "Utilisateur non trouvé"
+            });
+        }
+        
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        console.error("Erreur get_user:", error);
+        res.status(500).json({
+            success: false,
+            message: "Erreur serveur"
+        });
+    }
+};
+
 // Route pour supprimer utilisateur
 module.exports.delete_user = async (req, res, next) => {
     try {

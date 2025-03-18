@@ -257,6 +257,37 @@
         </div>
     </div>
 
+    <!-- Modal d'édition d'utilisateur -->
+    <div class="auth-modal" id="editUserModal">
+        <div class="auth-content">
+            <span class="close-auth">&times;</span>
+            <form class="auth-form" id="editUserForm">
+                <h2>Modifier l'utilisateur</h2>
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="editNomComplet">Nom complet</label>
+                    <input type="text" id="editNomComplet" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="editRole">Rôle</label>
+                    <select id="editRole" required>
+                        <option value="utilisateur">Utilisateur</option>
+                        <option value="admin">Admin</option>
+                        <option value="chef_centre">Chef de Centre</option>
+                        <option value="chef_agence">Chef d'Agence</option>
+                        <option value="chef_tech_com">Chef Technique Commercial</option>
+                        <option value="juriste">Juriste</option>
+                    </select>
+                </div>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>
+
     <script src="./scripts/main.js"></script>
 </body>
 

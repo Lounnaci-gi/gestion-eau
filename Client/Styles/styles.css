@@ -650,7 +650,7 @@ nav ul li a:hover {
 }
 
 /* Style pour le modal de récupération de mot de passe */
-#forgotPasswordModal {
+#forgotPasswordModal,#editUserModal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -663,6 +663,7 @@ nav ul li a:hover {
     align-items: center;
 }
 
+#editUserModal .auth-form input,
 #forgotPasswordModal .auth-form input {
     width: 100%;
     /* Assurez-vous que l'input prend toute la largeur disponible */
@@ -674,7 +675,7 @@ nav ul li a:hover {
     box-sizing: border-box;
     /* Inclut le padding et la bordure dans la largeur */
 }
-
+#editUserModal .auth-content,
 #forgotPasswordModal .auth-content {
     background-color: #fff;
     padding: 20px;
@@ -684,24 +685,28 @@ nav ul li a:hover {
     animation: slideIn 0.3s ease;
 }
 
+#editUserModal .close-auth,
 #forgotPasswordModal .close-auth {
     float: right;
     cursor: pointer;
     font-size: 24px;
 }
 
+#editUserModal .auth-form,
 #forgotPasswordModal .auth-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
+#editUserModal .auth-switch,
 #forgotPasswordModal .auth-switch {
     margin-top: 10px;
     cursor: pointer;
     color: #007bff;
 }
 
+#editUserModal .auth-switch:hover,
 #forgotPasswordModal .auth-switch:hover {
     text-decoration: underline;
 }
@@ -772,11 +777,14 @@ nav ul li a:hover {
     padding: 30px;
     border-radius: var(--border-radius);
     width: 90%;
-    max-width: 800px; /* Ajustez la largeur maximale selon vos besoins */
+    max-width: 800px;
+    /* Ajustez la largeur maximale selon vos besoins */
     position: relative;
     animation: slideIn 0.3s ease;
-    overflow-y: auto; /* Ajoutez un défilement si le contenu est trop long */
-    max-height: 90vh; /* Limitez la hauteur pour éviter de dépasser l'écran */
+    overflow-y: auto;
+    /* Ajoutez un défilement si le contenu est trop long */
+    max-height: 90vh;
+    /* Limitez la hauteur pour éviter de dépasser l'écran */
 }
 
 /* Tableau des utilisateurs */
@@ -816,7 +824,8 @@ nav ul li a:hover {
 
 .action-buttons {
     display: flex;
-    gap: 8px; /* Espace entre les boutons */
+    gap: 8px;
+    /* Espace entre les boutons */
 }
 
 .action-buttons button {
@@ -851,6 +860,7 @@ nav ul li a:hover {
         transform: translateY(-50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
