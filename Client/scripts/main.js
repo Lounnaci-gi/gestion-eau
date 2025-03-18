@@ -324,7 +324,7 @@ loginForm.addEventListener("submit", async (e) => {
 
 
 // Gestion du clic sur "Général"
-document.getElementById("general").addEventListener("click", async (e) => {
+document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
     e.preventDefault();
     try {
         const response = await fetch("http://localhost:3000/liste", {
@@ -414,7 +414,7 @@ async function deleteUser(userId) {
             if (!response.ok) throw new Error("Échec de la suppression");
 
             showAlert("Succès", "Utilisateur supprimé avec succès", "success");
-            document.getElementById("general").click(); // Recharger le tableau
+            document.getElementById("Utilisateurs").click(); // Recharger le tableau
         }
     } catch (error) {
         showAlert("Erreur", error.message, "error");
