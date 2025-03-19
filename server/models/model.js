@@ -122,12 +122,84 @@ const articleSchema = mongoose.Schema({
     timestamps: true
 });
 
+//Schéma pour les Structure
+const structureSchema = new mongoose.Schema({
+    nom: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ["centre", "departement", "antenne"],
+        required: true
+    },
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Structure", // Référence à une autre structure (hiérarchie)
+        default: null
+    },
+    prefixe: {
+        type: String,
+        required: true,
+        unique: true,
+        validate: {
+            validator: v => /^[A-Z]{2}$/.test(v),
+            message: "Le préfixe doit être 2 lettres majuscules"
+        }
+    },
+    telephone: {
+        type: String,
+        required: true,
+        validate: {
+            validator: v => /^\+?[0-9\s-]+$/.test(v),
+            message: "Numéro de téléphone invalide"
+        }
+    },
+    fax: {
+        type: String,
+        required: true,
+        validate: {
+            validator: v => /^\+?[0-9\s-]+$/.test(v),
+            message: "Numéro de fax invalide"
+        }
+    },
+    email: {
+        type: String,
+        required: true,
+        match: [/.+@.+\..+/, "Adresse email invalide"]
+    },
+    adresse: {
+        type: String,
+        required: true
+    },
+    boite_postale: {
+        type: String,
+        required: true
+    },
+    compte_bancaire: {
+        type: String,
+        required: true,
+        validate: {
+            validator: v => /^[A-Z0-9-]{12,34}$/.test(v), // Format IBAN ou RIB
+            message: "Format de compte bancaire invalide"
+        }
+    },
+    compte_postal: {
+        type: String,
+        required: true,
+        validate: {
+            validator: v => /^[0-9]{5,15}$/.test(v), // Format numérique (ex: 12345-67890)
+            message: "Format de compte postal invalide"
+        }
+    }
+}, { timestamps: true });
 
 // Création des modèles
 const Client = mongoose.model("Client", clientSchema);
 const User = mongoose.model("User", userSchema);
 const Article = mongoose.model("Article", articleSchema);
+const Structure = mongoose.model("Structure", structureSchema);
 
 
 // Export des modèles
-module.exports = { Client, User, Article };
+module.exports = { Client, User, Article, Structure };

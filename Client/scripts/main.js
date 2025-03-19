@@ -247,7 +247,6 @@ authToggle.addEventListener("click", async () => {
     }
 });
 
-// forgotPasswordModal.style.display='flex';
 // Basculer entre connexion, inscription et récupération de mot de passe
 authSwitches.forEach((link) => {
     link.addEventListener("click", () => {
@@ -334,9 +333,7 @@ loginForm.addEventListener("submit", async (e) => {
     }
 });
 
-
-
-// Gestion du clic sur "Général"
+// Afficher la liste des Utilisateurs
 document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
     e.preventDefault();
     try {
@@ -354,7 +351,6 @@ document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
         if (!response.ok) throw new Error("Erreur de chargement des utilisateurs");
 
         const data = await response.json();
-        console.log(data); // Pour déboguer
 
         // Accédez à data.data pour obtenir le tableau des utilisateurs
         if (data.success && Array.isArray(data.data)) {

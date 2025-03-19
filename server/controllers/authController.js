@@ -297,7 +297,9 @@ module.exports.logout = async (req, res) => {
 //Route Liste des utilisateurs
 module.exports.liste_utilisateur = async (req, res) => {
     try {
-        const users = await User.find().select('-motDePasse');
+        const users = await User.find({ role: { $ne: "admin" } }) // Exclure les admins
+                                 .select('-motDePasse')
+                                 .lean();
 
         if (users.length === 0) { // Vérifier si le tableau est vide
             return res.status(404).json({ success: false, message: "Aucun utilisateur trouvé." });
@@ -306,7 +308,11 @@ module.exports.liste_utilisateur = async (req, res) => {
         res.json({ success: true, data: users });
     } catch (error) {
         console.error("Erreur liste_utilisateur:", error);
-        res.status(500).json({ success: false, message: "Erreur serveur." });
+        res.status(500).json({
+            success: false,
+            message: "Erreur serveur. Contactez l'administrateur.",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
     }
 };
 
@@ -315,14 +321,14 @@ module.exports.get_user = async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await User.findById(userId).select('-motDePasse');
-        
+
         if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "Utilisateur non trouvé"
             });
         }
-        
+
         res.status(200).json({
             success: true,
             data: user
@@ -356,5 +362,48 @@ module.exports.delete_user = async (req, res, next) => {
 
     } catch (err) {
         next(err)
+    }
+};
+
+// Mettre à jour un utilisateur
+module.exports.update_user = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { nomComplet, email, role } = req.body;
+
+        // Vérifier si l'email existe déjà pour un autre utilisateur
+        const existingUser = await User.findOne({ email, _id: { $ne: userId } });
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Cet email est déjà utilisé par un autre utilisateur"
+            });
+        }
+
+        // Trouver et mettre à jour l'utilisateur
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { nomComplet, email, role },
+            { new: true, runValidators: true }
+        ).select('-motDePasse');
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: "Utilisateur non trouvé"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Utilisateur mis à jour avec succès",
+            data: updatedUser
+        });
+    } catch (error) {
+        console.error("Erreur update_user:", error);
+        res.status(500).json({
+            success: false,
+            message: "Erreur serveur"
+        });
     }
 };
