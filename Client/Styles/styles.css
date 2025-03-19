@@ -894,3 +894,6 @@ nav ul li a:hover {
     }
 }
 
+.form-group #structureNom {
+    width: 30%;
+}
