@@ -20,7 +20,7 @@ const authenticate = async (req, res, next) => {
     const token = req.cookies.token;
     // Vérifier si le token est présent
     if (!token) {
-        return res.status(401).json({ message: "Accès refusé. Veuillez vous identifier" });
+        return res.status(401).json({ message: "⛔ Accès refusé. Veuillez vous identifier" });
     }
 
     try {
@@ -31,12 +31,12 @@ const authenticate = async (req, res, next) => {
         const user = await User.findById(decoded.userId);
 
         if (!user) {
-            return res.status(401).json({ message: "Utilisateur introuvable." });
+            return res.status(401).json({ message: "⚠️ Utilisateur introuvable." });
         }
 
         // ✅ Vérifier si le token est toujours valide
         if (user.tokenVersion !== decoded.tokenVersion) {
-            return res.status(401).json({ message: "Session expirée. Veuillez vous reconnecter." });
+            return res.status(401).json({ message: "⚠️ Session expirée. Veuillez vous reconnecter." });
         }
 
         // Ajouter l'utilisateur à l'objet `req` pour une utilisation ultérieure
@@ -52,7 +52,7 @@ const authenticate = async (req, res, next) => {
             sameSite: "strict",
         });
 
-        res.status(401).json({ message: "Token invalide. Vous allez être déconnecté." });
+        res.status(401).json({ message: "❗ Token invalide. Vous allez être déconnecté." });
     }
 };
 
