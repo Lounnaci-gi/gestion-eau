@@ -412,6 +412,7 @@ nav ul li a:hover {
 }
 
 /* Modal d'authentification */
+
 .auth-modal {
     display: none;
     position: fixed;
@@ -424,6 +425,8 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
 }
+
+
 
 .auth-modal.show {
     display: flex !important;
@@ -650,7 +653,8 @@ nav ul li a:hover {
 }
 
 /* Style pour le modal de récupération de mot de passe */
-#forgotPasswordModal,#editUserModal {
+#forgotPasswordModal,
+#editUserModal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -675,6 +679,7 @@ nav ul li a:hover {
     box-sizing: border-box;
     /* Inclut le padding et la bordure dans la largeur */
 }
+
 #editUserModal .auth-content,
 #forgotPasswordModal .auth-content {
     background-color: #fff;
@@ -888,3 +893,4 @@ nav ul li a:hover {
         width: 100%;
     }
 }
+
