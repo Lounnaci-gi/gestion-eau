@@ -473,8 +473,7 @@ function editUser(userId) {
 // Gérer la soumission du formulaire d'édition
 document.getElementById("editUserForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    
-    editUserModal.classList.add('show');
+
     const userId = document.getElementById('editUserId').value;
     const nomComplet = document.getElementById('editNomComplet').value.trim();
     const email = document.getElementById('editEmail').value.trim();
