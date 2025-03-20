@@ -894,6 +894,46 @@ nav ul li a:hover {
     }
 }
 
+/* Styles pour le formulaire de création des structures */
 .form-group #structureNom {
-    width: 30%;
+    width: 70%;
+}
+
+#structurePrefixe {
+    width: 5%;
+    text-transform: uppercase;
+}
+
+.nom_préfix {
+    display: flex;
+}
+
+#structureTelephone,
+#structureFax,
+#structureEmail,
+#structureBoitePostale {
+    width: 15%;
+}
+
+#structureAdresse,
+#structureComptePostal,
+#structureCompteBancaire {
+    width: 35%;
+}
+
+#btn_strtucture {
+    width: 15%;
+    padding: 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+}
+
+#btn_strtucture:hover {
+    background: var(--secondary-color);
 }

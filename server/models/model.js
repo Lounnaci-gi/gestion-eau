@@ -132,12 +132,6 @@ const structureSchema = new mongoose.Schema({
         maxlength: 100,
         message: "Le nom doit contenir entre 2 et 100 caractères."
     },
-    type: {
-        type: String,
-        enum: ["centre", "departement", "antenne"],
-        required: true,
-        message: "Le type doit être 'centre', 'departement' ou 'antenne'."
-    },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Structure", // Référence à une autre structure (hiérarchie)

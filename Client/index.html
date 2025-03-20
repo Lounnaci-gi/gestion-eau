@@ -38,14 +38,9 @@
             <li class="dropdown">
                 <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-<<<<<<< HEAD
-                    <li id="general"><a href="#"><i class="fa-solid fa-person-dots-from-line"></i> Structure</a></li>
-                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a></li>
-=======
                     <li id="structure"><a href="#structures"><i class="fa-solid fa-building"></i> Structure</a></li>
                     <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a>
                     </li>
->>>>>>> 5aa0eb048b128587305f4b86acdb5196004eabec
                 </ul>
             </li>
 
@@ -170,27 +165,19 @@
     <div class="dashboard">
         <h1 id="structures">Structure</h1>
         <form class="structure">
-            <!-- Champ Nom -->
-            <div class="form-group">
-                <label for="structureNom">Désignation</label>
-                <input type="text" id="structureNom" required maxlength="100" placeholder="Exp : Centre Medea">
-            </div>
 
-            <!-- Champ Type -->
-            <div class="form-group">
-                <label for="structureType">Type</label>
-                <select id="structureType" required>
-                    <option value="centre">Centre</option>
-                    <option value="departement">Département</option>
-                    <option value="antenne">Antenne</option>
-                </select>
-            </div>
-
-            <!-- Champ Préfixe -->
-            <div class="form-group">
-                <label for="structurePrefixe">Préfixe</label>
-                <input type="text" id="structurePrefixe" required maxlength="2" pattern="[A-Z]{2}"
-                    title="Le préfixe doit être 2 lettres majuscules.">
+            <!-- chmap nom & préfix -->
+            <div class="nom_préfix">
+                <!-- Champ Nom -->
+                <div class="form-group">
+                    <label for="structureNom">Désignation</label>
+                    <input type="text" id="structureNom" required maxlength="100" placeholder="Exp : Centre Medea">
+                </div>
+                <!-- Champ Préfixe -->
+                <div class="form-group">
+                    <label for="structurePrefixe">Préfixe</label>
+                    <input type="text" id="structurePrefixe" required maxlength="2" placeholder="aa">
+                </div>
             </div>
 
             <!-- Champ Téléphone -->
@@ -236,7 +223,7 @@
             </div>
 
             <!-- Bouton de soumission -->
-            <button type="submit">Ajouter</button>
+            <button type="submit" id="btn_strtucture">Ajouter</button>
         </form>
 
     </div>
