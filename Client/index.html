@@ -38,8 +38,14 @@
             <li class="dropdown">
                 <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
+<<<<<<< HEAD
                     <li id="general"><a href="#"><i class="fa-solid fa-person-dots-from-line"></i> Structure</a></li>
                     <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a></li>
+=======
+                    <li id="structure"><a href="#structures"><i class="fa-solid fa-building"></i> Structure</a></li>
+                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a>
+                    </li>
+>>>>>>> 5aa0eb048b128587305f4b86acdb5196004eabec
                 </ul>
             </li>
 
@@ -160,6 +166,80 @@
 
         </div>
     </section>
+
+    <div class="dashboard">
+        <h1 id="structures">Structure</h1>
+        <form class="structure">
+            <!-- Champ Nom -->
+            <div class="form-group">
+                <label for="structureNom">Désignation</label>
+                <input type="text" id="structureNom" required maxlength="100" placeholder="Exp : Centre Medea">
+            </div>
+
+            <!-- Champ Type -->
+            <div class="form-group">
+                <label for="structureType">Type</label>
+                <select id="structureType" required>
+                    <option value="centre">Centre</option>
+                    <option value="departement">Département</option>
+                    <option value="antenne">Antenne</option>
+                </select>
+            </div>
+
+            <!-- Champ Préfixe -->
+            <div class="form-group">
+                <label for="structurePrefixe">Préfixe</label>
+                <input type="text" id="structurePrefixe" required maxlength="2" pattern="[A-Z]{2}"
+                    title="Le préfixe doit être 2 lettres majuscules.">
+            </div>
+
+            <!-- Champ Téléphone -->
+            <div class="form-group">
+                <label for="structureTelephone">Téléphone</label>
+                <input type="tel" id="structureTelephone" required>
+            </div>
+
+            <!-- Champ Fax -->
+            <div class="form-group">
+                <label for="structureFax">Fax</label>
+                <input type="tel" id="structureFax" required>
+            </div>
+
+            <!-- Champ Email -->
+            <div class="form-group">
+                <label for="structureEmail">Email</label>
+                <input type="email" id="structureEmail" required>
+            </div>
+
+            <!-- Champ Adresse -->
+            <div class="form-group">
+                <label for="structureAdresse">Adresse</label>
+                <input type="text" id="structureAdresse" required>
+            </div>
+
+            <!-- Champ Boîte Postale -->
+            <div class="form-group">
+                <label for="structureBoitePostale">Boîte Postale</label>
+                <input type="text" id="structureBoitePostale" required>
+            </div>
+
+            <!-- Champ Compte Bancaire -->
+            <div class="form-group">
+                <label for="structureCompteBancaire">Compte Bancaire</label>
+                <input type="text" id="structureCompteBancaire" required>
+            </div>
+
+            <!-- Champ Compte Postal -->
+            <div class="form-group">
+                <label for="structureComptePostal">Compte Postal</label>
+                <input type="text" id="structureComptePostal" required>
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit">Ajouter</button>
+        </form>
+
+    </div>
     <!-- Section Utilisateur -->
     <div class="auth-modal" id="userTableModal">
         <div class="auth-content">
@@ -287,6 +367,7 @@
             </form>
         </div>
     </div>
+
 
     <script src="./scripts/main.js"></script>
 </body>
