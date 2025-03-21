@@ -179,6 +179,12 @@
                 </div>
             </div>
 
+            <!-- Champ Adresse -->
+            <div class="form-group">
+                <label for="structureAdresse">Adresse</label>
+                <input type="text" id="structureAdresse" required maxlength="100">
+            </div>
+
             <!-- Champ Téléphone -->
             <div class="form-group">
                 <label for="structureTelephone">Téléphone</label>
@@ -197,18 +203,35 @@
                 <input type="email" id="structureEmail" maxlength="50">
             </div>
 
-            <!-- Champ Adresse -->
-            <div class="form-group">
-                <label for="structureAdresse">Adresse</label>
-                <input type="text" id="structureAdresse" required maxlength="100">
+            <div class="nom_préfix">
+
+                <!-- Champ Compte Bancaire -->
+                <div class="form-group">
+                    <label for="structureCompteBancaire">Compte Bancaire</label>
+                    <input type="text" id="structureCompteBancaire" required maxlength="20">
+                </div>
+
+                <!-- Champ nom banque -->
+                <div class="form-group">
+                    <label for="nombanque">Choisire la banque</label>
+                    <select id="nombanque" required>
+                        <option value="BADR">BADR</option>
+                        <option value="BNA">BNA</option>
+                        <option value="BDL">BDL</option>
+                        <option value="BEA">BEA</option>
+                        <option value="CPA">CPA</option>
+                        <option value="CNEP">CNEP</option>
+                        <option value="Al Baraka">Al Baraka</option>
+                        <option value="Citibank">Citibank</option>
+                        <option value="Arab Banking">Arab Banking</option>
+                        <option value="Natixis">Natixis</option>
+                        <option value="Société Générale">Société Générale</option>
+                        <option value="BNP Paribas">BNP Paribas</option>
+                    </select>
+                </div>
+
             </div>
 
-
-            <!-- Champ Compte Bancaire -->
-            <div class="form-group">
-                <label for="structureCompteBancaire">Compte Bancaire</label>
-                <input type="text" id="structureCompteBancaire" required maxlength="20">
-            </div>
 
             <!-- Champ Compte Postal -->
             <div class="form-group">

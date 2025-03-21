@@ -1000,6 +1000,13 @@ nav ul li a:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+#structureCompteBancaire{
+    width: 100%;
+}
+
+#structureComptePostal{
+    width: 35%;
+}
 @media (max-width: 768px) {
     .structure {
         padding: 15px;

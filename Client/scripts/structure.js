@@ -47,6 +47,8 @@ document.querySelector('.structure').addEventListener('submit', async (e) => {
     const email = document.getElementById("structureEmail").value;
     const adresse = document.getElementById("structureAdresse").value.trim();
     const compte_bancaire = document.getElementById("structureCompteBancaire").value;
+    const nom_compte_bancaire = document.getElementById("nombanque").value;
+
     const compte_postal = document.getElementById("structureComptePostal").value;
 
     if (!raison_sociale || !prefixe || !email || !telephone || !adresse || !compte_bancaire || !compte_postal) {
@@ -54,15 +56,26 @@ document.querySelector('.structure').addEventListener('submit', async (e) => {
         return;
     }
 
+     // Afficher un loader pendant l'inscription
+     Swal.fire({
+        title: "Enregistrement en cours...",
+        html: "Veuillez patienter...",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
     const data = {
-        raison_sociale: raison_sociale,
-        prefixe: prefixe,
-        telephone: telephone,
-        fax: fax,
-        email: email,
-        adresse: adresse,
-        compte_bancaire: compte_bancaire,
-        compte_postal: compte_postal
+        raison_sociale,
+        prefixe,
+        telephone,
+        fax,
+        email,
+        adresse,
+        compte_bancaire,
+        nom_compte_bancaire,
+        compte_postal
     };
 
     try {
@@ -73,7 +86,18 @@ document.querySelector('.structure').addEventListener('submit', async (e) => {
             credentials: 'include',
         });
 
-    } catch (error) {
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Erreur lors de l'enregistrement.");
+        }
 
+        
+        Swal.close();
+        showAlert("Succès", "Enregistrement réussie !", "success");
+        const form = document.querySelector('.structure');
+        form.reset();     
+
+    } catch (error) {
+        showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
 });
