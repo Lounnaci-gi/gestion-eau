@@ -124,9 +124,10 @@ const articleSchema = mongoose.Schema({
 
 //Schéma pour les Structure
 const structureSchema = new mongoose.Schema({
-    nom: {
+    raison_sociale: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         minlength: 2,
         maxlength: 100,
@@ -156,7 +157,7 @@ const structureSchema = new mongoose.Schema({
     },
     fax: {
         type: String,
-        required: true,
+        required: false,
         validate: {
             validator: v => /^\+?[0-9\s-]{8,15}$/.test(v),
             message: "Numéro de fax invalide. Format attendu : +212 522-123457."
@@ -164,7 +165,7 @@ const structureSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: false,
         match: [/.+@.+\..+/, "Adresse email invalide."]
     },
     adresse: {
@@ -174,14 +175,6 @@ const structureSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 200,
         message: "L'adresse doit contenir entre 5 et 200 caractères."
-    },
-    boite_postale: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 3,
-        maxlength: 20,
-        message: "La boîte postale doit contenir entre 3 et 20 caractères."
     },
     compte_bancaire: {
         type: String,
