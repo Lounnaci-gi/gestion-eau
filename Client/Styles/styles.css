@@ -895,45 +895,106 @@ nav ul li a:hover {
 }
 
 /* Styles pour le formulaire de création des structures */
-.form-group #structureNom {
+/* styles.css */
+.structure {
+    padding: 20px;
+    background: white;
+    border-radius: 12px; /* Bordures plus douces */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Ombre plus moderne */
+    gap: 1.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Bordure subtile */
+    
+}
+
+.structure .form-group {
+    margin-bottom: 1.2rem;
     width: 70%;
 }
 
-#structurePrefixe {
-    width: 5%;
-    text-transform: uppercase;
+.structure label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-size: 0.9em;
+    letter-spacing: -0.02em; /* Améliore la lisibilité */
+}
+
+.structure input {
+    width: 70%;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0; /* Bordure plus claire */
+    border-radius: 8px; /* Bordures plus arrondies */
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+    background-color: #fafafa; /* Fond légèrement grisé */
+}
+
+.structure input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.15); /* Effet focus plus doux */
+    background-color: white;
+    transform: scale(1.02); /* Légère animation au focus */
 }
 
 .nom_préfix {
-    display: flex;
+    width: 50%;
+    display: grid;
+    grid-template-columns: auto 5%;
+    margin-bottom: 1.2rem;
 }
-
-#structureTelephone,
-#structureFax,
-#structureEmail,
-#structureBoitePostale {
-    width: 15%;
-}
-
-#structureAdresse,
-#structureComptePostal,
-#structureCompteBancaire {
-    width: 35%;
+#structureNom{
+    width: 100%;
 }
 
 #btn_strtucture {
-    width: 15%;
+    width: 10%;
     padding: 12px;
     background: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 15px;
-    transition: background 0.3s ease;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 #btn_strtucture:hover {
     background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée au hover */
+}
+
+#btn_strtucture:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .structure {
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+    .nom_préfix {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .structure input {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+    }
+    
+    #btn_strtucture {
+        padding: 10px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+    }
 }

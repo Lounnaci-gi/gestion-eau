@@ -171,7 +171,7 @@
                 <!-- Champ Nom -->
                 <div class="form-group">
                     <label for="structureNom">Désignation</label>
-                    <input type="text" id="structureNom" required maxlength="100" placeholder="Exp : Centre Medea">
+                    <input type="text" id="structureNom" required maxlength="60" placeholder="Exp : Centre Medea">
                 </div>
                 <!-- Champ Préfixe -->
                 <div class="form-group">
@@ -183,43 +183,38 @@
             <!-- Champ Téléphone -->
             <div class="form-group">
                 <label for="structureTelephone">Téléphone</label>
-                <input type="tel" id="structureTelephone" required>
+                <input type="tel" id="structureTelephone" required maxlength="10">
             </div>
 
             <!-- Champ Fax -->
             <div class="form-group">
                 <label for="structureFax">Fax</label>
-                <input type="tel" id="structureFax" required>
+                <input type="tel" id="structureFax" max="10">
             </div>
 
             <!-- Champ Email -->
             <div class="form-group">
                 <label for="structureEmail">Email</label>
-                <input type="email" id="structureEmail" required>
+                <input type="email" id="structureEmail" maxlength="50">
             </div>
 
             <!-- Champ Adresse -->
             <div class="form-group">
                 <label for="structureAdresse">Adresse</label>
-                <input type="text" id="structureAdresse" required>
+                <input type="text" id="structureAdresse" required maxlength="100">
             </div>
 
-            <!-- Champ Boîte Postale -->
-            <div class="form-group">
-                <label for="structureBoitePostale">Boîte Postale</label>
-                <input type="text" id="structureBoitePostale" required>
-            </div>
 
             <!-- Champ Compte Bancaire -->
             <div class="form-group">
                 <label for="structureCompteBancaire">Compte Bancaire</label>
-                <input type="text" id="structureCompteBancaire" required>
+                <input type="text" id="structureCompteBancaire" required maxlength="20">
             </div>
 
             <!-- Champ Compte Postal -->
             <div class="form-group">
                 <label for="structureComptePostal">Compte Postal</label>
-                <input type="text" id="structureComptePostal" required>
+                <input type="text" id="structureComptePostal" required maxlength="20">
             </div>
 
             <!-- Bouton de soumission -->
