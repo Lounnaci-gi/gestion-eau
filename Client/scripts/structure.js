@@ -55,9 +55,18 @@ document.querySelector('.structure').addEventListener('submit', async (e) => {
         showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
         return;
     }
+    Swal.fire({
+        title: "Enregistrer nouvelle structure",
+        text: "Êtes-vous sûr de vouloir enregistrer ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, Enregistrer",
+        cancelButtonText: "Annuler",
+        showLoaderOnConfirm: true
+    });
 
-     // Afficher un loader pendant l'inscription
-     Swal.fire({
+    // Afficher un loader pendant l'inscription
+    Swal.fire({
         title: "Enregistrement en cours...",
         html: "Veuillez patienter...",
         allowOutsideClick: false,
@@ -91,11 +100,11 @@ document.querySelector('.structure').addEventListener('submit', async (e) => {
             throw new Error(errorData.message || "Erreur lors de l'enregistrement.");
         }
 
-        
+
         Swal.close();
         showAlert("Succès", "Enregistrement réussie !", "success");
         const form = document.querySelector('.structure');
-        form.reset();     
+        form.reset();
 
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");

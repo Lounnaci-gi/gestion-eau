@@ -969,6 +969,7 @@ nav ul li a:hover {
 
 #structureNom {
     width: 100%;
+    text-transform: capitalize;
 }
 
 #btn_strtucture {
