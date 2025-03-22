@@ -13,6 +13,11 @@
     --border-radius: 10px;
 }
 
+html {
+    scroll-behavior: smooth;
+    /* Ajoute un déplacement fluide pour les ancres */
+}
+
 /* Styles de base */
 body {
     font-family: Arial, sans-serif;
@@ -20,7 +25,6 @@ body {
     padding: 0;
     background-color: var(--background-light);
     color: var(--text-color);
-    scroll-behavior: smooth;
 }
 
 /* 📌 Style du menu principal */
@@ -899,77 +903,153 @@ nav ul li a:hover {
 .structure {
     padding: 20px;
     background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    border-radius: 12px;
+    /* Bordures plus douces */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Ombre plus moderne */
+    gap: 1.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Bordure subtile */
+}
+
+#structures{
+    color: var(--primary-color);
 }
 
 .structure .form-group {
-    margin-bottom: 1.5rem;
-    width: 100%;
+    margin-bottom: 1.2rem;
+    width: 70%;
 }
 
 .structure label {
     display: block;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--text-color);
+    font-size: 0.9em;
+    letter-spacing: -0.02em;
+    /* Améliore la lisibilité */
 }
 
 .structure input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+    width: 70%;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    /* Bordure plus claire */
+    border-radius: 8px;
+    /* Bordures plus arrondies */
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+    background-color: #fafafa;
+    /* Fond légèrement grisé */
 }
 
 .structure input:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.15);
+    /* Effet focus plus doux */
+    background-color: white;
+    transform: scale(1.02);
+    /* Légère animation au focus */
 }
 
 .nom_préfix {
+    width: 50%;
     display: grid;
-    grid-template-columns: 1fr 100px;
-    gap: 20px;
-    margin-bottom: 1.5rem;
+    grid-template-columns: auto 30%;
+    margin-bottom: 1.2rem;
+
 }
 
-.nom_préfix input{
+#structurePrefixe {
     text-transform: uppercase;
+    width: 30px;
 }
 
+#structureNom {
+    width: 100%;
+    text-transform: capitalize;
+}
 
 #btn_strtucture {
-    width: 100%;
+    width: 10%;
     padding: 12px;
     background: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-top: 20px;
-    transition: background-color 0.3s ease;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    /* Ombre subtile */
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 #btn_strtucture:hover {
     background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* Ombre plus prononcée au hover */
 }
 
+#btn_strtucture:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#structureCompteBancaire{
+    width: 100%;
+}
+
+#structureComptePostal{
+    width: 35%;
+}
 @media (max-width: 768px) {
+    .structure {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
     .nom_préfix {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
-    
+
     .structure input {
-        font-size: 0.9rem;
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        border-radius: 6px;
     }
-    
+
     #btn_strtucture {
         padding: 10px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        border-radius: 6px;
     }
+}
+
+/* styles.css */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        /* Début invisible */
+        transform: translateY(20px);
+        /* Décalage léger vers le bas */
+    }
+
+    to {
+        opacity: 1;
+        /* Fin visible */
+        transform: translateY(0);
+        /* Pas de décalage */
+    }
+}
+
+.dashboard {
+    animation: fadeIn 1.8s ease-out;
+    /* Applique l'animation */
 }

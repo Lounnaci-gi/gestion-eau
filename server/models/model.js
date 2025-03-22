@@ -124,13 +124,10 @@ const articleSchema = mongoose.Schema({
 
 //Schéma pour les Structure
 const structureSchema = new mongoose.Schema({
-    nom: {
+    raison_sociale: {
         type: String,
         required: true,
-        trim: true,
-        minlength: 2,
-        maxlength: 100,
-        message: "Le nom doit contenir entre 2 et 100 caractères."
+        unique: true
     },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
@@ -140,64 +137,37 @@ const structureSchema = new mongoose.Schema({
     prefixe: {
         type: String,
         required: true,
-        unique: true,
-        validate: {
-            validator: v => /^[A-Z]{2}$/.test(v),
-            message: "Le préfixe doit être 2 lettres majuscules."
-        }
+        unique: true
     },
     telephone: {
         type: String,
-        required: true,
-        validate: {
-            validator: v => /^\+?[0-9\s-]{8,15}$/.test(v),
-            message: "Numéro de téléphone invalide. Format attendu : +212 522-123456."
-        }
+        required: true
     },
     fax: {
         type: String,
-        required: true,
-        validate: {
-            validator: v => /^\+?[0-9\s-]{8,15}$/.test(v),
-            message: "Numéro de fax invalide. Format attendu : +212 522-123457."
-        }
+        required: false
     },
     email: {
         type: String,
-        required: true,
-        match: [/.+@.+\..+/, "Adresse email invalide."]
+        required: false
     },
     adresse: {
         type: String,
-        required: true,
-        trim: true,
-        minlength: 5,
-        maxlength: 200,
-        message: "L'adresse doit contenir entre 5 et 200 caractères."
-    },
-    boite_postale: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 3,
-        maxlength: 20,
-        message: "La boîte postale doit contenir entre 3 et 20 caractères."
+        required: true
     },
     compte_bancaire: {
         type: String,
-        required: true,
-        validate: {
-            validator: v => /^[A-Z]{2}[0-9]{2}[A-Z0-9]{10,30}$/.test(v), // Format IBAN
-            message: "Format IBAN/RIB invalide. Exemple : MA64012345678901234567890."
-        }
+        required: true
     },
+
+    nom_compte_bancaire: {
+        type: String,
+        required: true
+    },
+
     compte_postal: {
         type: String,
-        required: true,
-        validate: {
-            validator: v => /^[0-9]{5}(-[0-9]{5})?$/.test(v), // Format 12345 ou 12345-67890
-            message: "Format de compte postal invalide. Exemple : 12345 ou 12345-67890."
-        }
+        required: true
     }
 }, { timestamps: true });
 

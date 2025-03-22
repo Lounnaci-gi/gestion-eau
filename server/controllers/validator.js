@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/model");
+const { User,Structure } = require("../models/model");
 const rateLimit = require("express-rate-limit");
 
 const validation = [

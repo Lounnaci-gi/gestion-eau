@@ -165,13 +165,12 @@
     <div class="dashboard">
         <h1 id="structures">Structure</h1>
         <form class="structure">
-
             <!-- chmap nom & préfix -->
             <div class="nom_préfix">
                 <!-- Champ Nom -->
                 <div class="form-group">
                     <label for="structureNom">Désignation</label>
-                    <input type="text" id="structureNom" required maxlength="100" placeholder="Exp : Centre Medea">
+                    <input type="text" id="structureNom" required maxlength="60" placeholder="Exp : Centre Medea">
                 </div>
                 <!-- Champ Préfixe -->
                 <div class="form-group">
@@ -180,35 +179,59 @@
                 </div>
             </div>
 
-            <!-- Champ Téléphone -->
-            <div class="form-group">
-                <label for="structureTelephone">Téléphone</label>
-                <input type="tel" id="structureTelephone" required maxlength="12">
-            </div>
-
-            <!-- Champ Fax -->
-            <div class="form-group">
-                <label for="structureFax">Fax</label>
-                <input type="tel" id="structureFax" maxlength="12">
-            </div>
-
-            <!-- Champ Email -->
-            <div class="form-group">
-                <label for="structureEmail">Email</label>
-                <input type="email" id="structureEmail" maxlength="30">
-            </div>
-
             <!-- Champ Adresse -->
             <div class="form-group">
                 <label for="structureAdresse">Adresse</label>
                 <input type="text" id="structureAdresse" required maxlength="100">
             </div>
 
-            <!-- Champ Compte Bancaire -->
+            <!-- Champ Téléphone -->
             <div class="form-group">
-                <label for="structureCompteBancaire">Compte Bancaire</label>
-                <input type="text" id="structureCompteBancaire" required maxlength="20">
+                <label for="structureTelephone">Téléphone</label>
+                <input type="tel" id="structureTelephone" required maxlength="14" placeholder="0662 44 32 85">
             </div>
+
+            <!-- Champ Fax -->
+            <div class="form-group">
+                <label for="structureFax">Fax</label>
+                <input type="tel" id="structureFax" maxlength="14" placeholder="0662 44 32 85">
+            </div>
+
+            <!-- Champ Email -->
+            <div class="form-group">
+                <label for="structureEmail">Email</label>
+                <input type="email" id="structureEmail" maxlength="50">
+            </div>
+
+            <div class="nom_préfix">
+
+                <!-- Champ Compte Bancaire -->
+                <div class="form-group">
+                    <label for="structureCompteBancaire">Compte Bancaire</label>
+                    <input type="text" id="structureCompteBancaire" required maxlength="20">
+                </div>
+
+                <!-- Champ nom banque -->
+                <div class="form-group">
+                    <label for="nombanque">Choisire la banque</label>
+                    <select id="nombanque" required>
+                        <option value="BADR">BADR</option>
+                        <option value="BNA">BNA</option>
+                        <option value="BDL">BDL</option>
+                        <option value="BEA">BEA</option>
+                        <option value="CPA">CPA</option>
+                        <option value="CNEP">CNEP</option>
+                        <option value="Al Baraka">Al Baraka</option>
+                        <option value="Citibank">Citibank</option>
+                        <option value="Arab Banking">Arab Banking</option>
+                        <option value="Natixis">Natixis</option>
+                        <option value="Société Générale">Société Générale</option>
+                        <option value="BNP Paribas">BNP Paribas</option>
+                    </select>
+                </div>
+
+            </div>
+
 
             <!-- Champ Compte Postal -->
             <div class="form-group">
@@ -351,6 +374,7 @@
 
 
     <script src="./scripts/main.js"></script>
+    <script src="./scripts/structure.js"></script>
 </body>
 
 </html>
