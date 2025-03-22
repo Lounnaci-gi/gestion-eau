@@ -183,43 +183,37 @@
             <!-- Champ Téléphone -->
             <div class="form-group">
                 <label for="structureTelephone">Téléphone</label>
-                <input type="tel" id="structureTelephone" required>
+                <input type="tel" id="structureTelephone" required maxlength="12">
             </div>
 
             <!-- Champ Fax -->
             <div class="form-group">
                 <label for="structureFax">Fax</label>
-                <input type="tel" id="structureFax" required>
+                <input type="tel" id="structureFax" maxlength="12">
             </div>
 
             <!-- Champ Email -->
             <div class="form-group">
                 <label for="structureEmail">Email</label>
-                <input type="email" id="structureEmail" required>
+                <input type="email" id="structureEmail" maxlength="30">
             </div>
 
             <!-- Champ Adresse -->
             <div class="form-group">
                 <label for="structureAdresse">Adresse</label>
-                <input type="text" id="structureAdresse" required>
-            </div>
-
-            <!-- Champ Boîte Postale -->
-            <div class="form-group">
-                <label for="structureBoitePostale">Boîte Postale</label>
-                <input type="text" id="structureBoitePostale" required>
+                <input type="text" id="structureAdresse" required maxlength="100">
             </div>
 
             <!-- Champ Compte Bancaire -->
             <div class="form-group">
                 <label for="structureCompteBancaire">Compte Bancaire</label>
-                <input type="text" id="structureCompteBancaire" required>
+                <input type="text" id="structureCompteBancaire" required maxlength="20">
             </div>
 
             <!-- Champ Compte Postal -->
             <div class="form-group">
                 <label for="structureComptePostal">Compte Postal</label>
-                <input type="text" id="structureComptePostal" required>
+                <input type="text" id="structureComptePostal" required maxlength="20">
             </div>
 
             <!-- Bouton de soumission -->
@@ -259,7 +253,7 @@
                 <h2>Connexion</h2>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" required maxlength="50">
+                    <input type="email" id="email" required maxlength="50" autocomplete="aaaaa@aaaa.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
