@@ -32,7 +32,7 @@ router.delete('/liste/:id', authenticate, authorize(["admin"]), delete_user);
 // Route pour supprimer utilisateur
 router.get('/liste/:id',authenticate, get_user);
 
-// Route pour supprimer utilisateur
+// Route pour mettre a jour l'utilisateur
 router.put('/liste/:id',authenticate,authorize(["admin","chef_centre"]), update_user);
 
 module.exports = router;

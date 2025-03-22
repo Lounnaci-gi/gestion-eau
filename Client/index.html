@@ -242,7 +242,30 @@
             <!-- Bouton de soumission -->
             <button type="submit" id="btn_strtucture">Ajouter</button>
         </form>
-
+    </div>
+    <div class="auth-modal" id="structureTableModal">
+        <div class="auth-content">
+            <span class="close-auth">&times;</span>
+            <div class="user-table-container">
+                <h2>Gestion des structures</h2>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Nom Complet</th>
+                            <th>Prefixe</th>
+                            <th>Adresse</th>
+                            <th>Telephone</th>
+                            <th>Fax</th>
+                            <th>Email</th>
+                            <th>Banque</th>
+                        </tr>
+                    </thead>
+                    <tbody id="structureTableBody">
+                        <!-- Les utilisateurs seront chargés ici -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <!-- Section Utilisateur -->
     <div class="auth-modal" id="userTableModal">
