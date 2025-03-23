@@ -2,7 +2,7 @@ const { Client, User, Article, Structure } = require("../models/model");
 const { validationResult } = require("express-validator");
 
 
-
+// Ajouter nouvelle structure
 module.exports.add_structure = async (req, res, next) => {
     try {
         const data = { raison_sociale, prefixe, telephone, fax, email, adresse, compte_bancaire, nom_compte_bancaire, compte_postal } = req.body;
@@ -45,4 +45,18 @@ module.exports.add_structure = async (req, res, next) => {
 
     }
 
+}
+
+// Afficher la liste des structures existante
+module.exports.liste_structure = async (req, res, next) => {
+    try {
+
+        const structure = await Structure.find();
+        if (structure.length === 0) { // Vérifier si le tableau est vide
+            return res.status(404).json({ success: false, message: "Aucune structure trouvé." });
+        }
+        res.json({ success: true, data: structure });
+    } catch (err) {
+        next(err)
+    }
 }

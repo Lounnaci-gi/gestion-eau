@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 const jwt = require("jsonwebtoken");
-const { User,Structure } = require("../models/model");
+const { User } = require("../models/model");
 const rateLimit = require("express-rate-limit");
 
 const validation = [
@@ -83,5 +83,14 @@ const authorize = (roles = []) => {
     };
 };
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailValidation = [
+    body("email")
+    .notEmpty().withMessage("Lemail est obligatoire.")
+    .isEmail().withMessage("L'email est invalide.")
+    .matches(emailRegex).withMessage("L'email est invalide."), 
 
-module.exports = { validation, loginLimiter, authenticate, authorize };
+    // Ajoutez d'autres validations ici si nécessaire
+];
+
+module.exports = { validation, loginLimiter, authenticate, authorize,emailValidation };
