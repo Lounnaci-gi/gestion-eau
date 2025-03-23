@@ -4,28 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Clientels - Suivi des nouveaux branchements</title>
+    <title>Gestion Clientèle - Suivi des nouveaux branchements</title>
     <link rel="stylesheet" href="./Styles/styles.css"> <!-- Lien vers le fichier CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Ajouter des balises OpenGraph -->
+    <!-- Balises OpenGraph -->
     <meta property="og:title" content="Gestion Clientèle - Suivi des branchements">
-    <meta property="og:description"
-        content="Optimisez votre gestion clientèle avec notre solution de suivi des branchements.">
+    <meta property="og:description" content="Optimisez votre gestion clientèle avec notre solution de suivi des branchements.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="URL_DU_SITE">
 
-    <!-- Ajout de méta-données SEO -->
-
-    <meta name="description"
-        content="Solution de gestion clientèle spécialisée dans le suivi des branchements - Création de devis, facturation et suivi technique">
+    <!-- Méta-données SEO -->
+    <meta name="description" content="Solution de gestion clientèle spécialisée dans le suivi des branchements - Création de devis, facturation et suivi technique">
     <meta name="keywords" content="gestion client, branchements, devis, facturation, suivi technique">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="scripts/controle_nav.js"></script>
 </head>
 
 <body>
+    <!-- Barre de navigation -->
     <nav>
-        <div class="company-name">Logo</div> <!-- Nom de l'entreprise à gauche -->
+        <div class="company-name">Logo</div>
         <button class="hamburger" id="hamburger">
             <i class="fas fa-bars"></i>
         </button>
@@ -39,19 +37,14 @@
                 <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
                     <li id="structure"><a href="#structures"><i class="fa-solid fa-building"></i> Structure</a></li>
-                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a>
-                    </li>
+                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> Utilisateurs</a></li>
                 </ul>
             </li>
-
-            <!-- <li><a href="#">Paramètres</a></li> -->
         </ul>
-
         <div class="search-container">
-            <i class="fas fa-search search-icon"></i> <!-- Icône de recherche à l'intérieur -->
+            <i class="fas fa-search search-icon"></i>
             <input type="text" placeholder="Rechercher..." class="search-input" id="search">
         </div>
-        <!-- Dans la section auth-buttons -->
         <div class="auth-buttons">
             <div class="auth-toggle-button" id="authToggle">
                 <i class="fas fa-sign-in-alt"></i>
@@ -75,104 +68,20 @@
                     <p>Objectif atteint : <strong>75%</strong></p>
                 </div>
             </div>
-
-            <!-- Carte 2 : Clients actifs -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-users"></i>
-                    <h3>Clients Actifs</h3>
-                </div>
-                <div class="card-content">
-                    <p>Nombre de clients actifs : <strong>120</strong></p>
-                    <p>Nouveaux clients ce mois-ci : <strong>15</strong></p>
-                </div>
-            </div>
-
-            <!-- Carte 3 : Commandes en attente -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Commandes en Attente</h3>
-                </div>
-                <div class="card-content">
-                    <p>Commandes à traiter : <strong>8</strong></p>
-                    <p>Délai moyen : <strong>2 jours</strong></p>
-                </div>
-            </div>
-
-            <!-- Carte 4 : Revenus mensuels -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-euro-sign"></i>
-                    <h3>Revenus Mensuels</h3>
-                </div>
-                <div class="card-content">
-                    <p>Revenus totaux : <strong>25 000 €</strong></p>
-                    <p>Croissance : <strong>+12%</strong></p>
-                </div>
-            </div>
-        </div>
-        <div class="dashboard-grid">
-            <!-- Carte 5 : Commandes en attente -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Commandes en Attente</h3>
-                </div>
-                <div class="card-content">
-                    <p>Commandes à traiter : <strong>8</strong></p>
-                    <p>Délai moyen : <strong>2 jours</strong></p>
-                </div>
-            </div>
-            <!-- Carte 6 : Commandes en attente -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Commandes en Attente</h3>
-                </div>
-                <div class="card-content">
-                    <p>Commandes à traiter : <strong>8</strong></p>
-                    <p>Délai moyen : <strong>2 jours</strong></p>
-                </div>
-            </div>
-            <!-- Carte 7 : Commandes en attente -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Commandes en Attente</h3>
-                </div>
-                <div class="card-content">
-                    <p>Commandes à traiter : <strong>8</strong></p>
-                    <p>Délai moyen : <strong>2 jours</strong></p>
-                </div>
-            </div>
-            <!-- Carte 8 : Commandes en attente -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Commandes en Attente</h3>
-                </div>
-                <div class="card-content">
-                    <p>Commandes à traiter : <strong>8</strong></p>
-                    <p>Délai moyen : <strong>2 jours</strong></p>
-                </div>
-            </div>
-
-
+            <!-- Ajoutez d'autres cartes ici -->
         </div>
     </section>
 
-    <div class="dashboard structure">
-        <h1 id="structures">Structure</h1>
-        <form >
-            <!-- chmap nom & préfix -->
+    <!-- Section Structure -->
+    <div class="dashboard">
+        <form class="form-container structure">
+            <h1 id="structures">Structure</h1>
+            <!-- Champ Nom & Préfixe -->
             <div class="nom_préfix">
-                <!-- Champ Nom -->
                 <div class="form-group">
                     <label for="structureNom">Désignation</label>
                     <input type="text" id="structureNom" required maxlength="60" placeholder="Exp : Centre Medea">
                 </div>
-                <!-- Champ Préfixe -->
                 <div class="form-group">
                     <label for="structurePrefixe">Préfixe</label>
                     <input type="text" id="structurePrefixe" required maxlength="2" placeholder="aa">
@@ -203,17 +112,14 @@
                 <input type="email" id="structureEmail" maxlength="50">
             </div>
 
+            <!-- Champ Compte Bancaire & Banque -->
             <div class="nom_préfix">
-
-                <!-- Champ Compte Bancaire -->
                 <div class="form-group">
                     <label for="structureCompteBancaire">Compte Bancaire</label>
                     <input type="text" id="structureCompteBancaire" required maxlength="20">
                 </div>
-
-                <!-- Champ nom banque -->
                 <div class="form-group">
-                    <label for="nombanque">Choisire la banque</label>
+                    <label for="nombanque">Choisir la banque</label>
                     <select id="nombanque" required>
                         <option value="BADR">BADR</option>
                         <option value="BNA">BNA</option>
@@ -229,9 +135,7 @@
                         <option value="BNP Paribas">BNP Paribas</option>
                     </select>
                 </div>
-
             </div>
-
 
             <!-- Champ Compte Postal -->
             <div class="form-group">
@@ -240,82 +144,56 @@
             </div>
 
             <!-- Bouton de soumission -->
-            <button type="submit" id="btn_strtucture">Ajouter</button>
+            <button type="submit" class="primary-button" id="btn_strtucture">Ajouter</button>
         </form>
-    </div>
-    <!-- Section Structure -->
-    <div class="auth-modal" id="structureTableModal">
-        <div class="auth-content">
-            <span class="close-auth">&times;</span>
-            <div class="structure-table-container">
-                <h2>Gestion des structures</h2>
-                <table class="structure-table">
-                    <thead>
-                        <tr>
-                            <th>Désignation</th>
-                            <th>Prefixe</th>
-                            <th>Adresse</th>
-                            <th>Telephone</th>
-                            <th>Fax</th>
-                            <th>Email</th>
-                            <th>Banque</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="structureTableBody">
-                        <!-- Les structure seront chargés ici -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- Section Utilisateur -->
-    <div class="auth-modal" id="userTableModal">
-        <div class="auth-content">
-            <span class="close-auth">&times;</span>
-            <div class="user-table-container">
-                <h2>Gestion des Utilisateurs</h2>
-                <table class="user-table">
-                    <thead>
-                        <tr>
-                            <th>Nom Complet</th>
-                            <th>Email</th>
-                            <th>Rôle</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                        <!-- Les utilisateurs seront chargés ici -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- Ajoutez ceci juste avant la balise </body> dans index.html -->
-    <div class="auth-modal" id="authModal">
-        <div class="auth-content">
-            <span class="close-auth">&times;</span>
 
+        <!-- Tableau des structures -->
+        <div class="structure-table-container">
+            <h2>Liste des Structures</h2>
+            <table class="data-table structure-table">
+                <thead>
+                    <tr>
+                        <th>Nom Complet</th>
+                        <th>Préfixe</th>
+                        <th>Adresse</th>
+                        <th>Téléphone</th>
+                        <th>Fax</th>
+                        <th>Email</th>
+                        <th>Banque</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="structureTableBody">
+                    <!-- Les structures seront chargées ici -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal d'authentification -->
+    <div class="modal" id="authModal">
+        <div class="auth-content">
+            <span class="close-auth">&times;</span>
             <!-- Formulaire de Connexion -->
-            <form class="auth-form" id="loginForm">
+            <form class="form-container auth-form" id="loginForm">
                 <h2>Connexion</h2>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" required maxlength="50" autocomplete="aaaaa@aaaa.com">
+                    <input type="email" id="email" required maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" required maxlength="20">
                 </div>
-                <button type="submit">Se connecter</button>
+                <button type="submit" class="primary-button">Se connecter</button>
                 <p class="auth-switch">Pas de compte ? <span>Créer un compte</span></p>
-                <!-- Ajouter un lien "Mot de passe oublié" -->
                 <p class="forgot-password">
                     <a href="#" id="forgotPasswordLink">Mot de passe oublié ?</a>
                 </p>
             </form>
             <!-- Formulaire d'Inscription -->
-            <form class="auth-form" id="registerForm">
+            <form class="form-container auth-form" id="registerForm">
                 <h2>Inscription</h2>
                 <div class="form-group">
                     <label for="nomComplet">Nom complet</label>
@@ -344,33 +222,33 @@
                         <option value="juriste">Juriste</option>
                     </select>
                 </div>
-                <button type="submit">S'inscrire</button>
+                <button type="submit" class="primary-button">S'inscrire</button>
                 <p class="auth-switch">Déjà un compte ? <span>Se connecter</span></p>
             </form>
         </div>
     </div>
 
     <!-- Modal pour la récupération de mot de passe -->
-    <div class="auth-modal" id="forgotPasswordModal">
+    <div class="modal" id="forgotPasswordModal">
         <div class="auth-content">
             <span class="close-auth">&times;</span>
-            <form class="auth-form" id="forgotPasswordForm">
+            <form class="form-container auth-form" id="forgotPasswordForm">
                 <h2>Mot de passe oublié</h2>
                 <div class="form-group">
                     <label for="forgotPasswordEmail">Email</label>
                     <input type="email" id="forgotPasswordEmail" required maxlength="50">
                 </div>
-                <button type="submit">Envoyer le lien de réinitialisation</button>
+                <button type="submit" class="primary-button">Envoyer le lien de réinitialisation</button>
                 <p class="auth-switch"><span>Retour à la connexion</span></p>
             </form>
         </div>
     </div>
 
     <!-- Modal d'édition d'utilisateur -->
-    <div class="auth-modal" id="editUserModal">
+    <div class="modal" id="editUserModal">
         <div class="auth-content">
             <span class="close-auth">&times;</span>
-            <form class="auth-form" id="editUserForm">
+            <form class="form-container auth-form" id="editUserForm">
                 <h2>Modifier l'utilisateur</h2>
                 <input type="hidden" id="editUserId">
                 <div class="form-group">
@@ -385,18 +263,16 @@
                     <label for="editRole">Rôle</label>
                     <select id="editRole" required>
                         <option value="utilisateur">Utilisateur</option>
-                        <!-- <option value="admin">Admin</option> -->
                         <option value="chef_centre">Chef de Centre</option>
                         <option value="chef_agence">Chef d'Agence</option>
                         <option value="chef_tech_com">Chef Technique Commercial</option>
                         <option value="juriste">Juriste</option>
                     </select>
                 </div>
-                <button type="submit">Enregistrer les modifications</button>
+                <button type="submit" class="primary-button">Enregistrer les modifications</button>
             </form>
         </div>
     </div>
-
 
     <script src="./scripts/main.js"></script>
     <script src="./scripts/structure.js"></script>

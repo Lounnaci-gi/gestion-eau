@@ -56,10 +56,6 @@ async function loadStructures() {
             throw new Error("Format de données invalide");
         }
 
-        // Afficher le modal
-        const structureTableModal = document.getElementById('structureTableModal');
-        structureTableModal.classList.add("show");
-
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
@@ -94,6 +90,7 @@ function populateStructureTable(structures) {
     `).join("");
 }
 
+
 // Écouteur d'événement pour afficher la liste des structures
 document.getElementById('structure').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -106,13 +103,6 @@ document.querySelector('.close-auth').addEventListener('click', () => {
     structureTableModal.classList.remove("show");
 });
 
-// Fermer le modal en cliquant en dehors
-window.addEventListener('click', (e) => {
-    const structureTableModal = document.getElementById('structureTableModal');
-    if (e.target === structureTableModal) {
-        structureTableModal.classList.remove("show");
-    }
-});
 /*
 document.querySelector('.structure').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
