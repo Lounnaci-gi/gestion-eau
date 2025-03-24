@@ -98,6 +98,7 @@ function populateStructureTable(structures) {
 document.getElementById('liste_structure').addEventListener('click', async (e) => {
     e.preventDefault();
     document.querySelector('.structure_liste').classList.add("show");
+    // setActiveLink(this.querySelector('h2'));
     await loadStructures();
 });
 

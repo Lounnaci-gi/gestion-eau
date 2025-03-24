@@ -80,7 +80,7 @@ nav ul li a:hover {
 .dropdown>a {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px; /* Réduit l'espace entre le texte et l'icône */
 }
 
 /* 📌 Icône flèche animée */
@@ -92,19 +92,16 @@ nav ul li a:hover {
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 0;
-    /* Modification importante */
-    left: 100%;
-    /* Affiche le sous-menu à droite du parent */
-    min-width: 200px;
+    top: 100%; /* Menu sous l'élément parent */
+    left: 0;
+    min-width: 180px; /* Légèrement réduit pour un look plus compact */
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus subtile */
     border-radius: var(--border-radius);
     list-style: none;
-    padding: 8px 0;
+    padding: 5px 0;
     z-index: 1000;
-    /* Z-index plus élevé */
-    transition: all var(--transition-speed) ease;
+    transition: all 0.25s ease;
 }
 
 /* 📌 Style des liens du sous-menu */
@@ -114,22 +111,38 @@ nav ul li a:hover {
 }
 
 .dropdown-menu li a {
-    display: block;
+    display: flex;
+    align-items: center;
     color: white;
     text-decoration: none;
-    transition: all var(--transition-speed) ease;
+    padding: 10px 12px; /* Réduit le padding pour un look plus compact */
+    transition: all 0.2s ease;
+}
+
+.dropdown-menu li a i {
+    margin: 0 6px 0 0; /* Espace réduit entre les icônes et le texte */
+}
+
+.dropdown-menu li a i.fa-caret-right {
+    margin: 0 0 0 auto; /* Place la flèche à droite */
+}
+
+/* 📌 Style pour les sous-menus de deuxième niveau */
+.dropdown-menu .dropdown-menu {
+    top: 0;
+    left: 100%;
 }
 
 .dropdown-menu>li:hover>ul {
     display: block;
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
 /* Animation de la flèche secondaire */
 .dropdown-menu li>a>.fa-caret-right {
     transition: transform 0.3s ease;
-    margin-left: auto;
+    font-size: 0.85em; /* Icône légèrement plus petite */
 }
 
 .dropdown-menu li:hover>a>.fa-caret-right {
@@ -138,27 +151,37 @@ nav ul li a:hover {
 
 /* 📌 Effet au survol */
 .dropdown-menu li:hover {
-    background: var(--primary-color);
+    background: rgba(255, 255, 255, 0.05); /* Fond subtil au survol */
 }
 
 .dropdown-menu li:hover a {
-    text-shadow: 0 0 8px white;
-    background: rgba(0, 191, 255, 0.1);
-    transform: translateX(5px);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+    transform: translateX(3px); /* Décalage plus subtil */
     font-weight: 500;
 }
 
 /* 📌 Affichage du menu au survol */
 .dropdown:hover>.dropdown-menu {
     display: block;
-    /* transform: translateY(0); */
+    animation: fadeIn 0.2s ease-in-out; /* Animation d'apparition */
 }
 
 /* 📌 Animation de la flèche */
-.dropdown:hover>a i {
+.dropdown:hover>a i.fa-caret-down {
     transform: rotate(180deg);
 }
 
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* 📌 Ajustement pour mobile */
 @media (max-width: 768px) {
     nav ul {
@@ -1090,167 +1113,378 @@ nav ul li a:hover {
 
 
 /*------------------------------------------------*/
-#structureTableModal {
+/* Styles modernes pour le tableau de structures */
+
+/* Animation pour les éléments qui apparaissent */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Container principal */
+  .structure-table-container {
+    padding: 24px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 0.4s ease;
+  }
+  
+  /* En-tête du tableau */
+  .structure-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .structure-table-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* Styles pour le tableau */
+  .structure-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 15px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  .structure-table th, 
+  .structure-table td {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+  
+  .structure-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.8rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .structure-table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  .structure-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .structure-table tbody tr:last-child {
+    border-bottom: none;
+  }
+  
+  .structure-table tbody tr:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Boutons d'action */
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .action-buttons button {
+    border: none;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .action-buttons button i {
+    font-size: 0.85rem;
+  }
+  
+  .edit-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #3d8b40;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  }
+  
+  .delete-btn:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+  }
+  
+  /* Styles responsifs */
+  @media (max-width: 1024px) {
+    .structure-table {
+      font-size: 0.85rem;
+    }
+    
+    .structure-table th, 
+    .structure-table td {
+      padding: 10px 12px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .structure-table-container {
+      padding: 16px;
+      overflow-x: auto;
+    }
+    
+    .structure-table {
+      min-width: 700px; /* Assure que le tableau ne se compresse pas trop */
+    }
+  }
+  
+  /* Animation lors du chargement des données */
+  .structure-table tbody tr {
+    animation: fadeInUp 0.3s ease;
+    animation-fill-mode: both;
+  }
+  
+  .structure-table tbody tr:nth-child(2) { animation-delay: 0.05s; }
+  .structure-table tbody tr:nth-child(3) { animation-delay: 0.1s; }
+  .structure-table tbody tr:nth-child(4) { animation-delay: 0.15s; }
+  .structure-table tbody tr:nth-child(5) { animation-delay: 0.2s; }
+  .structure-table tbody tr:nth-child(6) { animation-delay: 0.25s; }
+  .structure-table tbody tr:nth-child(7) { animation-delay: 0.3s; }
+  .structure-table tbody tr:nth-child(8) { animation-delay: 0.35s; }
+  .structure-table tbody tr:nth-child(9) { animation-delay: 0.4s; }
+  .structure-table tbody tr:nth-child(10) { animation-delay: 0.45s; }
+  
+  /* Styles pour les cellules vides/non renseignées */
+  .structure-table td:empty::before,
+  .structure-table td:contains("Non renseigné") {
+    content: "Non renseigné";
+    color: #aaa;
+    font-style: italic;
+  }
+  
+  /* Style pour la mise en page de la section de structures */
+  .structures.show, 
+  #structureTableModal.show {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    animation: fadeInUp 0.4s ease;
+  }
+  
+  #structureTableModal .auth-content {
+    background: white;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 1200px;
+    position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Ajout d'une barre de recherche moderne */
+  .structure-search {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .structure-search input {
+    width: 95%;
+    padding: 12px 20px;
+    padding-left: 40px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  .structure-search input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 12px rgba(var(--primary-color-rgb), 0.15);
+    outline: none;
+  }
+  
+  .structure-search i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+  }
+
+  /* Styles pour les états vides et les animations */
+
+/* État vide du tableau */
+.empty-table {
+    padding: 40px !important;
+    text-align: center;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    color: #888;
+  }
+  
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #ccc;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  /* Style pour valeurs non renseignées */
+  .empty-value {
+    color: #aaa;
+    font-style: italic;
+    font-size: 0.9em;
+  }
+  
+  /* Animations au survol des lignes */
+  .structure-table tbody tr {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .structure-table tbody tr::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary-color), transparent);
+    transition: width 0.3s ease;
+  }
+  
+  .structure-table tbody tr:hover::after {
+    width: 100%;
+  }
+  
+  /* Styles pour les boutons d'exportation/actions */
+  .table-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+  }
+  
+  .export-btn {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+  }
+  
+  .export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+  }
+  
+  .refresh-btn {
+    background: linear-gradient(135deg, #2196F3, #0D47A1);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(33, 150, 243, 0.3);
+  }
+  
+  .refresh-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
+  }
+  
+  .refresh-btn i {
+    font-size: 0.9rem;
+  }
+  
+  /* Animation de chargement */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-indicator {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.structures.show,
-#structureTableModal.show {
-    display: flex;
-}
-
-#structureTableModal .auth-content {
-    background: white;
-    padding: 30px;
-    border-radius: var(--border-radius);
-    width: 90%;
-    max-width: 800px;
-    /* Ajustez la largeur maximale selon vos besoins */
-    position: relative;
-    animation: slideIn 0.3s ease;
-    overflow-y: auto;
-    /* Ajoutez un défilement si le contenu est trop long */
-    max-height: 90vh;
-    /* Limitez la hauteur pour éviter de dépasser l'écran */
-}
-
-
-/* Styles pour le tableau des structures */
-.structure-table-container {
-    padding: 20px;
-}
-
-.structure-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: white;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-}
-
-.structure-table th,
-.structure-table td {
-    padding: 8px 10px;
-    /* Réduire le padding */
-    font-size: 0.9em;
-    /* Réduire la taille de la police */
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.structure-table th {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.structure-table tr:hover {
-    background-color: #f5f5f5;
-}
-
-.structure-table tr:last-child td {
-    border-bottom: none;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 8px;
-    /* Espace entre les boutons */
-}
-
-.action-buttons button {
-    padding: 4px 8px;
-    /* Réduire le padding */
-    font-size: 0.8em;
-    /* Réduire la taille de la police */
-    border-radius: 3px;
-    /* Réduire le rayon de la bordure */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.action-buttons button i {
-    font-size: 0.8em;
-    /* Réduire la taille des icônes */
-}
-
-.edit-btn {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.delete-btn {
-    background-color: #f44336;
-    color: white;
-}
-
-.edit-btn:hover,
-.delete-btn:hover {
-    opacity: 0.9;
-}
-
-/* Ajuster la largeur des colonnes */
-.structure-table th:nth-child(1),
-.structure-table td:nth-child(1) {
-    width: 25%;
-    /* Ajuster la largeur de la première colonne */
-}
-
-.structure-table th:nth-child(2),
-.structure-table td:nth-child(2) {
-    width: 5%;
-    /* Ajuster la largeur de la deuxième colonne */
-}
-
-.structure-table th:nth-child(3),
-.structure-table td:nth-child(3) {
-    width: 30%;
-    /* Ajuster la largeur de la troisième colonne */
-}
-
-.structure-table th:nth-child(4),
-.structure-table td:nth-child(4) {
-    width: 15%;
-    /* Ajuster la largeur de la quatrième colonne */
-}
-
-.structure-table th:nth-child(5),
-.structure-table td:nth-child(5) {
-    width: 15%;
-    /* Ajuster la largeur de la cinquième colonne */
-}
-
-.structure-table th:nth-child(6),
-.structure-table td:nth-child(6) {
-    width: 10%;
-    /* Ajuster la largeur de la sixième colonne */
-}
-
-/* Réduire la hauteur des lignes */
-.structure-table tr {
-    height: 30px;
-    /* Réduire la hauteur des lignes */
-}
-
-/* Ajuster la taille du modal */
-#structureTableModal .auth-content {
-    width: 90%;
-    /* Réduire la largeur du modal */
-    max-width: 100%;
-    /* Ajuster la largeur maximale */
-    padding: 20px;
-    /* Réduire le padding */
-}
+  }
+  
+ 
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(var(--primary-color-rgb), 0.1);
+    border-radius: 50%;
+    border-top: 4px solid var(--primary-color);
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Ajustement des transitions */
+  .structure-table tbody tr {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }

@@ -38,18 +38,19 @@
             <li class="dropdown">
                 <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-                    <li id="structure"><a><i class="fa-solid fa-building"></i> Structure <i class="fas fa-caret-right"></i></a>
+                    <li id="structure"><a><i class="fa-solid fa-building"></i> Structure <i
+                                class="fas fa-caret-right"></i></a>
                         <ul class="dropdown-menu">
-                            <li id="creation_structure"><a href="#structures"><i class="fa-solid fa-plus"></i> Création</a></li>
-                            <li id="liste_structure"><a href="#structure-liste"><i class="fa-solid fa-list"></i> Liste</a></li>
+                            <li id="creation_structure"><a href="#structures"><i class="fa-solid fa-plus"></i>
+                                    Création</a></li>
+                            <li id="liste_structure"><a href="#structure-liste"><i class="fa-solid fa-list"></i>
+                                    Liste</a></li>
                         </ul>
                     </li>
                     <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> Utilisateurs</a></li>
                 </ul>
             </li>
-            
 
-            <!-- <li><a href="#">Paramètres</a></li> -->
         </ul>
 
         <div class="search-container">
@@ -168,7 +169,7 @@
     </section>
 
     <div class="dashboard structure_creation">
-        <form >
+        <form>
             <h1 id="structures">Structure</h1>
             <!-- chmap nom & préfix -->
             <div class="nom_préfix">
@@ -251,7 +252,11 @@
     <!-- Table Structure -->
     <div class="dashboard structure_liste" id="structure-liste">
         <div class="structure-table-container">
-            <h2 >Gestion des structures</h2>
+            <h2>Gestion des structures</h2>
+            <div class="structure-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="structureSearch" placeholder="Rechercher une structure..." />
+            </div>
             <table class="structure-table">
                 <thead>
                     <tr>
