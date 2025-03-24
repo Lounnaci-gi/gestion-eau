@@ -92,22 +92,24 @@ nav ul li a:hover {
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 0;
+    /* Modification importante */
+    left: 100%;
+    /* Affiche le sous-menu à droite du parent */
     min-width: 200px;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     list-style: none;
     padding: 8px 0;
-    z-index: 100;
+    z-index: 1000;
+    /* Z-index plus élevé */
     transition: all var(--transition-speed) ease;
-    transform: translateY(5px);
-    overflow: hidden;
 }
 
 /* 📌 Style des liens du sous-menu */
 .dropdown-menu li {
+    position: relative;
     padding: 0;
 }
 
@@ -116,6 +118,22 @@ nav ul li a:hover {
     color: white;
     text-decoration: none;
     transition: all var(--transition-speed) ease;
+}
+
+.dropdown-menu>li:hover>ul {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animation de la flèche secondaire */
+.dropdown-menu li>a>.fa-caret-right {
+    transition: transform 0.3s ease;
+    margin-left: auto;
+}
+
+.dropdown-menu li:hover>a>.fa-caret-right {
+    transform: rotate(90deg);
 }
 
 /* 📌 Effet au survol */
@@ -133,7 +151,6 @@ nav ul li a:hover {
 /* 📌 Affichage du menu au survol */
 .dropdown:hover>.dropdown-menu {
     display: block;
-    opacity: 1;
     /* transform: translateY(0); */
 }
 
@@ -348,6 +365,7 @@ nav ul li a:hover {
     }
 }
 
+
 /* Styles pour le dashboard */
 .dashboard {
     padding: 20px;
@@ -358,7 +376,7 @@ nav ul li a:hover {
     box-shadow: var(--box-shadow);
 }
 
-.dashboard h1, 
+.dashboard h1,
 .dashboard h2 {
     font-size: 2em;
     margin-bottom: 20px;
@@ -901,8 +919,9 @@ nav ul li a:hover {
 
 /* Styles pour le formulaire de création des structures */
 
-.structure {
-    /* display: none; */
+.structure_creation,
+.structure_liste {
+    display: none;
     padding: 20px;
     background: white;
     border-radius: 12px;
@@ -914,16 +933,26 @@ nav ul li a:hover {
     /* Bordure subtile */
 }
 
-#structures{
+.structure_creation.show {
+    display: block;
+}
+
+.structure_liste.show {
+    display: block;
+}
+
+#structures {
     color: var(--primary-color);
 }
 
-.structure .form-group {
+.structure_creation .form-group,
+.structure_liste .form-group {
     margin-bottom: 1.2rem;
     width: 70%;
 }
 
-.structure label {
+.structure_creation label,
+.structure_liste label {
     display: block;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -933,7 +962,7 @@ nav ul li a:hover {
     /* Améliore la lisibilité */
 }
 
-.structure input {
+.structure_creation input {
     width: 70%;
     padding: 10px 12px;
     border: 1px solid #e0e0e0;
@@ -946,7 +975,7 @@ nav ul li a:hover {
     /* Fond légèrement grisé */
 }
 
-.structure input:focus {
+.structure_creation input:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.15);
@@ -1003,15 +1032,18 @@ nav ul li a:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-#structureCompteBancaire{
+#structureCompteBancaire {
     width: 100%;
 }
 
-#structureComptePostal{
+#structureComptePostal {
     width: 35%;
 }
+
 @media (max-width: 768px) {
-    .structure {
+
+    .structure_creation,
+    .structure_liste {
         padding: 15px;
         border-radius: 10px;
     }
@@ -1021,7 +1053,7 @@ nav ul li a:hover {
         gap: 15px;
     }
 
-    .structure input {
+    .structure_creation input {
         padding: 8px 10px;
         font-size: 0.85rem;
         border-radius: 6px;
@@ -1070,10 +1102,12 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
 }
+
 .structures.show,
-#structureTableModal.show{
+#structureTableModal.show {
     display: flex;
 }
+
 #structureTableModal .auth-content {
     background: white;
     padding: 30px;
@@ -1107,8 +1141,10 @@ nav ul li a:hover {
 
 .structure-table th,
 .structure-table td {
-    padding: 8px 10px; /* Réduire le padding */
-    font-size: 0.9em;  /* Réduire la taille de la police */
+    padding: 8px 10px;
+    /* Réduire le padding */
+    font-size: 0.9em;
+    /* Réduire la taille de la police */
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -1128,13 +1164,17 @@ nav ul li a:hover {
 
 .action-buttons {
     display: flex;
-    gap: 8px; /* Espace entre les boutons */
+    gap: 8px;
+    /* Espace entre les boutons */
 }
 
 .action-buttons button {
-    padding: 4px 8px; /* Réduire le padding */
-    font-size: 0.8em; /* Réduire la taille de la police */
-    border-radius: 3px; /* Réduire le rayon de la bordure */
+    padding: 4px 8px;
+    /* Réduire le padding */
+    font-size: 0.8em;
+    /* Réduire la taille de la police */
+    border-radius: 3px;
+    /* Réduire le rayon de la bordure */
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -1143,7 +1183,8 @@ nav ul li a:hover {
 }
 
 .action-buttons button i {
-    font-size: 0.8em; /* Réduire la taille des icônes */
+    font-size: 0.8em;
+    /* Réduire la taille des icônes */
 }
 
 .edit-btn {
@@ -1164,42 +1205,52 @@ nav ul li a:hover {
 /* Ajuster la largeur des colonnes */
 .structure-table th:nth-child(1),
 .structure-table td:nth-child(1) {
-    width: 25%; /* Ajuster la largeur de la première colonne */
+    width: 25%;
+    /* Ajuster la largeur de la première colonne */
 }
 
 .structure-table th:nth-child(2),
 .structure-table td:nth-child(2) {
-    width: 5%; /* Ajuster la largeur de la deuxième colonne */
+    width: 5%;
+    /* Ajuster la largeur de la deuxième colonne */
 }
 
 .structure-table th:nth-child(3),
 .structure-table td:nth-child(3) {
-    width: 30%; /* Ajuster la largeur de la troisième colonne */
+    width: 30%;
+    /* Ajuster la largeur de la troisième colonne */
 }
 
 .structure-table th:nth-child(4),
 .structure-table td:nth-child(4) {
-    width: 15%; /* Ajuster la largeur de la quatrième colonne */
+    width: 15%;
+    /* Ajuster la largeur de la quatrième colonne */
 }
 
 .structure-table th:nth-child(5),
 .structure-table td:nth-child(5) {
-    width: 15%; /* Ajuster la largeur de la cinquième colonne */
+    width: 15%;
+    /* Ajuster la largeur de la cinquième colonne */
 }
 
 .structure-table th:nth-child(6),
 .structure-table td:nth-child(6) {
-    width: 10%; /* Ajuster la largeur de la sixième colonne */
+    width: 10%;
+    /* Ajuster la largeur de la sixième colonne */
 }
 
 /* Réduire la hauteur des lignes */
 .structure-table tr {
-    height: 30px; /* Réduire la hauteur des lignes */
+    height: 30px;
+    /* Réduire la hauteur des lignes */
 }
 
 /* Ajuster la taille du modal */
 #structureTableModal .auth-content {
-    width: 90%; /* Réduire la largeur du modal */
-    max-width: 100%; /* Ajuster la largeur maximale */
-    padding: 20px; /* Réduire le padding */
+    width: 90%;
+    /* Réduire la largeur du modal */
+    max-width: 100%;
+    /* Ajuster la largeur maximale */
+    padding: 20px;
+    /* Réduire le padding */
 }

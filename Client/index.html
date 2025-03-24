@@ -38,11 +38,16 @@
             <li class="dropdown">
                 <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-                    <li id="structure"><a href="#structures"><i class="fa-solid fa-building"></i> Structure</a></li>
-                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> utilisateurs</a>
+                    <li id="structure"><a><i class="fa-solid fa-building"></i> Structure <i class="fas fa-caret-right"></i></a>
+                        <ul class="dropdown-menu">
+                            <li id="creation_structure"><a href="#structures"><i class="fa-solid fa-plus"></i> Création</a></li>
+                            <li id="liste_structure"><a href="#structure-liste"><i class="fa-solid fa-list"></i> Liste</a></li>
+                        </ul>
                     </li>
+                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> Utilisateurs</a></li>
                 </ul>
             </li>
+            
 
             <!-- <li><a href="#">Paramètres</a></li> -->
         </ul>
@@ -162,7 +167,7 @@
         </div>
     </section>
 
-    <div class="dashboard structure">
+    <div class="dashboard structure_creation">
         <form >
             <h1 id="structures">Structure</h1>
             <!-- chmap nom & préfix -->
@@ -243,10 +248,10 @@
             <button type="submit" id="btn_strtucture">Ajouter</button>
         </form>
     </div>
-    <!-- Section Structure -->
-    <div class="dashboard">
+    <!-- Table Structure -->
+    <div class="dashboard structure_liste" id="structure-liste">
         <div class="structure-table-container">
-            <h2>Gestion des structures</h2>
+            <h2 >Gestion des structures</h2>
             <table class="structure-table">
                 <thead>
                     <tr>

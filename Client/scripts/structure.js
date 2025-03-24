@@ -95,8 +95,9 @@ function populateStructureTable(structures) {
 }
 
 // Écouteur d'événement pour afficher la liste des structures
-document.getElementById('structure').addEventListener('click', async (e) => {
+document.getElementById('liste_structure').addEventListener('click', async (e) => {
     e.preventDefault();
+    document.querySelector('.structure_liste').classList.add("show");
     await loadStructures();
 });
 
@@ -114,7 +115,7 @@ document.getElementById('structure').addEventListener('click', async (e) => {
 //     }
 // });
 /*
-document.querySelector('.structure').addEventListener('submit', async (e) => {
+document.querySelector('#creation_structure').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
     const raison_sociale = document.getElementById("structureNom").value.trim();
     const prefixe = document.getElementById("structurePrefixe").value.trim().toUpperCase();
