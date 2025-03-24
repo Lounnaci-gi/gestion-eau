@@ -358,7 +358,8 @@ nav ul li a:hover {
     box-shadow: var(--box-shadow);
 }
 
-.dashboard h1 {
+.dashboard h1, 
+.dashboard h2 {
     font-size: 2em;
     margin-bottom: 20px;
     color: #333;

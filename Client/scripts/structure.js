@@ -57,8 +57,8 @@ async function loadStructures() {
         }
 
         // Afficher le modal
-        const structureTableModal = document.getElementById('structureTableModal');
-        structureTableModal.classList.add("show");
+        // const structureTableModal = document.getElementById('structureTableModal');
+        // structureTableModal.classList.add("show");
 
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
@@ -101,18 +101,18 @@ document.getElementById('structure').addEventListener('click', async (e) => {
 });
 
 // Fermer le modal
-document.querySelector('.close-auth').addEventListener('click', () => {
-    const structureTableModal = document.getElementById('structureTableModal');
-    structureTableModal.classList.remove("show");
-});
+// document.querySelector('.close-auth').addEventListener('click', () => {
+//     const structureTableModal = document.getElementById('structureTableModal');
+//     structureTableModal.classList.remove("show");
+// });
 
 // Fermer le modal en cliquant en dehors
-window.addEventListener('click', (e) => {
-    const structureTableModal = document.getElementById('structureTableModal');
-    if (e.target === structureTableModal) {
-        structureTableModal.classList.remove("show");
-    }
-});
+// window.addEventListener('click', (e) => {
+//     const structureTableModal = document.getElementById('structureTableModal');
+//     if (e.target === structureTableModal) {
+//         structureTableModal.classList.remove("show");
+//     }
+// });
 /*
 document.querySelector('.structure').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
