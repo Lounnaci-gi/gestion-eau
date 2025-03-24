@@ -56,10 +56,6 @@ async function loadStructures() {
             throw new Error("Format de données invalide");
         }
 
-        // Afficher le modal
-        // const structureTableModal = document.getElementById('structureTableModal');
-        // structureTableModal.classList.add("show");
-
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
@@ -92,15 +88,45 @@ function populateStructureTable(structures) {
             </td>
         </tr>
     `).join("");
+    // Ajouter une animation d'entrée aux lignes
+    const rows = structureTableBody.querySelectorAll('tr');
+    rows.forEach((row, index) => {
+        row.style.animationDelay = `${0.15 * index}s`;
+    });
+
 }
+
 
 // Écouteur d'événement pour afficher la liste des structures
 document.getElementById('liste_structure').addEventListener('click', async (e) => {
     e.preventDefault();
     document.querySelector('.structure_liste').classList.add("show");
-    // setActiveLink(this.querySelector('h2'));
     await loadStructures();
 });
+
+function filterStructures(searchText) {
+    const rows = document.querySelectorAll('#structureTableBody tr');
+    rows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        if (rowText.includes(searchText)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+setTimeout(() => {
+    const searchInput = document.getElementById('structureSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            filterStructures(this.value.toLowerCase());
+        });
+    }
+}, 100);
+
+
+
 
 // Fermer le modal
 // document.querySelector('.close-auth').addEventListener('click', () => {
@@ -194,3 +220,4 @@ document.querySelector('#creation_structure').addEventListener('submit', async (
     }
 });
 */
+
