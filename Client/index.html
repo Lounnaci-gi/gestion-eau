@@ -162,8 +162,8 @@
         </div>
     </section>
 
-    <div class="dashboard">
-        <form class="structure">
+    <div class="dashboard structure">
+        <form >
             <h1 id="structures">Structure</h1>
             <!-- chmap nom & préfix -->
             <div class="nom_préfix">
@@ -242,34 +242,31 @@
             <!-- Bouton de soumission -->
             <button type="submit" id="btn_strtucture">Ajouter</button>
         </form>
-        <!-- Section Structure -->
-    <div class="structure" id="structureTableModal">
-        <div class="auth-content">
-            <span class="close-auth">&times;</span>
-            <div class="structure-table-container">
-                <h2>Gestion des structures</h2>
-                <table class="structure-table">
-                    <thead>
-                        <tr>
-                            <th>Désignation</th>
-                            <th>Prefixe</th>
-                            <th>Adresse</th>
-                            <th>Telephone</th>
-                            <th>Fax</th>
-                            <th>Email</th>
-                            <th>Banque</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="structureTableBody">
-                        <!-- Les structure seront chargés ici -->
-                    </tbody>
-                </table>
-            </div>
+    </div>
+    <!-- Section Structure -->
+    <div class="dashboard">
+        <div class="structure-table-container">
+            <h2>Gestion des structures</h2>
+            <table class="structure-table">
+                <thead>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Prefixe</th>
+                        <th>Adresse</th>
+                        <th>Telephone</th>
+                        <th>Fax</th>
+                        <th>Email</th>
+                        <th>Banque</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="structureTableBody">
+                    <!-- Les structure seront chargés ici -->
+                </tbody>
+            </table>
         </div>
+
     </div>
-    </div>
-    
     <!-- Section Utilisateur -->
     <div class="auth-modal" id="userTableModal">
         <div class="auth-content">
