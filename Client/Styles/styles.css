@@ -80,7 +80,8 @@ nav ul li a:hover {
 .dropdown>a {
     display: flex;
     align-items: center;
-    gap: 5px; /* Réduit l'espace entre le texte et l'icône */
+    gap: 5px;
+    /* Réduit l'espace entre le texte et l'icône */
 }
 
 /* 📌 Icône flèche animée */
@@ -92,11 +93,14 @@ nav ul li a:hover {
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%; /* Menu sous l'élément parent */
+    top: 100%;
+    /* Menu sous l'élément parent */
     left: 0;
-    min-width: 180px; /* Légèrement réduit pour un look plus compact */
+    min-width: 180px;
+    /* Légèrement réduit pour un look plus compact */
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus subtile */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    /* Ombre plus subtile */
     border-radius: var(--border-radius);
     list-style: none;
     padding: 5px 0;
@@ -115,16 +119,19 @@ nav ul li a:hover {
     align-items: center;
     color: white;
     text-decoration: none;
-    padding: 10px 12px; /* Réduit le padding pour un look plus compact */
+    padding: 10px 12px;
+    /* Réduit le padding pour un look plus compact */
     transition: all 0.2s ease;
 }
 
 .dropdown-menu li a i {
-    margin: 0 6px 0 0; /* Espace réduit entre les icônes et le texte */
+    margin: 0 6px 0 0;
+    /* Espace réduit entre les icônes et le texte */
 }
 
 .dropdown-menu li a i.fa-caret-right {
-    margin: 0 0 0 auto; /* Place la flèche à droite */
+    margin: 0 0 0 auto;
+    /* Place la flèche à droite */
 }
 
 /* 📌 Style pour les sous-menus de deuxième niveau */
@@ -142,7 +149,8 @@ nav ul li a:hover {
 /* Animation de la flèche secondaire */
 .dropdown-menu li>a>.fa-caret-right {
     transition: transform 0.3s ease;
-    font-size: 0.85em; /* Icône légèrement plus petite */
+    font-size: 0.85em;
+    /* Icône légèrement plus petite */
 }
 
 .dropdown-menu li:hover>a>.fa-caret-right {
@@ -151,19 +159,22 @@ nav ul li a:hover {
 
 /* 📌 Effet au survol */
 .dropdown-menu li:hover {
-    background: rgba(255, 255, 255, 0.05); /* Fond subtil au survol */
+    background: rgba(255, 255, 255, 0.05);
+    /* Fond subtil au survol */
 }
 
 .dropdown-menu li:hover a {
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
-    transform: translateX(3px); /* Décalage plus subtil */
+    transform: translateX(3px);
+    /* Décalage plus subtil */
     font-weight: 500;
 }
 
 /* 📌 Affichage du menu au survol */
 .dropdown:hover>.dropdown-menu {
     display: block;
-    animation: fadeIn 0.2s ease-in-out; /* Animation d'apparition */
+    animation: fadeIn 0.2s ease-in-out;
+    /* Animation d'apparition */
 }
 
 /* 📌 Animation de la flèche */
@@ -177,11 +188,13 @@ nav ul li a:hover {
         opacity: 0;
         transform: translateY(-5px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
+
 /* 📌 Ajustement pour mobile */
 @media (max-width: 768px) {
     nav ul {
@@ -942,6 +955,7 @@ nav ul li a:hover {
 
 /* Styles pour le formulaire de création des structures */
 
+
 .structure_creation,
 .structure_liste {
     display: none;
@@ -956,10 +970,8 @@ nav ul li a:hover {
     /* Bordure subtile */
 }
 
-.structure_creation.show {
-    display: block;
-}
 
+.structure_creation.show,
 .structure_liste.show {
     display: block;
 }
@@ -1118,26 +1130,27 @@ nav ul li a:hover {
 /* Animation pour les éléments qui apparaissent */
 @keyframes fadeInUp {
     from {
-      opacity: 0;
-      transform: translateY(20px);
+        opacity: 0;
+        transform: translateY(20px);
     }
+
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
-  
-  /* Container principal */
-  .structure-table-container {
+}
+
+/* Container principal */
+.structure-table-container {
     padding: 24px;
     background-color: #f8f9fa;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     animation: fadeInUp 0.4s ease;
-  }
-  
-  /* Styles pour le tableau */
-  .structure-table {
+}
+
+/* Styles pour le tableau */
+.structure-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -1146,16 +1159,16 @@ nav ul li a:hover {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-  
-  .structure-table th, 
-  .structure-table td {
+}
+
+.structure-table th,
+.structure-table td {
     padding: 12px 16px;
     font-size: 0.9rem;
     text-align: left;
-  }
-  
-  .structure-table th {
+}
+
+.structure-table th {
     background-color: var(--primary-color);
     color: white;
     font-weight: 600;
@@ -1165,35 +1178,35 @@ nav ul li a:hover {
     position: sticky;
     top: 0;
     z-index: 10;
-  }
-  
-  .structure-table tr:nth-child(even) {
+}
+
+.structure-table tr:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.02);
-  }
-  
-  .structure-table tbody tr {
+}
+
+.structure-table tbody tr {
     transition: all 0.2s ease;
     border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .structure-table tbody tr:last-child {
+}
+
+.structure-table tbody tr:last-child {
     border-bottom: none;
-  }
-  
-  .structure-table tbody tr:hover {
+}
+
+.structure-table tbody tr:hover {
     background-color: rgba(var(--primary-color-rgb), 0.05);
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-  
-  /* Boutons d'action */
-  .action-buttons {
+}
+
+/* Boutons d'action */
+.action-buttons {
     display: flex;
     gap: 8px;
     justify-content: flex-end;
-  }
-  
-  .action-buttons button {
+}
+
+.action-buttons button {
     border: none;
     padding: 6px;
     width: 32px;
@@ -1205,92 +1218,119 @@ nav ul li a:hover {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .action-buttons button i {
+}
+
+.action-buttons button i {
     font-size: 0.85rem;
-  }
-  
-  .edit-btn {
+}
+
+.edit-btn {
     background-color: #4CAF50;
     color: white;
-  }
-  
-  .delete-btn {
+}
+
+.delete-btn {
     background-color: #f44336;
     color: white;
-  }
-  
-  .edit-btn:hover {
+}
+
+.edit-btn:hover {
     background-color: #3d8b40;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
-  }
-  
-  .delete-btn:hover {
+}
+
+.delete-btn:hover {
     background-color: #d32f2f;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
-  }
-  
-  /* Styles responsifs */
-  @media (max-width: 1024px) {
+}
+
+/* Styles responsifs */
+@media (max-width: 1024px) {
     .structure-table {
-      font-size: 0.85rem;
+        font-size: 0.85rem;
     }
-    
-    .structure-table th, 
+
+    .structure-table th,
     .structure-table td {
-      padding: 10px 12px;
+        padding: 10px 12px;
     }
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .structure-table-container {
-      padding: 16px;
-      overflow-x: auto;
+        padding: 16px;
+        overflow-x: auto;
     }
-    
+
     .structure-table {
-      min-width: 700px; /* Assure que le tableau ne se compresse pas trop */
+        min-width: 700px;
+        /* Assure que le tableau ne se compresse pas trop */
     }
-  }
-  
-  /* Animation lors du chargement des données */
-  .structure-table tbody tr {
+}
+
+/* Animation lors du chargement des données */
+.structure-table tbody tr {
     animation: fadeInUp 0.3s ease;
     animation-fill-mode: both;
-  }
-  
-  .structure-table tbody tr:nth-child(2) { animation-delay: 0.05s; }
-  .structure-table tbody tr:nth-child(3) { animation-delay: 0.1s; }
-  .structure-table tbody tr:nth-child(4) { animation-delay: 0.15s; }
-  .structure-table tbody tr:nth-child(5) { animation-delay: 0.2s; }
-  .structure-table tbody tr:nth-child(6) { animation-delay: 0.25s; }
-  .structure-table tbody tr:nth-child(7) { animation-delay: 0.3s; }
-  .structure-table tbody tr:nth-child(8) { animation-delay: 0.35s; }
-  .structure-table tbody tr:nth-child(9) { animation-delay: 0.4s; }
-  .structure-table tbody tr:nth-child(10) { animation-delay: 0.45s; }
-  
-  /* Styles pour les cellules vides/non renseignées */
-  .structure-table td:empty::before,
-  .structure-table td:contains("Non renseigné") {
+}
+
+.structure-table tbody tr:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.structure-table tbody tr:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.structure-table tbody tr:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+.structure-table tbody tr:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+.structure-table tbody tr:nth-child(6) {
+    animation-delay: 0.25s;
+}
+
+.structure-table tbody tr:nth-child(7) {
+    animation-delay: 0.3s;
+}
+
+.structure-table tbody tr:nth-child(8) {
+    animation-delay: 0.35s;
+}
+
+.structure-table tbody tr:nth-child(9) {
+    animation-delay: 0.4s;
+}
+
+.structure-table tbody tr:nth-child(10) {
+    animation-delay: 0.45s;
+}
+
+/* Styles pour les cellules vides/non renseignées */
+.structure-table td:empty::before,
+.structure-table td:contains("Non renseigné") {
     content: "Non renseigné";
     color: #aaa;
     font-style: italic;
-  }
-  
-  /* Style pour la mise en page de la section de structures */
-  .structures.show, 
-  #structureTableModal.show {
+}
+
+/* Style pour la mise en page de la section de structures */
+.structures.show,
+#structureTableModal.show {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
     animation: fadeInUp 0.4s ease;
-  }
-  
-  #structureTableModal .auth-content {
+}
+
+#structureTableModal .auth-content {
     background: white;
     border-radius: 12px;
     width: 95%;
@@ -1299,27 +1339,35 @@ nav ul li a:hover {
     overflow-y: auto;
     max-height: 90vh;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Ajout d'une barre de recherche moderne */
-  .structure-search {
+}
+
+/* Ajout d'une barre de recherche moderne */
+.structure-create{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.structure-search {
     position: relative;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 20px;
-  }
-  .structure-search .close-auth1 {
+}
+
+.structure-search .close-auth1 {
     font-size: 1.6em;
     color: #666;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
+
 .structure-search .close-auth1:hover {
     color: black;
 }
-  
-  .structure-search input {
+
+.structure-search input {
     width: 90%;
     padding: 12px 20px;
     padding-left: 40px;
@@ -1328,65 +1376,65 @@ nav ul li a:hover {
     font-size: 0.9rem;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  }
+}
 
-  
-  .structure-search input:focus {
+
+.structure-search input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 2px 12px rgba(var(--primary-color-rgb), 0.15);
     outline: none;
-  }
-  
-  .structure-search i {
+}
+
+.structure-search i {
     position: absolute;
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #aaa;
-  }
+}
 
-  /* Styles pour les états vides et les animations */
+/* Styles pour les états vides et les animations */
 
 /* État vide du tableau */
 .empty-table {
     padding: 40px !important;
     text-align: center;
-  }
-  
-  .empty-state {
+}
+
+.empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 30px;
     color: #888;
-  }
-  
-  .empty-state i {
+}
+
+.empty-state i {
     font-size: 2.5rem;
     margin-bottom: 15px;
     color: #ccc;
-  }
-  
-  .empty-state p {
+}
+
+.empty-state p {
     font-size: 1rem;
     margin: 0;
-  }
-  
-  /* Style pour valeurs non renseignées */
-  .empty-value {
+}
+
+/* Style pour valeurs non renseignées */
+.empty-value {
     color: #aaa;
     font-style: italic;
     font-size: 0.9em;
-  }
-  
-  /* Animations au survol des lignes */
-  .structure-table tbody tr {
+}
+
+/* Animations au survol des lignes */
+.structure-table tbody tr {
     position: relative;
     overflow: hidden;
-  }
-  
-  .structure-table tbody tr::after {
+}
+
+.structure-table tbody tr::after {
     content: '';
     position: absolute;
     left: 0;
@@ -1395,20 +1443,20 @@ nav ul li a:hover {
     width: 0;
     background: linear-gradient(90deg, var(--primary-color), transparent);
     transition: width 0.3s ease;
-  }
-  
-  .structure-table tbody tr:hover::after {
+}
+
+.structure-table tbody tr:hover::after {
     width: 100%;
-  }
-  
-  /* Styles pour les boutons d'exportation/actions */
-  .table-actions {
+}
+
+/* Styles pour les boutons d'exportation/actions */
+.table-actions {
     display: flex;
     gap: 10px;
     margin-left: auto;
-  }
-  
-  .export-btn {
+}
+
+.export-btn {
     background: linear-gradient(135deg, #4CAF50, #2E7D32);
     color: white;
     border: none;
@@ -1422,14 +1470,14 @@ nav ul li a:hover {
     font-size: 0.85rem;
     font-weight: 500;
     box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
-  }
-  
-  .export-btn:hover {
+}
+
+.export-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
-  }
-  
-  .refresh-btn {
+}
+
+.refresh-btn {
     background: linear-gradient(135deg, #2196F3, #0D47A1);
     color: white;
     border: none;
@@ -1442,24 +1490,29 @@ nav ul li a:hover {
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 2px 6px rgba(33, 150, 243, 0.3);
-  }
-  
-  .refresh-btn:hover {
+}
+
+.refresh-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
-  }
-  
-  .refresh-btn i {
+}
+
+.refresh-btn i {
     font-size: 0.9rem;
-  }
-  
-  /* Animation de chargement */
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Ajustement des transitions */
-  .structure-table tbody tr {
+}
+
+/* Animation de chargement */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Ajustement des transitions */
+.structure-table tbody tr {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-  }
+}

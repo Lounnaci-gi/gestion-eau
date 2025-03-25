@@ -40,6 +40,7 @@ restrictToNumbers(document.getElementById('structureComptePostal'));
 
 // Fonction pour charger et afficher la liste des structures
 async function loadStructures() {
+   
     try {
         const response = await fetch("http://localhost:3000/liste_structure", {
             method: "GET",
@@ -55,7 +56,6 @@ async function loadStructures() {
         } else {
             throw new Error("Format de données invalide");
         }
-
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
@@ -104,7 +104,7 @@ document.getElementById('liste_structure').addEventListener('click', async (e) =
     listeSection.classList.add("show");
     await loadStructures();
     listeSection.scrollIntoView({ behavior: 'smooth' });
-    
+
 });
 
 function filterStructures(searchText) {
@@ -129,26 +129,19 @@ setTimeout(() => {
 }, 100);
 
 
-document.querySelector('.close-auth1').addEventListener('click',()=>{
+document.querySelector('.close-auth1').addEventListener('click', () => {
     const listeSection = document.querySelector('.structure_liste');
     listeSection.classList.remove("show");
 });
 
-// Fermer le modal
-// document.querySelector('.close-auth').addEventListener('click', () => {
-//     const structureTableModal = document.getElementById('structureTableModal');
-//     structureTableModal.classList.remove("show");
-// });
 
-// Fermer le modal en cliquant en dehors
-// window.addEventListener('click', (e) => {
-//     const structureTableModal = document.getElementById('structureTableModal');
-//     if (e.target === structureTableModal) {
-//         structureTableModal.classList.remove("show");
-//     }
-// });
-/*
-document.querySelector('#creation_structure').addEventListener('submit', async (e) => {
+document.querySelector('#creation_structure').addEventListener('click', () => {
+    const creationSection = document.querySelector('.structure_creation');
+    creationSection.classList.add("show");
+    creationSection.scrollIntoView({ behavior: 'smooth' });
+});
+
+document.querySelector('#cc').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
     const raison_sociale = document.getElementById("structureNom").value.trim();
     const prefixe = document.getElementById("structurePrefixe").value.trim().toUpperCase();
@@ -164,6 +157,7 @@ document.querySelector('#creation_structure').addEventListener('submit', async (
         showAlert("Erreur", "Veuillez remplir tous les champs.", "warning");
         return;
     }
+
 
     // 🔥 Demander confirmation avant d'envoyer les données
     const confirmation = await Swal.fire({
@@ -225,5 +219,5 @@ document.querySelector('#creation_structure').addEventListener('submit', async (
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
 });
-*/
+
 
