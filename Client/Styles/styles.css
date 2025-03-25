@@ -1305,10 +1305,22 @@ nav ul li a:hover {
   .structure-search {
     position: relative;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
+  .structure-search .close-auth1 {
+    font-size: 1.6em;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.structure-search .close-auth1:hover {
+    color: black;
+}
   
   .structure-search input {
-    width: 95%;
+    width: 90%;
     padding: 12px 20px;
     padding-left: 40px;
     border: 1px solid #eaeaea;
@@ -1317,6 +1329,7 @@ nav ul li a:hover {
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
+
   
   .structure-search input:focus {
     border-color: var(--primary-color);

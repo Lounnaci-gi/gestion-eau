@@ -100,8 +100,11 @@ function populateStructureTable(structures) {
 // Écouteur d'événement pour afficher la liste des structures
 document.getElementById('liste_structure').addEventListener('click', async (e) => {
     e.preventDefault();
-    document.querySelector('.structure_liste').classList.add("show");
+    const listeSection = document.querySelector('.structure_liste');
+    listeSection.classList.add("show");
     await loadStructures();
+    listeSection.scrollIntoView({ behavior: 'smooth' });
+    
 });
 
 function filterStructures(searchText) {
@@ -126,7 +129,10 @@ setTimeout(() => {
 }, 100);
 
 
-
+document.querySelector('.close-auth1').addEventListener('click',()=>{
+    const listeSection = document.querySelector('.structure_liste');
+    listeSection.classList.remove("show");
+});
 
 // Fermer le modal
 // document.querySelector('.close-auth').addEventListener('click', () => {
