@@ -128,10 +128,16 @@ setTimeout(() => {
     }
 }, 100);
 
+const closeButtons = document.querySelectorAll(".close-auth1");
 
-document.querySelector('.close-auth1').addEventListener('click', () => {
-    const listeSection = document.querySelector('.structure_liste');
-    listeSection.classList.remove("show");
+closeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        // On cherche le conteneur parent qui a la classe "structure_liste" ou "structure_creation"
+        const container = button.closest(".structure_liste") || button.closest(".structure_creation");
+        if (container && container.classList.contains("show")) {
+            container.classList.remove("show");
+        }
+    });
 });
 
 
@@ -219,5 +225,3 @@ document.querySelector('#cc').addEventListener('submit', async (e) => {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
 });
-
-
