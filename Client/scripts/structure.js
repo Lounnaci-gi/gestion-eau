@@ -227,7 +227,7 @@ document.querySelector('#create_structure').addEventListener('submit', async (e)
 });
 
 // Modifier la fonction editUser
-function editStructure(userId) {
+function editStructure(structureid) {
     try {
         // Afficher un loader pendant le chargement des données
         Swal.fire({
@@ -239,8 +239,8 @@ function editStructure(userId) {
             },
         });
 
-        // Récupérer les détails de l'utilisateur
-        fetch(`http://localhost:3000/liste/${userId}`, {
+        // Récupérer les détails de structure
+        fetch(`http://localhost:3000/liste/${structureid}`, {
             method: 'GET',
             credentials: 'include'
         })
@@ -252,10 +252,16 @@ function editStructure(userId) {
             Swal.close();
             
             // Remplir le formulaire avec les données de l'utilisateur
-            document.getElementById('editUserId').value = userId;
-            document.getElementById('editNomComplet').value = data.data.nomComplet;
-            document.getElementById('editEmail').value = data.data.email;
-            document.getElementById('editRole').value = data.data.role;
+            document.getElementById('editUserId').value = structureid;
+            document.getElementById('structureNom').value = data.data.raison_sociale;
+            document.getElementById('structurePrefixe').value = data.data.prefixe;
+            document.getElementById('structureTelephone').value = data.data.telephone;
+            document.getElementById('structureFax').value = data.data.fax;
+            document.getElementById('structureEmail').value = data.data.email;
+            document.getElementById('structureAdresse').value = data.data.adresse;
+            document.getElementById('structureCompteBancaire').value = data.data.compte_bancaire;
+            document.getElementById('nombanque').value = data.data.nom_compte_bancaire;
+            document.getElementById('structureComptePostal').value = data.data.compte_postal;
             
             // Afficher le modal d'édition
             document.getElementById('editUserModal').classList.add('show');
