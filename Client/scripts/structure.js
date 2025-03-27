@@ -225,3 +225,46 @@ document.querySelector('#create_structure').addEventListener('submit', async (e)
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
 });
+
+// Modifier la fonction editUser
+function editStructure(userId) {
+    try {
+        // Afficher un loader pendant le chargement des données
+        Swal.fire({
+            title: "Chargement des données...",
+            html: "Veuillez patienter...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        // Récupérer les détails de l'utilisateur
+        fetch(`http://localhost:3000/liste/${userId}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Échec de la récupération des données");
+            return response.json();
+        })
+        .then(data => {
+            Swal.close();
+            
+            // Remplir le formulaire avec les données de l'utilisateur
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editNomComplet').value = data.data.nomComplet;
+            document.getElementById('editEmail').value = data.data.email;
+            document.getElementById('editRole').value = data.data.role;
+            
+            // Afficher le modal d'édition
+            document.getElementById('editUserModal').classList.add('show');
+        })
+        .catch(error => {
+            Swal.close();
+            showAlert("Erreur", error.message, "error");
+        });
+    } catch (error) {
+        showAlert("Erreur", "Une erreur est survenue", "error");
+    }
+}
