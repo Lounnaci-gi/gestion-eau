@@ -1,20 +1,40 @@
 function formatPhoneInput(inputElement) {
     inputElement.addEventListener('input', function (e) {
-        let input = e.target.value.replace(/\D/g, '');
+        let input = e.target.value.replace(/\D/g, ''); // Supprimer tous les caractères non numériques
         let formattedInput = '';
+
         if (input.length > 0) {
-            formattedInput += input.substring(0, 4);
-            if (input.length > 4) {
-                formattedInput += ' ' + input.substring(4, 6);
-            }
-            if (input.length > 6) {
-                formattedInput += ' ' + input.substring(6, 8);
-            }
-            if (input.length > 8) {
-                formattedInput += ' ' + input.substring(8, 10);
+            if (input.startsWith('02') || input.startsWith('03') || input.startsWith('04')) {
+                // Format pour téléphone fixe : 025 77 66 13
+                formattedInput += input.substring(0, 3); // Les 3 premiers chiffres
+                if (input.length > 3) {
+                    formattedInput += ' ' + input.substring(3, 5); // Les 2 chiffres suivants
+                }
+                if (input.length > 5) {
+                    formattedInput += ' ' + input.substring(5, 7); // Les 2 chiffres suivants
+                }
+                if (input.length > 7) {
+                    formattedInput += ' ' + input.substring(7, 9); // Les 2 derniers chiffres
+                }
+            } else if (input.startsWith('05') || input.startsWith('06') || input.startsWith('07')) {
+                // Format pour téléphone mobile : 0563 97 94 46 (ou 0663 97 94 46, ou 0763 97 94 46)
+                formattedInput += input.substring(0, 4); // Les 4 premiers chiffres
+                if (input.length > 4) {
+                    formattedInput += ' ' + input.substring(4, 6); // Les 2 chiffres suivants
+                }
+                if (input.length > 6) {
+                    formattedInput += ' ' + input.substring(6, 8); // Les 2 chiffres suivants
+                }
+                if (input.length > 8) {
+                    formattedInput += ' ' + input.substring(8, 10); // Les 2 derniers chiffres
+                }
+            } else {
+                // Si le numéro ne correspond à aucun des formats attendus, ne pas formater
+                formattedInput = input;
             }
         }
-        e.target.value = formattedInput;
+
+        e.target.value = formattedInput; // Appliquer le format au champ
     });
 }
 
