@@ -1,9 +1,7 @@
-
 function formatPhoneInput(inputElement) {
     inputElement.addEventListener('input', function (e) {
         let input = e.target.value.replace(/\D/g, '');
         let formattedInput = '';
-
         if (input.length > 0) {
             formattedInput += input.substring(0, 4);
             if (input.length > 4) {
@@ -16,7 +14,6 @@ function formatPhoneInput(inputElement) {
                 formattedInput += ' ' + input.substring(8, 10);
             }
         }
-
         e.target.value = formattedInput;
     });
 }
@@ -40,7 +37,7 @@ restrictToNumbers(document.getElementById('structureComptePostal'));
 
 // Fonction pour charger et afficher la liste des structures
 async function loadStructures() {
-   
+
     try {
         const response = await fetch("http://localhost:3000/liste_structure", {
             method: "GET",
@@ -68,7 +65,6 @@ function populateStructureTable(structures) {
         console.error("Expected an array of structures, got:", structures);
         return;
     }
-
     structureTableBody.innerHTML = structures.map(structure => `
         <tr>
             <td>${structure.raison_sociale || "Non renseigné"}</td>
@@ -88,12 +84,10 @@ function populateStructureTable(structures) {
             </td>
         </tr>
     `).join("");
-    // Ajouter une animation d'entrée aux lignes
     const rows = structureTableBody.querySelectorAll('tr');
     rows.forEach((row, index) => {
         row.style.animationDelay = `${0.15 * index}s`;
     });
-
 }
 
 
@@ -149,6 +143,7 @@ document.querySelector('#creation_structure').addEventListener('click', () => {
 
 document.querySelector('#create_structure').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
+
     const raison_sociale = document.getElementById("structureNom").value.trim();
     const prefixe = document.getElementById("structurePrefixe").value.trim().toUpperCase();
     const telephone = document.getElementById("structureTelephone").value.trim();
@@ -164,11 +159,10 @@ document.querySelector('#create_structure').addEventListener('submit', async (e)
         return;
     }
 
-
-    // 🔥 Demander confirmation avant d'envoyer les données
+    // Demander confirmation avant d'envoyer les données
     const confirmation = await Swal.fire({
         title: "Confirmer l'enregistrement ?",
-        text: "Voulez-vous vraiment ajouter cette structure ?",
+        text: "Voulez-vous vraiment enregistrer cette structure ?",
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -204,8 +198,18 @@ document.querySelector('#create_structure').addEventListener('submit', async (e)
     };
 
     try {
-        const response = await fetch("http://localhost:3000/add_structure", {
-            method: "POST",
+        let url, methode;
+
+        if (choix === "creation_structure") {
+            url = "http://localhost:3000/add_structure";
+            methode = "POST";
+        } else if (choix === "update_structure") {
+            url = `http://localhost:3000/liste_structure/${structure_id}`;
+            methode = "PUT";
+        }
+
+        const response = await fetch(url, {
+            method: methode,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
             credentials: 'include',
@@ -218,14 +222,23 @@ document.querySelector('#create_structure').addEventListener('submit', async (e)
 
         Swal.close();
         showAlert("Succès", "Enregistrement réussi !", "success");
-        const form = document.querySelector('.structure');
+        choix = "creation_structure";
+
+        // Réinitialiser le formulaire
+        const form = document.querySelector('#create_structure');
         form.reset();
 
+        // Recharger le tableau des structures
+        await loadStructures();
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
 });
 
+let choix = "creation_structure";
+let url;
+let methode;
+let structure_id;
 // Modifier la fonction editUser
 function editStructure(structureid) {
     try {
@@ -244,32 +257,33 @@ function editStructure(structureid) {
             method: 'GET',
             credentials: 'include'
         })
-        .then(response => {
-            if (!response.ok) throw new Error("Échec de la récupération des données");
-            return response.json();
-        })
-        .then(data => {
-            Swal.close();
-            
-            // Remplir le formulaire avec les données de l'utilisateur
-            document.getElementById('editUserId').value = structureid;
-            document.getElementById('structureNom').value = data.data.raison_sociale;
-            document.getElementById('structurePrefixe').value = data.data.prefixe;
-            document.getElementById('structureTelephone').value = data.data.telephone;
-            document.getElementById('structureFax').value = data.data.fax;
-            document.getElementById('structureEmail').value = data.data.email;
-            document.getElementById('structureAdresse').value = data.data.adresse;
-            document.getElementById('structureCompteBancaire').value = data.data.compte_bancaire;
-            document.getElementById('nombanque').value = data.data.nom_compte_bancaire;
-            document.getElementById('structureComptePostal').value = data.data.compte_postal;
-            
-            // Afficher le modal d'édition
-            document.querySelector('.structure_creation').classList.add('show');
-        })
-        .catch(error => {
-            Swal.close();
-            showAlert("Erreur", error.message, "error");
-        });
+            .then(response => {
+                if (!response.ok) throw new Error("Échec de la récupération des données");
+                return response.json();
+            })
+            .then(data => {
+                Swal.close();
+                choix = 'update_structure';
+                structure_id=structureid;
+                // Remplir le formulaire avec les données de l'utilisateur
+                document.getElementById('editUserId').value = structureid;
+                document.getElementById('structureNom').value = data.data.raison_sociale;
+                document.getElementById('structurePrefixe').value = data.data.prefixe;
+                document.getElementById('structureTelephone').value = data.data.telephone;
+                document.getElementById('structureFax').value = data.data.fax;
+                document.getElementById('structureEmail').value = data.data.email;
+                document.getElementById('structureAdresse').value = data.data.adresse;
+                document.getElementById('structureCompteBancaire').value = data.data.compte_bancaire;
+                document.getElementById('nombanque').value = data.data.nom_compte_bancaire;
+                document.getElementById('structureComptePostal').value = data.data.compte_postal;
+
+                // Afficher le modal d'édition
+                document.querySelector('.structure_creation').classList.add('show');
+            })
+            .catch(error => {
+                Swal.close();
+                showAlert("Erreur", error.message, "error");
+            });
     } catch (error) {
         showAlert("Erreur", "Une erreur est survenue", "error");
     }

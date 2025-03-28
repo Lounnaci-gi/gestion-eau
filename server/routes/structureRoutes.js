@@ -5,7 +5,7 @@ const {add_structure,liste_structure,get_structure,update_structure}=require('..
 
 
 //Routes ajouter structure
-router.post('/add_structure',emailValidation,authenticate, add_structure);
+router.post('/add_structure',emailValidation, add_structure);
 
 //Routes pour afficher la liste des structure
 router.get('/liste_structure',liste_structure);
