@@ -87,9 +87,9 @@ const authorize = (roles = []) => {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const emailValidation = [
     body("email")
-    .notEmpty().withMessage("Lemail est obligatoire.")
-    .isEmail().withMessage("L'email est invalide.")
-    .matches(emailRegex).withMessage("L'email est invalide."), 
+        .notEmpty().withMessage("Lemail est obligatoire.")
+        .isEmail().withMessage("L'email est invalide.")
+        .matches(emailRegex).withMessage("L'email est invalide."),
 
     // Ajoutez d'autres validations ici si nécessaire
 ];
@@ -108,6 +108,16 @@ const phoneValidation = [
                 throw new Error("Le numéro de téléphone est invalide. Format attendu : 0563 97 94 46 ou 025 77 66 13.");
             }
             return true;
-        })
+        }),
+    body("fax")
+        .optional() // Le fax n'est pas obligatoire
+        .trim()
+        .custom((value) => {
+            if (value && !phoneRegexFixe.test(value)) { // Le fax doit être un numéro fixe uniquement
+                throw new Error("Le numéro de fax est invalide. Format attendu : 025 77 66 13.");
+            }
+            return true;
+        }),
+
 ];
-module.exports = { validation, loginLimiter, authenticate, authorize,emailValidation,phoneValidation };
+module.exports = { validation, loginLimiter, authenticate, authorize, emailValidation, phoneValidation };
