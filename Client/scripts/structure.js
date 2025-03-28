@@ -240,7 +240,7 @@ function editStructure(structureid) {
         });
 
         // Récupérer les détails de structure
-        fetch(`http://localhost:3000/liste/${structureid}`, {
+        fetch(`http://localhost:3000/liste_structure/${structureid}`, {
             method: 'GET',
             credentials: 'include'
         })
@@ -264,7 +264,7 @@ function editStructure(structureid) {
             document.getElementById('structureComptePostal').value = data.data.compte_postal;
             
             // Afficher le modal d'édition
-            document.getElementById('editUserModal').classList.add('show');
+            document.querySelector('.structure_creation').classList.add('show');
         })
         .catch(error => {
             Swal.close();

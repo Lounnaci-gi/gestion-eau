@@ -60,3 +60,70 @@ module.exports.liste_structure = async (req, res, next) => {
         next(err)
     }
 }
+
+// Route pour récupérer la structure par ID
+module.exports.get_structure = async (req, res, next) => {
+    try {
+        const structureId = req.params.id;
+        const structure = await Structure.findById(structureId);
+
+        if (!structure) {
+            return res.status(404).json({
+                success: false,
+                message: "Structure non trouvé"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: structure
+        });
+    } catch (error) {
+        next(error);
+
+    }
+
+}
+
+// Mettre à jour une structure
+module.exports.update_structure = async (req, res) => {
+    try {
+        const structureId = req.params.id;
+        const { raison_sociale,prefixe,telephone,fax,email,adresse,compte_bancaire,nom_compte_bancaire,compte_postal } = req.body;
+
+        // Vérifier si l'email existe déjà pour un autre utilisateur
+        const existingStructure = await Structure.findOne({ raison_sociale, _id: { $ne: structureId } });
+        if (existingStructure) {
+            return res.status(400).json({
+                success: false,
+                message: "Cette structure est déjà"
+            });
+        }
+
+        // Trouver et mettre à jour l'utilisateur
+        const updateStructure = await Structure.findByIdAndUpdate(
+            structureId,
+            { raison_sociale,prefixe,telephone,fax,email,adresse,compte_bancaire,nom_compte_bancaire,compte_postal},
+            { new: true, runValidators: true }
+        );
+
+        if (!updateStructure) {
+            return res.status(404).json({
+                success: false,
+                message: "Structure non trouvé"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Structure mis à jour avec succès",
+            data: updateStructure
+        });
+    } catch (error) {
+        console.error("Erreur mise a jour structure:", error);
+        res.status(500).json({
+            success: false,
+            message: "Erreur serveur"
+        });
+    }
+};
