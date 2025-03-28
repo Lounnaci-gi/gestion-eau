@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { authenticate, authorize ,emailValidation} = require('../controllers/validator');
+const { authenticate, authorize ,emailValidation,phoneValidation} = require('../controllers/validator');
 const {add_structure,liste_structure,get_structure,update_structure}=require('../controllers/structurecontroller');
 
 
 //Routes ajouter structure
-router.post('/add_structure', emailValidation, add_structure);
+router.post('/add_structure', emailValidation,phoneValidation, add_structure);
 
 //Routes pour afficher la liste des structure
 router.get('/liste_structure',liste_structure);

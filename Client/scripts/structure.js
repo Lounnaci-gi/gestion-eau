@@ -226,6 +226,7 @@ document.getElementById('create_structure').addEventListener('submit', async (e)
         } else if (choix === "update_structure") {
             url = `http://localhost:3000/liste_structure/${structure_id}`;
             methode = "PUT";
+            document.querySelector('.structure_creation').classList.remove('show');
         }
 
         const response = await fetch(url, {
@@ -237,6 +238,14 @@ document.getElementById('create_structure').addEventListener('submit', async (e)
 
         if (!response.ok) {
             const errorData = await response.json();
+        
+            // ✅ Vérifier si la réponse contient un tableau `errors`
+            if (errorData.errors && Array.isArray(errorData.errors)) {
+                const errorMessages = errorData.errors.map(err => err.msg).join("\n");
+                throw new Error(errorMessages);
+            }
+        
+            // 🔴 Sinon, afficher un message générique
             throw new Error(errorData.message || "Erreur lors de l'enregistrement.");
         }
 

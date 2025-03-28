@@ -94,5 +94,20 @@ const emailValidation = [
     // Ajoutez d'autres validations ici si nécessaire
 ];
 
+// const phoneRegexMobile = /^0[6-7]\d{3} \d{2} \d{2} \d{2}$/; // Format mobile : 0663 97 94 46
 
-module.exports = { validation, loginLimiter, authenticate, authorize,emailValidation };
+const phoneRegexFixe = /^0[2-4]\d{2} \d{2} \d{2} \d{2}$/;  // Ex: 025 77 66 13
+const phoneRegexMobile = /^0[5-7]\d{2} \d{2} \d{2} \d{2}$/; // Ex: 0663 97 94 46
+
+const phoneValidation = [
+    body("telephone")
+        .trim()
+        .notEmpty().withMessage("Le numéro de téléphone est obligatoire.")
+        .custom((value) => {
+            if (!phoneRegexFixe.test(value) && !phoneRegexMobile.test(value)) {
+                throw new Error("Le numéro de téléphone est invalide. Format attendu : 0563 97 94 46 ou 025 77 66 13.");
+            }
+            return true;
+        })
+];
+module.exports = { validation, loginLimiter, authenticate, authorize,emailValidation,phoneValidation };

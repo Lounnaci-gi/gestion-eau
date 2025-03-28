@@ -3,8 +3,14 @@ const { Client, User, Article, Structure } = require("../models/model");
 const { validationResult } = require("express-validator");
 
 
+
 // Ajouter nouvelle structure
 module.exports.add_structure = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log("Erreurs détectées :", errors.array());  // 🔹 Affiche bien les erreurs dans la console
+        return res.status(400).json({ errors: errors.array() });  // ❌ STOP : Retourne l'erreur, ne continue pas
+    }
     try {
         const data = { raison_sociale, prefixe, telephone, fax, email, adresse, compte_bancaire, nom_compte_bancaire, compte_postal } = req.body;
 
@@ -90,7 +96,7 @@ module.exports.get_structure = async (req, res, next) => {
 module.exports.update_structure = async (req, res) => {
     try {
         const structureId = req.params.id;
-        const { raison_sociale,prefixe,telephone,fax,email,adresse,compte_bancaire,nom_compte_bancaire,compte_postal } = req.body;
+        const { raison_sociale, prefixe, telephone, fax, email, adresse, compte_bancaire, nom_compte_bancaire, compte_postal } = req.body;
 
         // Vérifier si l'email existe déjà pour un autre utilisateur
         const existingStructure = await Structure.findOne({ raison_sociale, _id: { $ne: structureId } });
@@ -104,7 +110,7 @@ module.exports.update_structure = async (req, res) => {
         // Trouver et mettre à jour l'utilisateur
         const updateStructure = await Structure.findByIdAndUpdate(
             structureId,
-            { raison_sociale,prefixe,telephone,fax,email,adresse,compte_bancaire,nom_compte_bancaire,compte_postal},
+            { raison_sociale, prefixe, telephone, fax, email, adresse, compte_bancaire, nom_compte_bancaire, compte_postal },
             { new: true, runValidators: true }
         );
 
