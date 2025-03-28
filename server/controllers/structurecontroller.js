@@ -1,3 +1,4 @@
+const { json } = require("express");
 const { Client, User, Article, Structure } = require("../models/model");
 const { validationResult } = require("express-validator");
 
@@ -57,6 +58,26 @@ module.exports.liste_structure = async (req, res, next) => {
         }
         res.json({ success: true, data: structure });
     } catch (err) {
+        next(err)
+    }
+}
+
+// Récupérer un structures par ID
+module.exports.get_strtucture = async (req, res, next) => {
+    const structureid = req.params.id;
+    try {
+        structure = await Structure.findById(structureid);
+        if(!structure){
+            return res.status(404).json({
+                success: false,
+                message: "Structure non trouvé"
+            });
+        }
+        res.status(200).json({
+            success: true,
+            data: structure
+        });
+    } catch (error) {
         next(err)
     }
 }

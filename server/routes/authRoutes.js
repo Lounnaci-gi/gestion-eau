@@ -29,7 +29,7 @@ router.get('/liste', authenticate, authorize(["admin","chef_centre"]), liste_uti
 // Route pour supprimer utilisateur
 router.delete('/liste/:id', authenticate, authorize(["admin"]), delete_user);
 
-// Route pour supprimer utilisateur
+// Récupérer un utilisateur par ID
 router.get('/liste/:id',authenticate, get_user);
 
 // Route pour mettre a jour l'utilisateur

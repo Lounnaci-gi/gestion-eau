@@ -147,8 +147,9 @@ document.querySelector('#creation_structure').addEventListener('click', () => {
     creationSection.scrollIntoView({ behavior: 'smooth' });
 });
 
-document.querySelector('#create_structure').addEventListener('submit', async (e) => {
+document.getElementById('create_structure').addEventListener('submit', async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
+    alert('kvlxcv');
     const raison_sociale = document.getElementById("structureNom").value.trim();
     const prefixe = document.getElementById("structurePrefixe").value.trim().toUpperCase();
     const telephone = document.getElementById("structureTelephone").value.trim();
@@ -240,7 +241,7 @@ function editStructure(structureid) {
         });
 
         // Récupérer les détails de structure
-        fetch(`http://localhost:3000/liste/${structureid}`, {
+        fetch(`http://localhost:3000/liste_structure/${structureid}`, {
             method: 'GET',
             credentials: 'include'
         })
@@ -250,7 +251,6 @@ function editStructure(structureid) {
         })
         .then(data => {
             Swal.close();
-            
             // Remplir le formulaire avec les données de l'utilisateur
             document.getElementById('editUserId').value = structureid;
             document.getElementById('structureNom').value = data.data.raison_sociale;
@@ -264,7 +264,7 @@ function editStructure(structureid) {
             document.getElementById('structureComptePostal').value = data.data.compte_postal;
             
             // Afficher le modal d'édition
-            document.getElementById('editUserModal').classList.add('show');
+            document.querySelector('.structure_creation').classList.add('show');
         })
         .catch(error => {
             Swal.close();
