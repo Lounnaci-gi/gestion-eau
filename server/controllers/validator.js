@@ -15,6 +15,7 @@ const validation = [
         .matches(/[@$!%*?&]/).withMessage("Le mot de passe doit contenir au moins un caractère spécial (@$!%*?&)."),
 ];
 
+
 const authenticate = async (req, res, next) => {
     // Récupérer le token depuis le cookie
     const token = req.cookies.token;
@@ -92,5 +93,6 @@ const emailValidation = [
 
     // Ajoutez d'autres validations ici si nécessaire
 ];
+
 
 module.exports = { validation, loginLimiter, authenticate, authorize,emailValidation };
