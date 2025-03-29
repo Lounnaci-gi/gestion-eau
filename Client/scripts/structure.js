@@ -338,32 +338,42 @@ function editStructure(structureid) {
 }
 
 async function deleteStructure(structureid) {
-    const response = await fetch(`http://localhost:3000/liste_structures/${structureid}`, {
-        method: 'GET',
-        credentials: 'include'
-    });
+    try {
 
-    const confirmation = await Swal.fire({
-        title: "Confirmer la suppression ?",
-        text: "Voulez-vous vraiment supprimer cette structure ?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oui, supprimer !",
-        cancelButtonText: "Annuler"
-    });
- 
-    if (!response.ok) {
-        const errorData = await response.json();
+        const response = await fetch(`http://localhost:3000/liste_structure/${structureid}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
 
-        if (errorData.errors && Array.isArray(errorData.errors)) {
-            const errorMessages = errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n");
-            throw new Error(errorMessages);
+        const confirmation = await Swal.fire({
+            title: "Confirmer la suppression ?",
+            text: "Voulez-vous vraiment supprimer cette structure ?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Oui, supprimer !",
+            cancelButtonText: "Annuler"
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+
+            if (errorData.errors && Array.isArray(errorData.errors)) {
+                const errorMessages = errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n");
+                throw new Error(errorMessages);
+            }
+
+            throw new Error(errorData.message || "Erreur lors de suppression.");
         }
+        const data = await response.json();
 
-        throw new Error(errorData.message || "Erreur lors de suppression.");
+        showAlert("Succès", data.message, "success");
+
+        // Recharger le tableau des structures
+        await loadStructures();
+    } catch (err) {
+        showAlert("Erreur", err.message, "error");
     }
-
 
 }
