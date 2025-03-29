@@ -7,6 +7,8 @@ const { validationResult } = require("express-validator");
 // Ajouter nouvelle structure
 module.exports.add_structure = async (req, res, next) => {
     const errors = validationResult(req);
+    console.log("Données reçues:", req.body);
+
     if (!errors.isEmpty()) {
         console.log("Erreurs détectées :", errors.array());  // 🔹 Affiche bien les erreurs dans la console
         return res.status(400).json({ errors: errors.array() });  // ❌ STOP : Retourne l'erreur, ne continue pas

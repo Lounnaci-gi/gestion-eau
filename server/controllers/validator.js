@@ -95,9 +95,8 @@ const emailValidation = [
 ];
 
 // const phoneRegexMobile = /^0[6-7]\d{3} \d{2} \d{2} \d{2}$/; // Format mobile : 0663 97 94 46
-
-const phoneRegexFixe = /^0[2-4]\d{2} \d{2} \d{2} \d{2}$/;  // Ex: 025 77 66 13
-const phoneRegexMobile = /^0[5-7]\d{2} \d{2} \d{2} \d{2}$/; // Ex: 0663 97 94 46
+const phoneRegexFixe = /^0[2-4]\d{1} \d{2} \d{2} \d{2}$/;  
+const phoneRegexMobile = /^0[5-7]\d{2} \d{2} \d{2} \d{2}$/; 
 
 const phoneValidation = [
     body("telephone")
@@ -109,15 +108,18 @@ const phoneValidation = [
             }
             return true;
         }),
+
     body("fax")
-        .optional() // Le fax n'est pas obligatoire
+        .optional()
         .trim()
         .custom((value) => {
-            if (value && !phoneRegexFixe.test(value)) { // Le fax doit être un numéro fixe uniquement
-                throw new Error("Le numéro de fax est invalide. Format attendu : 025 77 66 13.");
+            if (value && !phoneRegexFixe.test(value) && !phoneRegexMobile.test(value)) {
+                console.log("⛔ Fax invalide détecté :", value);
+                throw new Error("Le numéro de fax est invalide. Format attendu : 0563 97 94 46 ou 025 77 66 13.");
             }
+            console.log("✅ Fax accepté :", value);
             return true;
         }),
-
 ];
+
 module.exports = { validation, loginLimiter, authenticate, authorize, emailValidation, phoneValidation };
