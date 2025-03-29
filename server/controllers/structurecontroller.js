@@ -7,10 +7,7 @@ const { validationResult } = require("express-validator");
 // Ajouter nouvelle structure
 module.exports.add_structure = async (req, res, next) => {
     const errors = validationResult(req);
-    console.log("Données reçues:", req.body);
-
     if (!errors.isEmpty()) {
-        console.log("Erreurs détectées :", errors.array());  // 🔹 Affiche bien les erreurs dans la console
         return res.status(400).json({ errors: errors.array() });  // ❌ STOP : Retourne l'erreur, ne continue pas
     }
     try {
@@ -105,7 +102,7 @@ module.exports.update_structure = async (req, res) => {
         if (existingStructure) {
             return res.status(400).json({
                 success: false,
-                message: "Cette structure est déjà"
+                message: "Cette structure existe déjà"
             });
         }
 
@@ -136,3 +133,20 @@ module.exports.update_structure = async (req, res) => {
         });
     }
 };
+
+// Route pour supprimer une structure
+module.exports.delete_structure = async (req, res, next) => {
+    const structureId = req.params.id;
+    try {
+        const existingStructure = await Structure.findByIdAndDelete(structureId);
+        if (!existingStructure) {
+            return res.status(400).json({
+                success: false,
+                message: "Cette structure n'existe pas"
+            });
+        }
+    } catch (err) {
+
+    }
+
+}

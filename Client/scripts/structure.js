@@ -64,7 +64,16 @@ async function loadStructures() {
             credentials: 'include',
         });
 
-        if (!response.ok) throw new Error("Erreur de chargement des structures");
+        if (!response.ok) {
+            const errorData = await response.json();
+
+            if (errorData.errors && Array.isArray(errorData.errors)) {
+                const errorMessages = errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n");
+                throw new Error(errorMessages);
+            }
+
+            throw new Error(errorData.message || "Erreur lors de l'enregistrement.");
+        }
 
         const data = await response.json();
 
@@ -73,6 +82,11 @@ async function loadStructures() {
         } else {
             throw new Error("Format de données invalide");
         }
+
+        const listeSection = document.querySelector('.structure_liste');
+        listeSection.classList.add("show");
+        listeSection.scrollIntoView({ behavior: 'smooth' });
+
     } catch (error) {
         showAlert("Erreur", error.message || "Une erreur est survenue.", "error");
     }
@@ -98,6 +112,7 @@ function populateStructureTable(structures) {
                 <button class="edit-btn" onclick="editStructure('${structure._id}')">
                     <i class="fas fa-edit"></i>
                 </button>
+           
                 <button class="delete-btn" onclick="deleteStructure('${structure._id}')">
                     <i class="fas fa-trash"></i>
                 </button>
@@ -114,11 +129,7 @@ function populateStructureTable(structures) {
 // Écouteur d'événement pour afficher la liste des structures
 document.getElementById('liste_structure').addEventListener('click', async (e) => {
     e.preventDefault();
-    const listeSection = document.querySelector('.structure_liste');
-    listeSection.classList.add("show");
     await loadStructures();
-    listeSection.scrollIntoView({ behavior: 'smooth' });
-
 });
 
 function filterStructures(searchText) {
@@ -239,15 +250,15 @@ document.getElementById('create_structure').addEventListener('submit', async (e)
 
         if (!response.ok) {
             const errorData = await response.json();
-        
+
             if (errorData.errors && Array.isArray(errorData.errors)) {
                 const errorMessages = errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n");
                 throw new Error(errorMessages);
             }
-        
+
             throw new Error(errorData.message || "Erreur lors de l'enregistrement.");
         }
-        
+
 
         Swal.close();
         showAlert("Succès", "Enregistrement réussi !", "success");
@@ -270,6 +281,14 @@ let methode;
 let structure_id;
 // Modifier la fonction editUser
 function editStructure(structureid) {
+    const structureCreationDiv = document.querySelector(".dashboard.structure_creation");
+
+    if (structureCreationDiv) {
+        structureCreationDiv.style.display = "block";  // Rendre le div visible
+        structureCreationDiv.scrollIntoView({ behavior: "smooth" }); // Faire défiler la page jusqu'à ce div
+    } else {
+        console.error("❌ Le div .dashboard.structure_creation n'existe pas !");
+    }
     try {
         // Afficher un loader pendant le chargement des données
         Swal.fire({
@@ -293,7 +312,7 @@ function editStructure(structureid) {
             .then(data => {
                 Swal.close();
                 choix = 'update_structure';
-                structure_id=structureid;
+                structure_id = structureid;
                 // Remplir le formulaire avec les données de l'utilisateur
                 document.getElementById('editUserId').value = structureid;
                 document.getElementById('structureNom').value = data.data.raison_sociale;
@@ -316,4 +335,23 @@ function editStructure(structureid) {
     } catch (error) {
         showAlert("Erreur", "Une erreur est survenue", "error");
     }
+}
+
+async function deleteStructure(structureid) {
+    const response = await fetch(`http://localhost:3000/liste_structure/${structureid}`, {
+        method: 'GET',
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+            const errorMessages = errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n");
+            throw new Error(errorMessages);
+        }
+
+        throw new Error(errorData.message || "Erreur lors de suppression.");
+    }
+
+
 }

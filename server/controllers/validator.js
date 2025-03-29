@@ -114,10 +114,8 @@ const phoneValidation = [
         .trim()
         .custom((value) => {
             if (value && !phoneRegexFixe.test(value) && !phoneRegexMobile.test(value)) {
-                console.log("⛔ Fax invalide détecté :", value);
                 throw new Error("Le numéro de fax est invalide. Format attendu : 0563 97 94 46 ou 025 77 66 13.");
             }
-            console.log("✅ Fax accepté :", value);
             return true;
         }),
 ];
