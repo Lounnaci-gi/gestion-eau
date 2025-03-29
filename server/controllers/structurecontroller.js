@@ -137,6 +137,7 @@ module.exports.update_structure = async (req, res) => {
 // Route pour supprimer une structure
 module.exports.delete_structure = async (req, res, next) => {
     const structureId = req.params.id;
+    console.log(structureId);
     try {
         const existingStructure = await Structure.findByIdAndDelete(structureId);
         if (!existingStructure) {

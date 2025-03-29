@@ -338,10 +338,22 @@ function editStructure(structureid) {
 }
 
 async function deleteStructure(structureid) {
-    const response = await fetch(`http://localhost:3000/liste_structure/${structureid}`, {
+    const response = await fetch(`http://localhost:3000/liste_structures/${structureid}`, {
         method: 'GET',
         credentials: 'include'
     });
+
+    const confirmation = await Swal.fire({
+        title: "Confirmer la suppression ?",
+        text: "Voulez-vous vraiment supprimer cette structure ?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Annuler"
+    });
+ 
     if (!response.ok) {
         const errorData = await response.json();
 

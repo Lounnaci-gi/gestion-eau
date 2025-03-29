@@ -17,6 +17,6 @@ router.get('/liste_structure/:id',authenticate,get_structure);
 router.put('/liste_structure/:id',emailValidation,phoneValidation,authenticate,update_structure);
 
 //Routes pour supprimer une structure 
-router.get('/liste_structure/:id',emailValidation,phoneValidation,authenticate,delete_structure);
+router.get('/liste_structures/:id',authenticate,delete_structure);
 
 module.exports = router;
