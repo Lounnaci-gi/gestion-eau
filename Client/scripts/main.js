@@ -367,8 +367,6 @@ document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
 const userTableBody=document.getElementById('userTableBody');
 // Remplir le tableau des utilisateurs
 function populateUserTable(users) {
-    console.log("Données des utilisateurs reçues:", users); // Ajoutez cette ligne
-    
     userTableBody.innerHTML = users.map(user => `
         <tr>
             <td>${user.nomComplet || "Non renseigné"}</td>

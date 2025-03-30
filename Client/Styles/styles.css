@@ -492,7 +492,7 @@ nav ul li a:hover {
 }
 
 .auth-content {
-    background: white;
+    background: white; 
     padding: 30px;
     border-radius: 10px;
     width: 90%;
@@ -841,7 +841,7 @@ nav ul li a:hover {
     padding: 30px;
     border-radius: var(--border-radius);
     width: 90%;
-    max-width: 800px;
+    max-width: 80%;
     /* Ajustez la largeur maximale selon vos besoins */
     position: relative;
     animation: slideIn 0.3s ease;
