@@ -256,19 +256,19 @@
     <div class="dashboard structure_liste" id="structure-liste">
         <h1>Gestion des structures</h1>
         <div class="structure-table-container">
-                <div class="structure-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="structureSearch" placeholder="Rechercher une structure..." />
-                    <span class="close-auth1">&times;</span>
-                </div>
-                <table class="structure-table">
-                    <thead>
-                        <tr>
-                            <th>Désignation</th>
-                            <th>Prefixe</th>
-                            <th>Adresse</th>
-                            <th>Telephone</th>
-                            <th>Fax</th>
+            <div class="structure-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="structureSearch" placeholder="Rechercher une structure..." />
+                <span class="close-auth1">&times;</span>
+            </div>
+            <table class="structure-table">
+                <thead>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>Prefixe</th>
+                        <th>Adresse</th>
+                        <th>Telephone</th>
+                        <th>Fax</th>
                         <th>Email</th>
                         <th>Banque</th>
                         <th>Action</th>
@@ -293,6 +293,7 @@
                             <th>Nom Complet</th>
                             <th>Email</th>
                             <th>Rôle</th>
+                            <th>Structure</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -350,10 +351,6 @@
                     <select id="role" required>
                         <option value="utilisateur">Utilisateur</option>
                         <option value="admin">Admin</option>
-                        <option value="chef_centre">Chef de Centre</option>
-                        <option value="chef_agence">Chef d'Agence</option>
-                        <option value="chef_tech_com">Chef Technique Commercial</option>
-                        <option value="juriste">Juriste</option>
                     </select>
                 </div>
                 <button type="submit">S'inscrire</button>
@@ -402,6 +399,12 @@
                         <option value="chef_agence">Chef d'Agence</option>
                         <option value="chef_tech_com">Chef Technique Commercial</option>
                         <option value="juriste">Juriste</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editStructure">Structure</label>
+                    <select id="editStructure" class="form-control">
+                        <option value="">-- Aucune structure --</option>
                     </select>
                 </div>
                 <button type="submit">Enregistrer les modifications</button>

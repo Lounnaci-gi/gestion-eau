@@ -1,4 +1,4 @@
-const { Client, User, Article } = require("../models/model");
+const { Client, User, Article, Structure } = require("../models/model");
 const { validationResult } = require("express-validator");
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
@@ -298,8 +298,9 @@ module.exports.logout = async (req, res) => {
 module.exports.liste_utilisateur = async (req, res) => {
     try {
         const users = await User.find({ role: { $ne: "admin" } }) // Exclure les admins
-                                 .select('-motDePasse')
-                                 .lean();
+            .select('-motDePasse')
+            .populate('structure') // Ajoutez cette ligne
+            .lean();
 
         if (users.length === 0) { // Vérifier si le tableau est vide
             return res.status(404).json({ success: false, message: "Aucun utilisateur trouvé." });
@@ -320,7 +321,9 @@ module.exports.liste_utilisateur = async (req, res) => {
 module.exports.get_user = async (req, res) => {
     try {
         const userId = req.params.id;
-        const user = await User.findById(userId).select('-motDePasse');
+        const user = await User.findById(userId)
+            .select('-motDePasse')
+            .populate('structure'); 
 
         if (!user) {
             return res.status(404).json({
@@ -369,7 +372,7 @@ module.exports.delete_user = async (req, res, next) => {
 module.exports.update_user = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { nomComplet, email, role } = req.body;
+        const { nomComplet, email, role, structure } = req.body;
 
         // Vérifier si l'email existe déjà pour un autre utilisateur
         const existingUser = await User.findOne({ email, _id: { $ne: userId } });
@@ -380,12 +383,27 @@ module.exports.update_user = async (req, res) => {
             });
         }
 
+        // Préparer les données de mise à jour
+        const updateData = {
+            nomComplet,
+            email,
+            role
+        };
+
+        // Ajouter la structure seulement si elle est fournie
+        if (structure) {
+            updateData.structure = structure;
+        } else {
+            // Si structure est vide, la supprimer
+            updateData.$unset = { structure: "" };
+        }
+
         // Trouver et mettre à jour l'utilisateur
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { nomComplet, email, role },
+            updateData,
             { new: true, runValidators: true }
-        ).select('-motDePasse');
+        ).select('-motDePasse').populate('structure');
 
         if (!updatedUser) {
             return res.status(404).json({
@@ -405,5 +423,16 @@ module.exports.update_user = async (req, res) => {
             success: false,
             message: "Erreur serveur"
         });
+    }
+};
+
+// Dans authController.js ou un nouveau contrôleur
+module.exports.getStructures = async (req, res) => {
+    try {
+        const structures = await Structure.find().lean();
+        res.json({ success: true, data: structures });
+    } catch (error) {
+        console.error("Erreur getStructures:", error);
+        res.status(500).json({ success: false, message: "Erreur serveur" });
     }
 };

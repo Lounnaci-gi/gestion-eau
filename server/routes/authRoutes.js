@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { validation, loginLimiter, authenticate, authorize } = require('../controllers/validator');
 const { login, new_user, forgot_password, resetPassword, check_auth, logout, liste_utilisateur,
-        delete_user,get_user,update_user } = require('../controllers/authController');
+        delete_user,get_user,update_user,getStructures } = require('../controllers/authController');
 
 
 // Route pour la connexion
@@ -34,5 +34,8 @@ router.get('/liste/:id',authenticate, get_user);
 
 // Route pour mettre a jour l'utilisateur
 router.put('/liste/:id',authenticate,authorize(["admin","chef_centre"]), update_user);
+
+// Dans votre fichier de routes
+router.get('/structures', getStructures);
 
 module.exports = router;

@@ -28,8 +28,6 @@ document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     forgotPasswordModal.classList.add("show");
 });
 
-
-
 // Masquer le model de mots de passe oublier
 document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", function() {
     // Masquer le modal de mot de passe oublié
@@ -366,18 +364,17 @@ document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
     }
 });
 
+const userTableBody=document.getElementById('userTableBody');
 // Remplir le tableau des utilisateurs
 function populateUserTable(users) {
-    if (!Array.isArray(users)) {
-        console.error("Expected an array of users, got:", users);
-        return;
-    }
-
+    console.log("Données des utilisateurs reçues:", users); // Ajoutez cette ligne
+    
     userTableBody.innerHTML = users.map(user => `
         <tr>
             <td>${user.nomComplet || "Non renseigné"}</td>
             <td>${user.email || "Non renseigné"}</td>
             <td>${user.role || "Non renseigné"}</td>
+            <td>${user.structure?.raison_sociale || "Aucune structure"}</td>
             <td class="action-buttons">
                 <button class="edit-btn" onclick="editUser('${user._id}')">
                     <i class="fas fa-edit"></i>
@@ -389,7 +386,6 @@ function populateUserTable(users) {
         </tr>
     `).join("");
 }
-
 // Exemple de fonction de suppression
 async function deleteUser(userId) {
     try {
@@ -424,45 +420,59 @@ async function deleteUser(userId) {
 
 
 // Modifier la fonction editUser
-function editUser(userId) {
+async function editUser(userId) {
     try {
-        // Afficher un loader pendant le chargement des données
         Swal.fire({
             title: "Chargement des données...",
             html: "Veuillez patienter...",
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
+            didOpen: () => { Swal.showLoading(); },
         });
 
-        // Récupérer les détails de l'utilisateur
-        fetch(`http://localhost:3000/liste/${userId}`, {
-            method: 'GET',
-            credentials: 'include'
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("Échec de la récupération des données");
-            return response.json();
-        })
-        .then(data => {
-            Swal.close();
-            
-            // Remplir le formulaire avec les données de l'utilisateur
-            document.getElementById('editUserId').value = userId;
-            document.getElementById('editNomComplet').value = data.data.nomComplet;
-            document.getElementById('editEmail').value = data.data.email;
-            document.getElementById('editRole').value = data.data.role;
-            
-            // Afficher le modal d'édition
-            document.getElementById('editUserModal').classList.add('show');
-        })
-        .catch(error => {
-            Swal.close();
-            showAlert("Erreur", error.message, "error");
+        // Récupérer l'utilisateur et les structures en parallèle
+        const [userResponse, structuresResponse] = await Promise.all([
+            fetch(`http://localhost:3000/liste/${userId}`, {
+                method: 'GET',
+                credentials: 'include'
+            }),
+            fetch(`http://localhost:3000/structures`, {
+                method: 'GET',
+                credentials: 'include'
+            })
+        ]);
+
+        if (!userResponse.ok || !structuresResponse.ok) {
+            throw new Error("Échec de la récupération des données");
+        }
+
+        const userData = await userResponse.json();
+        const structuresData = await structuresResponse.json();
+
+        Swal.close();
+        
+        // Remplir le formulaire
+        document.getElementById('editUserId').value = userId;
+        document.getElementById('editNomComplet').value = userData.data.nomComplet;
+        document.getElementById('editEmail').value = userData.data.email;
+        document.getElementById('editRole').value = userData.data.role;
+
+        // Remplir le select des structures
+        const structureSelect = document.getElementById('editStructure');
+        structureSelect.innerHTML = '<option value="">-- Aucune structure --</option>';
+        
+        structuresData.data.forEach(structure => {
+            const option = document.createElement('option');
+            option.value = structure._id;
+            option.textContent = structure.raison_sociale;
+            option.selected = userData.data.structure?._id === structure._id;
+            structureSelect.appendChild(option);
         });
+
+        // Afficher le modal
+        document.getElementById('editUserModal').classList.add('show');
     } catch (error) {
-        showAlert("Erreur", "Une erreur est survenue", "error");
+        Swal.close();
+        showAlert("Erreur", error.message, "error");
     }
 }
 
@@ -474,27 +484,25 @@ document.getElementById("editUserForm").addEventListener("submit", async (e) => 
     const nomComplet = document.getElementById('editNomComplet').value.trim();
     const email = document.getElementById('editEmail').value.trim();
     const role = document.getElementById('editRole').value;
+    const structure = document.getElementById('editStructure').value;
     
     // Validation
     if (!nomComplet || !email) {
         return showAlert("Erreur", "Veuillez remplir tous les champs requis", "warning");
     }
     
-    // Afficher le loader
     Swal.fire({
         title: "Mise à jour en cours...",
         html: "Veuillez patienter...",
         allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        },
+        didOpen: () => { Swal.showLoading(); },
     });
     
     try {
         const response = await fetch(`http://localhost:3000/liste/${userId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nomComplet, email, role }),
+            body: JSON.stringify({ nomComplet, email, role, structure }),
             credentials: 'include'
         });
         
@@ -514,7 +522,6 @@ document.getElementById("editUserForm").addEventListener("submit", async (e) => 
         showAlert("Erreur", error.message, "error");
     }
 });
-
 // Fonction pour afficher une alerte
 function showAlert(title, text, icon) {
     return Swal.fire({
