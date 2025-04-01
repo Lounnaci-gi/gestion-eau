@@ -72,7 +72,7 @@ async function loadStructures() {
             }
         });
 
-        const response = await fetch("http://localhost:3000/liste_structure", {
+        const response = await fetch(`${API_BASE_URL}/liste_structure`, {
             method: "GET",
             credentials: 'include',
         });
@@ -84,7 +84,7 @@ async function loadStructures() {
             const errorMessage = errorData.errors && Array.isArray(errorData.errors)
                 ? errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n")
                 : errorData.message || "Erreur lors de la récupération des structures.";
-            
+
             throw new Error(errorMessage);
         }
 
@@ -92,7 +92,7 @@ async function loadStructures() {
 
         if (data.success && Array.isArray(data.data)) {
             populateStructureTable(data.data);
-            
+
             const listeSection = document.querySelector('.structure_liste');
             listeSection.classList.add("show");
             listeSection.scrollIntoView({ behavior: 'smooth' });
@@ -107,21 +107,21 @@ async function loadStructures() {
 // Remplir le tableau des structures
 function populateStructureTable(structures) {
     const structureTableBody = document.getElementById('structureTableBody');
-    
+
     if (!Array.isArray(structures)) {
         console.error("Expected an array of structures, got:", structures);
         return;
     }
-    
+
     structureTableBody.innerHTML = structures.map(structure => `
         <tr>
-            <td>${structure.raison_sociale || "Non renseigné"}</td>
-            <td>${structure.prefixe || "Non renseigné"}</td>
-            <td>${structure.adresse || "Non renseigné"}</td>
-            <td>${structure.telephone || "Non renseigné"}</td>
-            <td>${structure.fax || "Non renseigné"}</td>
-            <td>${structure.email || "Non renseigné"}</td>
-            <td>${structure.nom_compte_bancaire || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.raison_sociale) || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.prefixe) || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.adresse) || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.telephone) || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.fax) || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.email) || "Non renseigné"}</td>
+            <td>${escapeHtml(structure.nom_compte_bancaire) || "Non renseigné"}</td>
             <td class="action-buttons">
                 <button class="edit-btn" onclick="editStructure('${structure._id}')">
                     <i class="fas fa-edit"></i>
@@ -132,7 +132,7 @@ function populateStructureTable(structures) {
             </td>
         </tr>
     `).join("");
-    
+
     // Animation des lignes
     const rows = structureTableBody.querySelectorAll('tr');
     rows.forEach((row, index) => {
@@ -161,7 +161,7 @@ async function editStructure(structureid) {
             },
         });
 
-        const response = await fetch(`http://localhost:3000/liste_structure/${structureid}`, {
+        const response = await fetch(`${API_BASE_URL}/liste_structure/${structureid}`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -228,7 +228,7 @@ async function deleteStructure(structureid) {
             },
         });
 
-        const response = await fetch(`http://localhost:3000/liste_structure/${structureid}`, {
+        const response = await fetch(`${API_BASE_URL}/liste_structure/${structureid}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -238,15 +238,15 @@ async function deleteStructure(structureid) {
             const errorMessage = errorData.errors && Array.isArray(errorData.errors)
                 ? errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n")
                 : errorData.message || "Erreur lors de la suppression.";
-            
+
             throw new Error(errorMessage);
         }
 
         const data = await response.json();
         Swal.close();
-        
+
         await showAlert("Succès", data.message || "Structure supprimée avec succès", "success");
-        
+
         // Recharger le tableau des structures
         await loadStructures();
     } catch (error) {
@@ -319,10 +319,10 @@ async function submitStructureForm(e) {
         let url, methode;
 
         if (choix === "creation_structure") {
-            url = "http://localhost:3000/add_structure";
+            url = `${API_BASE_URL}/add_structure`;
             methode = "POST";
         } else if (choix === "update_structure") {
-            url = `http://localhost:3000/liste_structure/${structure_id}`;
+            url = `${API_BASE_URL}/liste_structure/${structure_id}`;
             methode = "PUT";
         } else {
             throw new Error("Opération non reconnue");
@@ -340,23 +340,23 @@ async function submitStructureForm(e) {
             const errorMessage = errorData.errors && Array.isArray(errorData.errors)
                 ? errorData.errors.map(err => `⚠️ ${err.msg}`).join("\n")
                 : errorData.message || "Erreur lors de l'enregistrement.";
-            
+
             throw new Error(errorMessage);
         }
 
         Swal.close();
         await showAlert("Succès", "Enregistrement réussi !", "success");
-        
+
         // Réinitialiser le formulaire et l'état
         document.getElementById('create_structure').reset();
         choix = "creation_structure";
         structure_id = null;
-        
+
         // Masquer le formulaire de création
         if (choix === "update_structure") {
             document.querySelector('.structure_creation').classList.remove('show');
         }
-        
+
         // Recharger la liste des structures
         await loadStructures();
     } catch (error) {
@@ -368,29 +368,29 @@ async function submitStructureForm(e) {
 // ============= INITIALISATION DES ÉVÉNEMENTS =============
 
 // Appliquer le formatage aux champs téléphone/fax
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Formatter les numéros de téléphone
     formatPhoneInput(document.getElementById('structureTelephone'));
     formatPhoneInput(document.getElementById('structureFax'));
-    
+
     // Restreindre à des chiffres uniquement
     restrictToNumbers(document.getElementById('structureCompteBancaire'));
     restrictToNumbers(document.getElementById('structureComptePostal'));
-    
+
     // Écouteur pour afficher la liste des structures
     document.getElementById('liste_structure').addEventListener('click', async (e) => {
         e.preventDefault();
         await loadStructures();
     });
-    
+
     // Écouteur pour le champ de recherche
     const searchInput = document.getElementById('structureSearch');
     if (searchInput) {
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             filterStructures(this.value.toLowerCase());
         });
     }
-    
+
     // Écouteurs pour les boutons de fermeture
     const closeButtons = document.querySelectorAll(".close-auth1");
     closeButtons.forEach(button => {
@@ -401,20 +401,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Écouteur pour afficher le formulaire de création
     document.querySelector('#creation_structure').addEventListener('click', () => {
         // Réinitialiser le formulaire et l'état
         document.getElementById('create_structure').reset();
         choix = "creation_structure";
         structure_id = null;
-        
+
         // Afficher le formulaire
         const creationSection = document.querySelector('.structure_creation');
         creationSection.classList.add("show");
         creationSection.scrollIntoView({ behavior: 'smooth' });
     });
-    
+
     // Écouteur pour le formulaire de création/modification
     document.getElementById('create_structure').addEventListener('submit', submitStructureForm);
 });
+

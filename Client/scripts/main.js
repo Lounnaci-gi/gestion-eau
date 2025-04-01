@@ -29,13 +29,13 @@ document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
 });
 
 // Masquer le model de mots de passe oublier
-document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", function() {
+document.querySelector("#forgotPasswordModal .auth-switch span").addEventListener("click", function () {
     // Masquer le modal de mot de passe oublié
     forgotPasswordModal.classList.remove("show");
-    
+
     // Afficher le modal d'authentification
     authModal.classList.add("show");
-    
+
     // Forcer l'affichage du formulaire de connexion
     loginForm.classList.add("active");
     loginForm.style.display = "block"; // ⚠️ Ajoutez cette ligne
@@ -78,7 +78,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     const data = { nomComplet, nomUtilisateur: utilisateur, email, motDePasse: password, role };
 
     try {
-        const response = await fetch("http://localhost:3000/user", {
+        const response = await fetch(`${API_BASE_URL}/user`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -125,7 +125,7 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async (
     });
 
     try {
-        const response = await fetch("http://localhost:3000/forgot-password", {
+        const response = await fetch(`${API_BASE_URL}/forgot-password`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email }),
@@ -168,7 +168,7 @@ async function updateLogin() {
     const logo = document.getElementsByClassName("company-name")[0];
 
     try {
-        const response = await fetch("http://localhost:3000/check-auth", {
+        const response = await fetch(`${API_BASE_URL}/check-auth`, {
             credentials: "include"
         });
 
@@ -202,7 +202,7 @@ authToggle.addEventListener("click", async () => {
         loginForm.classList.add("active");
         registerForm.classList.remove("active");
         forgotPasswordModal.style.display = "none"; // Masquer le modal de récupération de mot de passe
-        editUserModal.style.display ="none";
+        editUserModal.style.display = "none";
     } else {
         // Confirmation de déconnexion
         Swal.fire({
@@ -215,7 +215,7 @@ authToggle.addEventListener("click", async () => {
             showLoaderOnConfirm: true,
             preConfirm: async () => {
                 try {
-                    const response = await fetch('http://localhost:3000/logout', {
+                    const response = await fetch(`${API_BASE_URL}/logout`, {
                         method: 'POST',
                         credentials: 'include'
                     });
@@ -251,7 +251,7 @@ authSwitches.forEach((link) => {
         if (loginForm.classList.contains("active")) {
             loginForm.classList.remove("active");
             registerForm.classList.add("active");
-            
+
         } else {
             registerForm.classList.remove("active");
             loginForm.classList.add("active");
@@ -296,7 +296,7 @@ loginForm.addEventListener("submit", async (e) => {
     const data = { email: email, motDePasse: password };
 
     try {
-        const response = await fetch("http://localhost:3000/login", {
+        const response = await fetch(`${API_BASE_URL}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -335,7 +335,7 @@ loginForm.addEventListener("submit", async (e) => {
 document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch("http://localhost:3000/liste", {
+        const response = await fetch(`${API_BASE_URL}/liste`, {
             method: "GET",
             credentials: "include"
         });
@@ -364,7 +364,7 @@ document.getElementById("Utilisateurs").addEventListener("click", async (e) => {
     }
 });
 
-const userTableBody=document.getElementById('userTableBody');
+const userTableBody = document.getElementById('userTableBody');
 // Remplir le tableau des utilisateurs
 function populateUserTable(users) {
     userTableBody.innerHTML = users.map(user => `
@@ -383,6 +383,11 @@ function populateUserTable(users) {
             </td>
         </tr>
     `).join("");
+    // Animation des lignes
+    const rows = userTableBody.querySelectorAll('tr');
+    rows.forEach((row, index) => {
+        row.style.animationDelay = `${0.15 * index}s`;
+    });
 }
 // Exemple de fonction de suppression
 async function deleteUser(userId) {
@@ -398,15 +403,15 @@ async function deleteUser(userId) {
         });
 
         if (result.isConfirmed) {
-            const response = await fetch(`http://localhost:3000/liste/${userId}`, {
+            const response = await fetch(`${API_BASE_URL}/liste/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
 
-            if (!response.ok) {   
-                const data = await response.json();             
+            if (!response.ok) {
+                const data = await response.json();
                 throw new Error(data.message || "Échec de la suppression");
-            } 
+            }
 
             showAlert("Succès", "Utilisateur supprimé avec succès", "success");
             document.getElementById("Utilisateurs").click(); // Recharger le tableau
@@ -429,11 +434,11 @@ async function editUser(userId) {
 
         // Récupérer l'utilisateur et les structures en parallèle
         const [userResponse, structuresResponse] = await Promise.all([
-            fetch(`http://localhost:3000/liste/${userId}`, {
+            fetch(`${API_BASE_URL}/liste/${userId}`, {
                 method: 'GET',
                 credentials: 'include'
             }),
-            fetch(`http://localhost:3000/structures`, {
+            fetch(`${API_BASE_URL}/structures`, {
                 method: 'GET',
                 credentials: 'include'
             })
@@ -447,7 +452,7 @@ async function editUser(userId) {
         const structuresData = await structuresResponse.json();
 
         Swal.close();
-        
+
         // Remplir le formulaire
         document.getElementById('editUserId').value = userId;
         document.getElementById('editNomComplet').value = userData.data.nomComplet;
@@ -457,7 +462,7 @@ async function editUser(userId) {
         // Remplir le select des structures
         const structureSelect = document.getElementById('editStructure');
         structureSelect.innerHTML = '<option value="">-- Aucune structure --</option>';
-        
+
         structuresData.data.forEach(structure => {
             const option = document.createElement('option');
             option.value = structure._id;
@@ -483,35 +488,35 @@ document.getElementById("editUserForm").addEventListener("submit", async (e) => 
     const email = document.getElementById('editEmail').value.trim();
     const role = document.getElementById('editRole').value;
     const structure = document.getElementById('editStructure').value;
-    
+
     // Validation
     if (!nomComplet || !email) {
         return showAlert("Erreur", "Veuillez remplir tous les champs requis", "warning");
     }
-    
+
     Swal.fire({
         title: "Mise à jour en cours...",
         html: "Veuillez patienter...",
         allowOutsideClick: false,
         didOpen: () => { Swal.showLoading(); },
     });
-    
+
     try {
-        const response = await fetch(`http://localhost:3000/liste/${userId}`, {
+        const response = await fetch(`${API_BASE_URL}/liste/${userId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nomComplet, email, role, structure }),
             credentials: 'include'
         });
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || "Erreur lors de la mise à jour");
         }
-        
+
         Swal.close();
         showAlert("Succès", "Utilisateur mis à jour avec succès", "success");
-        
+
         // Fermer le modal et rafraîchir la liste
         document.getElementById('editUserModal').classList.remove('show');
         document.getElementById("Utilisateurs").click();
@@ -520,15 +525,6 @@ document.getElementById("editUserForm").addEventListener("submit", async (e) => 
         showAlert("Erreur", error.message, "error");
     }
 });
-// Fonction pour afficher une alerte
-function showAlert(title, text, icon) {
-    return Swal.fire({
-        title,
-        text,
-        icon,
-        confirmButtonText: "OK",
-    });
-}
 
 
 // Mettre à jour l'interface au chargement de la page
