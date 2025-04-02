@@ -1413,41 +1413,6 @@ nav ul li a:hover {
     color: #aaa;
 }
 
-/* Styles pour les états vides et les animations */
-
-/* État vide du tableau */
-.empty-table {
-    padding: 40px !important;
-    text-align: center;
-}
-
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    color: #888;
-}
-
-.empty-state i {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: #ccc;
-}
-
-.empty-state p {
-    font-size: 1rem;
-    margin: 0;
-}
-
-/* Style pour valeurs non renseignées */
-.empty-value {
-    color: #aaa;
-    font-style: italic;
-    font-size: 0.9em;
-}
-
 /* Animations au survol des lignes */
 .structure-table tbody tr {
     position: relative;
@@ -1474,51 +1439,6 @@ nav ul li a:hover {
     display: flex;
     gap: 10px;
     margin-left: auto;
-}
-
-.export-btn {
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.85rem;
-    font-weight: 500;
-    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
-}
-
-.export-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
-}
-
-.refresh-btn {
-    background: linear-gradient(135deg, #2196F3, #0D47A1);
-    color: white;
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(33, 150, 243, 0.3);
-}
-
-.refresh-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
-}
-
-.refresh-btn i {
-    font-size: 0.9rem;
 }
 
 /* Animation de chargement */

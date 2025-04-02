@@ -295,17 +295,70 @@ module.exports.logout = async (req, res) => {
 };
 
 //Route Liste des utilisateurs
+// module.exports.liste_utilisateur = async (req, res) => {
+//     try {
+//         const users = await User.find({ role: { $ne: "admin" } }) // Exclure les admins
+//             .select('-motDePasse')
+//             .populate('structure') // Ajoutez cette ligne
+//             .lean();
+
+//         if (users.length === 0) { // Vérifier si le tableau est vide
+//             return res.status(404).json({ success: false, message: "Aucun utilisateur trouvé." });
+//         }
+
+//         res.json({ success: true, data: users });
+//     } catch (error) {
+//         console.error("Erreur liste_utilisateur:", error);
+//         res.status(500).json({
+//             success: false,
+//             message: "Erreur serveur. Contactez l'administrateur.",
+//             error: process.env.NODE_ENV === "development" ? error.message : undefined
+//         });
+//     }
+// };
+
+// Route Liste des utilisateurs
 module.exports.liste_utilisateur = async (req, res) => {
     try {
-        const users = await User.find({ role: { $ne: "admin" } }) // Exclure les admins
+        // Récupérer l'utilisateur connecté (on suppose que vous avez un middleware d'authentification)
+        const connectedUser = req.user; // Récupéré via middleware d'authentification
+        
+        let query = {};
+        
+        // Adapter la requête selon le rôle de l'utilisateur connecté
+        if (connectedUser.role === "admin") {
+            // L'admin voit tout le monde sauf les autres admins
+            query = { role: { $ne: "admin" } };
+        } else if (connectedUser.role === "chef_centre") {
+            // Le chef de centre voit les utilisateurs de sa structure
+            // OU les utilisateurs sans structure avec rôle "utilisateur"
+            query = {
+                $or: [
+                    { structure: connectedUser.structure },
+                    { $and: [
+                        { structure: { $eq: null } },
+                        { role: "utilisateur" }
+                    ]}
+                ]
+            };
+        } else {
+            // Pour les autres rôles, retourner un accès refusé
+            return res.status(403).json({ 
+                success: false, 
+                message: "Vous n'avez pas les droits nécessaires pour accéder à cette ressource." 
+            });
+        }
+        
+        // Exécuter la requête avec les filtres appropriés
+        const users = await User.find(query)
             .select('-motDePasse')
-            .populate('structure') // Ajoutez cette ligne
+            .populate('structure')
             .lean();
-
+        
         if (users.length === 0) { // Vérifier si le tableau est vide
             return res.status(404).json({ success: false, message: "Aucun utilisateur trouvé." });
         }
-
+        
         res.json({ success: true, data: users });
     } catch (error) {
         console.error("Erreur liste_utilisateur:", error);
@@ -316,7 +369,6 @@ module.exports.liste_utilisateur = async (req, res) => {
         });
     }
 };
-
 // Récupérer un utilisateur par ID
 module.exports.get_user = async (req, res) => {
     try {

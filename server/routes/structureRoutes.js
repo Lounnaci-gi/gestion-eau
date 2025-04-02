@@ -5,16 +5,16 @@ const { add_structure, liste_structure, get_structure, update_structure, delete_
 
 
 //Routes ajouter structure
-router.post('/add_structure', emailValidation, phoneValidation, authenticate, add_structure);
+router.post('/add_structure', emailValidation, phoneValidation, authenticate,authorize(["admin"]), add_structure);
 
 //Routes pour afficher la liste des structure
-router.get('/liste_structure', authenticate, liste_structure);
+router.get('/liste_structure', authenticate,authorize(["admin","chef_centre"]), liste_structure);
 
 //Routes pour récupérer la structure par son ID
-router.get('/liste_structure/:id', authenticate, get_structure);
+router.get('/liste_structure/:id', authenticate,authorize(["admin","chef_centre"]), get_structure);
 
 //Routes pour mise a jour de la structure 
-router.put('/liste_structure/:id', emailValidation, phoneValidation, authenticate, update_structure);
+router.put('/liste_structure/:id', emailValidation, phoneValidation, authenticate,authorize(["admin","chef_centre"]), update_structure);
 
 //Routes pour supprimer une structure 
 router.delete('/liste_structure/:id', authenticate, authorize(["admin"]), delete_structure);
