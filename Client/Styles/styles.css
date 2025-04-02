@@ -1037,7 +1037,7 @@ nav ul li a:hover {
     width: 100%;
     text-transform: capitalize;
 }
-
+.btn-add-client,
 #btn_strtucture {
     width: 10%;
     padding: 12px;

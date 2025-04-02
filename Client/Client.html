@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Clientels - Gestion des clients</title>
+    <link rel="stylesheet" href="./Styles/styles.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Ajouter des balises OpenGraph -->
+    <meta property="og:title" content="Gestion Clientèle - Gestion des clients">
+    <meta property="og:description"
+        content="Gérez facilement votre base de clients avec notre solution de gestion clientèle.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="URL_DU_SITE">
+
+    <!-- Ajout de méta-données SEO -->
+    <meta name="description"
+        content="Gestion complète des clients - Ajout, modification, suppression et consultation des informations clients">
+    <meta name="keywords" content="gestion client, contact client, base clients, CRM, suivi client">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="scripts/controle_nav.js"></script>
+</head>
+
+<body>
+    <!-- Navbar identique à celle de index.html -->
+    <nav>
+        <div class="company-name">Logo</div> <!-- Nom de l'entreprise à gauche -->
+        <button class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#">Dossier</a></li>
+            <li><a href="client.html" class="active">Client</a></li>
+            <li><a href="#">Articles</a></li>
+            <li><a href="#">Devis</a></li>
+            <li><a href="#">Factures</a></li>
+            <li class="dropdown">
+                <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li id="structure"><a><i class="fa-solid fa-building"></i> Structure <i
+                                class="fas fa-caret-right"></i></a>
+                        <ul class="dropdown-menu">
+                            <li id="creation_structure"><a href="#structures"><i class="fa-solid fa-plus"></i>
+                                    Création</a></li>
+                            <li id="liste_structure"><a href="#structure-liste"><i class="fa-solid fa-list"></i>
+                                    Liste</a></li>
+                        </ul>
+                    </li>
+                    <li id="Utilisateurs"><a href="#"><i class="fa-solid fa-users-gear"></i> Utilisateurs</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i> <!-- Icône de recherche à l'intérieur -->
+            <input type="text" placeholder="Rechercher..." class="search-input" id="search">
+        </div>
+        <!-- Dans la section auth-buttons -->
+        <div class="auth-buttons">
+            <div class="auth-toggle-button" id="authToggle">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Sign In</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section principale pour la gestion des clients -->
+    <section class="client-container dashboard">
+        <div class="client-header">
+            <h1 id="structures">Gestion des Clients</h1>
+            <button class="btn-add-client" id="btnAddClient"><i class="fas fa-plus"></i> Créer</button>
+        </div>
+        <!-- Modal pour ajouter/modifier un client -->
+        <div class="auth-modal" id="clientModal">
+            <div class="auth-content client-form-content">
+                <span class="close-auth">&times;</span>
+            </div>
+        </div>
+    </section>
+
+    <script src="./scripts/main.js"></script>
+    <script src="./scripts/client.js"></script>
+</body>
+
+</html>
