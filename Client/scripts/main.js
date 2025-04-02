@@ -19,6 +19,7 @@ closeAuthButtons.forEach(closeBtn => {
         userTableModal.classList.remove("show");
     });
 });
+
 // Gestion du lien "Mot de passe oublié"
 document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
     e.preventDefault(); // Empêcher le comportement par défaut du lien

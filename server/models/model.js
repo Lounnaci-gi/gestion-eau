@@ -131,7 +131,7 @@ const userSchema = mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ["admin", "chef_centre", "chef_agence", "chef_tech_com", "juriste", "utilisateur"],
+            enum: ["admin", "chef_centre", "chef_agence", "chef_tech_com", "juriste", "utilisateur","chef_sect_client"],
             default: "utilisateur"
         },
         // Ajout de la référence à la structure
