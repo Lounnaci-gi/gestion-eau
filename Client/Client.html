@@ -50,9 +50,9 @@
                     </li>
                     <li id="Utilisateurs">
                         <a href="#" onclick="window.location.href='index.html?action=utilisateurs'; return false;">
-                           <i class="fa-solid fa-users-gear"></i> Utilisateurs
+                            <i class="fa-solid fa-users-gear"></i> Utilisateurs
                         </a>
-                     </li>
+                    </li>
 
                 </ul>
             </li>
@@ -71,6 +71,8 @@
         </div>
     </nav>
 
+
+
     <!-- Section principale pour la gestion des clients -->
     <section class="client-container dashboard">
         <div class="client-header">
@@ -78,14 +80,42 @@
             <button class="btn-add-client" id="btnAddClient"><i class="fas fa-plus"></i> Créer</button>
         </div>
         <!-- Modal pour ajouter/modifier un client -->
-        <div class="auth-modal" id="clientModal">
+        <div class="auth-modall" id="clientModal">
             <div class="auth-content client-form-content">
                 <span class="close-auth">&times;</span>
+
+                <form class="auth-form client-form" id="clientForm" style="display: block;">
+                    <div class="form-row">
+
+                        <div class="form-group">
+                            <label for="clientStatus">Civilité</label>
+                            <select id="clientStatus" required>
+                                <option value="Mr">Monsieur</option>
+                                <option value="Mme">Madame</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientCategorie">Status</label>
+                            <select id="clientCategorie" required>
+                                <option value="proprietaire">Proprietaire</option>
+                                <option value="locataire">Locataire</option>
+                                <option value="mandataire">Mandataire</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientType">Catégorie</label>
+                            <select id="clientType" required>
+                                <option value="particulier">Particulier</option>
+                                <option value="entreprise">Entreprise</option>
+                                <option value="administration">Administration</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </section>
-
-
 
 
     <div class="auth-modal" id="authModal">

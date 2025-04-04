@@ -492,7 +492,7 @@ nav ul li a:hover {
 }
 
 .auth-content {
-    background: white; 
+    background: white;
     padding: 30px;
     border-radius: 10px;
     width: 90%;
@@ -1037,6 +1037,7 @@ nav ul li a:hover {
     width: 100%;
     text-transform: capitalize;
 }
+
 .btn-add-client,
 #btn_strtucture {
     width: 10%;
@@ -1163,7 +1164,7 @@ nav ul li a:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.user-table th, 
+.user-table th,
 .user-table td,
 .structure-table th,
 .structure-table td {
@@ -1214,9 +1215,17 @@ nav ul li a:hover {
     animation-fill-mode: both;
 }
 
-.user-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
-.user-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
-.user-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.user-table tbody tr:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.user-table tbody tr:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.user-table tbody tr:nth-child(3) {
+    animation-delay: 0.15s;
+}
 
 /* Boutons d'action */
 .action-buttons {
@@ -1278,7 +1287,7 @@ nav ul li a:hover {
 }
 
 @media (max-width: 768px) {
-    
+
     .structure-table-container {
         padding: 16px;
         overflow-x: auto;
@@ -1362,12 +1371,13 @@ nav ul li a:hover {
 }
 
 /* Ajout d'une barre de recherche moderne */
-.structure-create{
+.structure-create {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
+
 .structure-search {
     position: relative;
     margin-bottom: 20px;
@@ -1457,14 +1467,24 @@ nav ul li a:hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.auth-modal#clientModal{
-    position: relative;
+.auth-modall#clientModal {
     display: block;
     width: 100%;
     height: 90dvh;
     margin: 20px 8px;
 }
-.client-form-content{
-    height: 50%;
-    width: 100%;
+
+.form-row {
+    gap: 20px;
+    justify-content: center;
+    font-size: 2em;
+    width: 20%;
+}
+
+.auth-modall{
+    background-color: #4CAF50;
+}
+.auth-content{
+    background: blue;
+    width: 100dvh;
 }
