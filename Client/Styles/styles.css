@@ -1038,11 +1038,13 @@ nav ul li a:hover {
     text-transform: capitalize;
 }
 
+
+.btn-submit,
 .btn-add-client,
 #btn_strtucture {
+    background: var(--primary-color);
     width: 10%;
     padding: 12px;
-    background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -1055,6 +1057,7 @@ nav ul li a:hover {
     font-weight: 600;
     letter-spacing: 0.02em;
 }
+
 
 #btn_strtucture:hover {
     background: var(--secondary-color);
@@ -1467,24 +1470,60 @@ nav ul li a:hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.auth-modall#clientModal {
-    display: block;
-    width: 100%;
-    height: 90dvh;
-    margin: 20px 8px;
+.client-form-container {
+    position: relative;
+    margin-top: 20px;
+    animation: fadeIn 0.3s ease;
 }
 
-.form-row {
+.client-form-container .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-form-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.close-form-btn:hover {
+    color: var(--primary-color);
+}
+
+.client-form-container form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    justify-content: center;
-    font-size: 2em;
-    width: 20%;
+    padding: 15px;
 }
 
-.auth-modall{
-    background-color: #4CAF50;
+.btn-submit {
+    background: var(--primary-color);
+    width: 10%;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    /* Ombre subtile */
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    grid-column: 1 / -1;
+ 
 }
-.auth-content{
-    background: blue;
-    width: 100dvh;
+
+.btn-submit:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

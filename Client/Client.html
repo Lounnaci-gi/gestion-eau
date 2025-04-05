@@ -5,16 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Clientels - Gestion des clients</title>
-    <link rel="stylesheet" href="./Styles/styles.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="./Styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Ajouter des balises OpenGraph -->
     <meta property="og:title" content="Gestion Clientèle - Gestion des clients">
     <meta property="og:description"
         content="Gérez facilement votre base de clients avec notre solution de gestion clientèle.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="URL_DU_SITE">
-
-    <!-- Ajout de méta-données SEO -->
     <meta name="description"
         content="Gestion complète des clients - Ajout, modification, suppression et consultation des informations clients">
     <meta name="keywords" content="gestion client, contact client, base clients, CRM, suivi client">
@@ -25,7 +22,7 @@
 <body>
     <!-- Navbar identique à celle de index.html -->
     <nav>
-        <div class="company-name">Logo</div> <!-- Nom de l'entreprise à gauche -->
+        <div class="company-name">Logo</div>
         <button class="hamburger" id="hamburger">
             <i class="fas fa-bars"></i>
         </button>
@@ -53,16 +50,14 @@
                             <i class="fa-solid fa-users-gear"></i> Utilisateurs
                         </a>
                     </li>
-
                 </ul>
             </li>
         </ul>
 
         <div class="search-container">
-            <i class="fas fa-search search-icon"></i> <!-- Icône de recherche à l'intérieur -->
+            <i class="fas fa-search search-icon"></i>
             <input type="text" placeholder="Rechercher..." class="search-input" id="search">
         </div>
-        <!-- Dans la section auth-buttons -->
         <div class="auth-buttons">
             <div class="auth-toggle-button" id="authToggle">
                 <i class="fas fa-sign-in-alt"></i>
@@ -71,58 +66,107 @@
         </div>
     </nav>
 
-
-
     <!-- Section principale pour la gestion des clients -->
     <section class="client-container dashboard">
         <div class="client-header">
-            <h1 id="structures">Gestion des Clients</h1>
+            <h1>Gestion des Clients</h1>
             <button class="btn-add-client" id="btnAddClient"><i class="fas fa-plus"></i> Créer</button>
         </div>
-        <!-- Modal pour ajouter/modifier un client -->
-        <div class="auth-modall" id="clientModal">
-            <div class="auth-content client-form-content">
-                <span class="close-auth">&times;</span>
 
-                <form class="auth-form client-form" id="clientForm" style="display: block;">
-                    <div class="form-row">
-
-                        <div class="form-group">
-                            <label for="clientStatus">Civilité</label>
-                            <select id="clientStatus" required>
-                                <option value="Mr">Monsieur</option>
-                                <option value="Mme">Madame</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientCategorie">Status</label>
-                            <select id="clientCategorie" required>
-                                <option value="proprietaire">Proprietaire</option>
-                                <option value="locataire">Locataire</option>
-                                <option value="mandataire">Mandataire</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientType">Catégorie</label>
-                            <select id="clientType" required>
-                                <option value="particulier">Particulier</option>
-                                <option value="entreprise">Entreprise</option>
-                                <option value="administration">Administration</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </form>
+        <!-- Formulaire intégré dans le dashboard -->
+        <div class="dashboard-card client-form-container" id="clientFormContainer" style="display: none;">
+            <div class="card-header">
+                <h3>Formulaire Client</h3>
+                <button class="close-form-btn" id="closeClientForm">&times;</button>
             </div>
+            <form id="clientForm">
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="clientStatus">Civilité</label>
+                        <select id="clientStatus" required>
+                            <option value="Mr">Monsieur</option>
+                            <option value="Mme">Madame</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCategorie">Status</label>
+                        <select id="clientCategorie" required>
+                            <option value="proprietaire">Proprietaire</option>
+                            <option value="locataire">Locataire</option>
+                            <option value="mandataire">Mandataire</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientType">Catégorie</label>
+                        <select id="clientType" required>
+                            <option value="particulier">Particulier</option>
+                            <option value="entreprise">Entreprise</option>
+                            <option value="administration">Administration</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="raisonSociale">Raison Sociale</label>
+                        <input type="text" id="raisonSociale" placeholder="Raison Sociale" required maxlength="60">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adresscorrespendante">Adresse</label>
+                        <input type="text" id="adresscorrespendante" placeholder="Adresse" required maxlength="60">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codepostale">Code Postale</label>
+                        <input type="text" id="codepostale" placeholder="Code Postale" required maxlength="5">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="commune_correspondante">Code Postale</label>
+                        <input type="text" id="commune_correspondante" placeholder="Commune" required maxlength="60">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="numPicIdentite">Numéro PIC Identité</label>
+                        <input type="text" id="numPicIdentite" placeholder="Numéro PIC Identité" required maxlength="18">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivrePar">Délivré par</label>
+                        <input type="text" id="delivrePar" placeholder="Délivré par" required maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateDelivrance">Date de délivrance</label>
+                        <input type="text" id="dateDelivrance" placeholder="Date de délivrance" required maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Email"  maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telephone">Telephone</label>
+                        <input type="tel" id="email" placeholder="Telephone"  maxlength="10">
+                    </div>
+
+                </div>
+               
+                <button type="submit" class="btn-submit">Enregistrer</button>
+            </form>
+        </div>
+
+        <!-- Tableau des clients -->
+        <div class="structure-table-container">
+            <!-- ... tableau existant ... -->
         </div>
     </section>
 
-
+    <!-- Modals d'authentification (copiés depuis index.html) -->
     <div class="auth-modal" id="authModal">
         <div class="auth-content">
             <span class="close-auth">&times;</span>
-
-            <!-- Formulaire de Connexion -->
             <form class="auth-form" id="loginForm">
                 <h2>Connexion</h2>
                 <div class="form-group">
@@ -135,12 +179,10 @@
                 </div>
                 <button type="submit">Se connecter</button>
                 <p class="auth-switch">Pas de compte ? <span>Créer un compte</span></p>
-                <!-- Ajouter un lien "Mot de passe oublié" -->
                 <p class="forgot-password">
                     <a href="#" id="forgotPasswordLink">Mot de passe oublié ?</a>
                 </p>
             </form>
-            <!-- Formulaire d'Inscription -->
             <form class="auth-form" id="registerForm">
                 <h2>Inscription</h2>
                 <div class="form-group">
@@ -172,7 +214,6 @@
         </div>
     </div>
 
-    <!-- Modal pour la récupération de mot de passe -->
     <div class="auth-modal" id="forgotPasswordModal">
         <div class="auth-content">
             <span class="close-auth">&times;</span>
@@ -188,7 +229,6 @@
         </div>
     </div>
 
-    <!-- Modal d'édition d'utilisateur -->
     <div class="auth-modal" id="editUserModal">
         <div class="auth-content">
             <span class="close-auth">&times;</span>
@@ -207,7 +247,6 @@
                     <label for="editRole">Rôle</label>
                     <select id="editRole" required>
                         <option value="utilisateur">Utilisateur</option>
-                        <!-- <option value="admin">Admin</option> -->
                         <option value="chef_centre">Chef de Centre</option>
                         <option value="chef_sect_client">Chef Section Clientels</option>
                         <option value="chef_agence">Chef d'Agence</option>
