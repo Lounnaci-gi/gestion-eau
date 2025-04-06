@@ -7,6 +7,8 @@ const closeClientForm = document.getElementById('closeClientForm');
 // Gestion de l'affichage du formulaire
 btnAddClient.addEventListener('click', () => {
     clientFormContainer.style.display = 'block';
+    btnAddClient.style.display='none';
+
     clientForm.reset();
     window.scrollTo({
         top: clientFormContainer.offsetTop - 20,
@@ -17,6 +19,7 @@ btnAddClient.addEventListener('click', () => {
 // Fermeture du formulaire
 closeClientForm.addEventListener('click', () => {
     clientFormContainer.style.display = 'none';
+    btnAddClient.style.display='block';
 });
 
 // Gestion de la soumission
@@ -36,11 +39,12 @@ clientForm.addEventListener('submit', (e) => {
     // Réinitialisation et fermeture
     clientFormContainer.style.display = 'none';
     clientForm.reset();
+    btnAddClient.style.display='block';
 });
 
 // Fermer si on clique en dehors (optionnel)
-document.addEventListener('click', (e) => {
-    if (!clientFormContainer.contains(e.target) && e.target !== btnAddClient) {
-        clientFormContainer.style.display = 'none';
-    }
-});
+// document.addEventListener('click', (e) => {
+//     if (!clientFormContainer.contains(e.target) && e.target !== btnAddClient) {
+//         clientFormContainer.style.display = 'none';
+//     }
+// });
