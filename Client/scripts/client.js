@@ -7,7 +7,7 @@ const closeClientForm = document.getElementById('closeClientForm');
 // Gestion de l'affichage du formulaire
 btnAddClient.addEventListener('click', () => {
     clientFormContainer.style.display = 'block';
-    btnAddClient.style.display='none';
+    btnAddClient.style.display = 'none';
 
     clientForm.reset();
     window.scrollTo({
@@ -19,27 +19,35 @@ btnAddClient.addEventListener('click', () => {
 // Fermeture du formulaire
 closeClientForm.addEventListener('click', () => {
     clientFormContainer.style.display = 'none';
-    btnAddClient.style.display='block';
+    btnAddClient.style.display = 'block';
 });
 
 // Gestion de la soumission
 clientForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     // Récupération des données
     const formData = {
-        idDossier: document.getElementById('clientIdDossier').value,
-        civilite: document.getElementById('clientStatus').value,
+        Civilite: document.getElementById('clientStatus').value,
+        raison_sociale: document.getElementById('raisonSociale').value,
+        Adresse_correspondante: document.getElementById('adresscorrespendante').value,
+        Code_postale: document.getElementById('codepostale').value,
+        commune_correspondante: document.getElementById('commune_correspondante').value,
+        Num_pic_identite: document.getElementById('numPicIdentite').value,
+        email: document.getElementById('emailClient').value,
+        telephone: document.getElementById('clientStatus').value,
+        type_client: document.getElementById('clientCategorie').value
+
         // ... récupérer tous les autres champs ...
     };
 
     // Logique de sauvegarde (à adapter)
     console.log('Nouveau client:', formData);
-    
+
     // Réinitialisation et fermeture
     clientFormContainer.style.display = 'none';
     clientForm.reset();
-    btnAddClient.style.display='block';
+    btnAddClient.style.display = 'block';
 });
 
 // Fermer si on clique en dehors (optionnel)

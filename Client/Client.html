@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Clientèle - Gestion des clients</title>
+    <title>Gestion Clientels - Gestion des clients</title>
     <link rel="stylesheet" href="./Styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta property="og:title" content="Gestion Clientèle - Gestion des clients">
@@ -20,10 +20,10 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- Navbar identique à celle de index.html -->
     <nav>
         <div class="company-name">Logo</div>
-        <button class="hamburger" id="hamburger" aria-label="Menu de navigation">
+        <button class="hamburger" id="hamburger">
             <i class="fas fa-bars"></i>
         </button>
         <ul class="nav-links" id="nav-links">
@@ -33,9 +33,9 @@
             <li><a href="#">Devis</a></li>
             <li><a href="#">Factures</a></li>
             <li class="dropdown">
-                <a href="#" aria-haspopup="true">Paramètres <i class="fas fa-caret-down"></i></a>
+                <a href="#">Paramètres <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown-menu">
-                    <li id="structure"><a aria-haspopup="true"><i class="fa-solid fa-building"></i> Structure <i
+                    <li id="structure"><a><i class="fa-solid fa-building"></i> Structure <i
                                 class="fas fa-caret-right"></i></a>
                         <ul class="dropdown-menu">
                             <li id="creation_structure"><a href="index.html#structures"><i class="fa-solid fa-plus"></i>
@@ -56,79 +56,84 @@
 
         <div class="search-container">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" placeholder="Rechercher..." class="search-input" id="search" aria-label="Rechercher">
+            <input type="text" placeholder="Rechercher..." class="search-input" id="search">
         </div>
         <div class="auth-buttons">
             <div class="auth-toggle-button" id="authToggle">
                 <i class="fas fa-sign-in-alt"></i>
-                <span>Connexion</span>
+                <span>Sign In</span>
             </div>
         </div>
     </nav>
 
     <!-- Section principale pour la gestion des clients -->
-    <main>
-        <section class="client-container dashboard">
-            <div class="client-header">
-                <h1>Gestion des Clients</h1>
-                <button class="btn-add-client" id="btnAddClient" aria-label="Créer un nouveau client"><i class="fas fa-plus"></i> Créer</button>
+    <section class="client-container dashboard">
+        <div class="client-header">
+            <h1>Gestion des Clients</h1>
+            <button class="btn-add-client" id="btnAddClient"><i class="fas fa-plus"></i> Créer</button>
+        </div>
+
+        <!-- Formulaire intégré dans le dashboard -->
+        <div class="client-form-container" id="clientFormContainer" style="display: none;">
+            <div class="card-header">
+                <h4>informations Client</h4>
+                <button class="close-form-btn" id="closeClientForm">&times;</button>
             </div>
+            <form id="clientForm">
+                <div class="form-row">
 
-            <!-- Formulaire intégré dans le dashboard -->
-            <div class="dashboard-card client-form-container" id="clientFormContainer" style="display: none;">
-                <div class="card-header">
-                    <h3>Formulaire Client</h3>
-                    <button class="close-form-btn" id="closeClientForm" aria-label="Fermer le formulaire">&times;</button>
-                </div>
-                <form id="clientForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="clientStatus">Civilité</label>
-                            <select id="clientStatus" required>
-                                <option value="Mr">Monsieur</option>
-                                <option value="Mme">Madame</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientCategorie">Statut</label>
-                            <select id="clientCategorie" required>
-                                <option value="proprietaire">Propriétaire</option>
-                                <option value="locataire">Locataire</option>
-                                <option value="mandataire">Mandataire</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientType">Catégorie</label>
-                            <select id="clientType" required>
-                                <option value="particulier">Particulier</option>
-                                <option value="entreprise">Entreprise</option>
-                                <option value="administration">Administration</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="clientStatus">Civilité</label>
+                        <select id="clientStatus" required>
+                            <option value="Mr">Monsieur</option>
+                            <option value="Mme">Madame</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCategorie">Status</label>
+                        <select id="clientCategorie" required>
+                            <option value="proprietaire">Proprietaire</option>
+                            <option value="locataire">Locataire</option>
+                            <option value="mandataire">Mandataire</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientType">Catégorie</label>
+                        <select id="clientType" required>
+                            <option value="particulier">Particulier</option>
+                            <option value="ِCommerciaux">ِCommerciaux</option>
+                            <option value="entreprise">Entreprise</option>
+                            <option value="administration">Administration</option>
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="raisonSociale">Raison Sociale</label>
-                            <input type="text" id="raisonSociale" placeholder="Raison Sociale" required maxlength="60">
-                        </div>
+                    <div class="form-group">
+                        <label for="raisonSociale">Raison Sociale</label>
+                        <input type="text" id="raisonSociale" placeholder="Raison Sociale" required maxlength="60">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="adresscorrespendante">Adresse</label>
-                            <input type="text" id="adresscorrespendante" placeholder="Adresse" required maxlength="60">
-                        </div>
+                    <div class="form-group">
+                        <label for="adresscorrespendante">Adresse</label>
+                        <input type="text" id="adresscorrespendante" placeholder="Adresse" required maxlength="60">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="codepostale">Code Postal</label>
-                            <input type="text" id="codepostale" placeholder="Code Postal" required maxlength="5" pattern="[0-9]{5}">
-                        </div>
-                       
-                        <div class="form-group">
-                            <label for="commune_correspondante">Commune</label>
-                            <input type="text" id="commune_correspondante" placeholder="Commune" required maxlength="60">
-                        </div>
-                       
+                    <div class="form-group">
+                        <label for="codepostale">Code Postale</label>
+                        <input type="text" id="codepostale" placeholder="Code Postale" required maxlength="5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="commune_correspondante">Commune</label>
+                        <input type="text" id="commune_correspondante" placeholder="Commune" required maxlength="60">
+                    </div>
+
+                    <div class="Identite">
+
+
                         <div class="form-group">
                             <label for="numPicIdentite">Numéro PIC Identité</label>
-                            <input type="text" id="numPicIdentite" placeholder="Numéro PIC Identité" required maxlength="18">
+                            <input type="text" id="numPicIdentite" placeholder="Numéro PIC Identité" required
+                                maxlength="18">
                         </div>
 
                         <div class="form-group">
@@ -138,47 +143,54 @@
 
                         <div class="form-group">
                             <label for="dateDelivrance">Date de délivrance</label>
-                            <input type="date" id="dateDelivrance" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="Email" maxlength="50">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="telephone">Téléphone</label>
-                            <input type="tel" id="telephone" placeholder="Téléphone" maxlength="10" pattern="[0-9]{10}">
+                            <input type="text" id="dateDelivrance" placeholder="Date de délivrance" required
+                                maxlength="50">
                         </div>
                     </div>
-                   
-                    <button type="submit" class="btn-submit">Enregistrer</button>
-                </form>
-            </div>
+                    <div class="form-group">
+                        <label for="emailClient">Email</label>
+                        <input type="email" id="emailClient" placeholder="Email" maxlength="50">
+                    </div>
+                    <div class="Identite">
 
-            <!-- Tableau des clients -->
-            <div class="structure-table-container">
-                <!-- ... tableau existant ... -->
-            </div>
-        </section>
-    </main>
+                    <div class="form-group">
+                        <label for="telephone">Telephone</label>
+                        <input type="tel" id="telephone" placeholder="Telephone" maxlength="10"> 
+                    </div>
 
-    <!-- Modals d'authentification -->
-    <div class="auth-modal" id="authModal" aria-hidden="true">
+                    <div class="form-group">
+                        <div class='add'>+</div>
+                    </div>
+                </div>
+
+                </div>
+
+                <button type="submit" class="btn-submit">Enregistrer</button>
+            </form>
+        </div>
+
+        <!-- Tableau des clients -->
+        <div class="structure-table-container">
+            <!-- ... tableau existant ... -->
+        </div>
+    </section>
+
+    <!-- Modals d'authentification (copiés depuis index.html) -->
+    <div class="auth-modal" id="authModal">
         <div class="auth-content">
-            <span class="close-auth" aria-label="Fermer">&times;</span>
+            <span class="close-auth">&times;</span>
             <form class="auth-form" id="loginForm">
                 <h2>Connexion</h2>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" required maxlength="50" autocomplete="email">
+                    <input type="email" id="email" required maxlength="50" autocomplete="aaaaa@aaaa.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" required maxlength="20" autocomplete="current-password">
+                    <input type="password" id="password" required maxlength="20">
                 </div>
                 <button type="submit">Se connecter</button>
-                <p class="auth-switch">Pas de compte ? <span tabindex="0">Créer un compte</span></p>
+                <p class="auth-switch">Pas de compte ? <span>Créer un compte</span></p>
                 <p class="forgot-password">
                     <a href="#" id="forgotPasswordLink">Mot de passe oublié ?</a>
                 </p>
@@ -187,19 +199,19 @@
                 <h2>Inscription</h2>
                 <div class="form-group">
                     <label for="nomComplet">Nom complet</label>
-                    <input type="text" id="nomComplet" required maxlength="50" autocomplete="name">
+                    <input type="text" id="nomComplet" required maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="Utilisateur">Nom Utilisateur</label>
-                    <input type="text" id="Utilisateur" required maxlength="15" autocomplete="username">
+                    <input type="text" id="Utilisateur" required maxlength="15">
                 </div>
                 <div class="form-group">
                     <label for="email_ins">Email</label>
-                    <input type="email" id="email_ins" required maxlength="50" autocomplete="email">
+                    <input type="email" id="email_ins" required maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="password_ins">Mot de passe</label>
-                    <input type="password" id="password_ins" required maxlength="20" autocomplete="new-password">
+                    <input type="password" id="password_ins" required maxlength="20">
                 </div>
                 <div class="form-group">
                     <label for="role">Rôle</label>
@@ -209,46 +221,46 @@
                     </select>
                 </div>
                 <button type="submit">S'inscrire</button>
-                <p class="auth-switch">Déjà un compte ? <span tabindex="0">Se connecter</span></p>
+                <p class="auth-switch">Déjà un compte ? <span>Se connecter</span></p>
             </form>
         </div>
     </div>
 
-    <div class="auth-modal" id="forgotPasswordModal" aria-hidden="true">
+    <div class="auth-modal" id="forgotPasswordModal">
         <div class="auth-content">
-            <span class="close-auth" aria-label="Fermer">&times;</span>
+            <span class="close-auth">&times;</span>
             <form class="auth-form" id="forgotPasswordForm">
                 <h2>Mot de passe oublié</h2>
                 <div class="form-group">
                     <label for="forgotPasswordEmail">Email</label>
-                    <input type="email" id="forgotPasswordEmail" required maxlength="50" autocomplete="email">
+                    <input type="email" id="forgotPasswordEmail" required maxlength="50">
                 </div>
                 <button type="submit">Envoyer le lien de réinitialisation</button>
-                <p class="auth-switch"><span tabindex="0">Retour à la connexion</span></p>
+                <p class="auth-switch"><span>Retour à la connexion</span></p>
             </form>
         </div>
     </div>
 
-    <div class="auth-modal" id="editUserModal" aria-hidden="true">
+    <div class="auth-modal" id="editUserModal">
         <div class="auth-content">
-            <span class="close-auth" aria-label="Fermer">&times;</span>
+            <span class="close-auth">&times;</span>
             <form class="auth-form" id="editUserForm">
                 <h2>Modifier l'utilisateur</h2>
                 <input type="hidden" id="editUserId">
                 <div class="form-group">
                     <label for="editNomComplet">Nom complet</label>
-                    <input type="text" id="editNomComplet" required maxlength="50" autocomplete="name">
+                    <input type="text" id="editNomComplet" required maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="editEmail">Email</label>
-                    <input type="email" id="editEmail" required maxlength="50" autocomplete="email">
+                    <input type="email" id="editEmail" required maxlength="50">
                 </div>
                 <div class="form-group">
                     <label for="editRole">Rôle</label>
                     <select id="editRole" required>
                         <option value="utilisateur">Utilisateur</option>
                         <option value="chef_centre">Chef de Centre</option>
-                        <option value="chef_sect_client">Chef Section Clientèle</option>
+                        <option value="chef_sect_client">Chef Section Clientels</option>
                         <option value="chef_agence">Chef d'Agence</option>
                         <option value="chef_tech_com">Chef Technique Commercial</option>
                         <option value="juriste">Juriste</option>

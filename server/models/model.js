@@ -48,9 +48,11 @@ const clientSchema = mongoose.Schema(
             required: false,
         },
         telephone: {
-            type: String,
+            type: [String],
             required: false,
+            default: []
         },
+
         type_client: {
             type: String,
             required: true,
@@ -111,27 +113,27 @@ const structureSchema = new mongoose.Schema({
 // Schéma pour les utilisateurs avec référence à la structure
 const userSchema = mongoose.Schema(
     {
-        nomComplet: { 
-            type: String, 
-            required: true 
+        nomComplet: {
+            type: String,
+            required: true
         },
-        nomUtilisateur: { 
-            type: String, 
-            required: true, 
-            unique: true 
+        nomUtilisateur: {
+            type: String,
+            required: true,
+            unique: true
         },
-        email: { 
-            type: String, 
-            required: true, 
-            unique: true 
+        email: {
+            type: String,
+            required: true,
+            unique: true
         },
-        motDePasse: { 
-            type: String, 
-            required: true 
+        motDePasse: {
+            type: String,
+            required: true
         },
         role: {
             type: String,
-            enum: ["admin", "chef_centre", "chef_agence", "chef_tech_com", "juriste", "utilisateur","chef_sect_client"],
+            enum: ["admin", "chef_centre", "chef_agence", "chef_tech_com", "juriste", "utilisateur", "chef_sect_client"],
             default: "utilisateur"
         },
         // Ajout de la référence à la structure
@@ -140,17 +142,17 @@ const userSchema = mongoose.Schema(
             ref: "Structure",
             required: false
         },
-        tokenVersion: { 
-            type: Number, 
-            default: 0 
+        tokenVersion: {
+            type: Number,
+            default: 0
         },
-        resetToken: { 
-            type: String, 
-            default: null 
+        resetToken: {
+            type: String,
+            default: null
         },
-        resetTokenExpire: { 
-            type: Date, 
-            default: null 
+        resetTokenExpire: {
+            type: Date,
+            default: null
         },
         // Ajout du statut de l'utilisateur
         statut: {
