@@ -1519,11 +1519,22 @@ nav ul li a:hover {
     font-weight: 600;
     letter-spacing: 0.02em;
     grid-column: 1 / -1;
- 
+
 }
 
 .btn-submit:hover {
     background: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.Identite {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    align-items: flex-end;
+}
+
+.Identite .form-group {
+    margin-inline-end: 15px;
 }

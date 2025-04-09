@@ -101,6 +101,7 @@
                         <label for="clientType">Catégorie</label>
                         <select id="clientType" required>
                             <option value="particulier">Particulier</option>
+                            <option value="ِCommerciaux">ِCommerciaux</option>
                             <option value="entreprise">Entreprise</option>
                             <option value="administration">Administration</option>
                         </select>
@@ -120,39 +121,44 @@
                         <label for="codepostale">Code Postale</label>
                         <input type="text" id="codepostale" placeholder="Code Postale" required maxlength="5">
                     </div>
-                   
+
                     <div class="form-group">
-                        <label for="commune_correspondante">Code Postale</label>
+                        <label for="commune_correspondante">Commune</label>
                         <input type="text" id="commune_correspondante" placeholder="Commune" required maxlength="60">
                     </div>
-                   
-                    <div class="form-group">
-                        <label for="numPicIdentite">Numéro PIC Identité</label>
-                        <input type="text" id="numPicIdentite" placeholder="Numéro PIC Identité" required maxlength="18">
-                    </div>
 
-                    <div class="form-group">
-                        <label for="delivrePar">Délivré par</label>
-                        <input type="text" id="delivrePar" placeholder="Délivré par" required maxlength="50">
-                    </div>
+                    <div class="Identite">
 
-                    <div class="form-group">
-                        <label for="dateDelivrance">Date de délivrance</label>
-                        <input type="text" id="dateDelivrance" placeholder="Date de délivrance" required maxlength="50">
-                    </div>
 
+                        <div class="form-group">
+                            <label for="numPicIdentite">Numéro PIC Identité</label>
+                            <input type="text" id="numPicIdentite" placeholder="Numéro PIC Identité" required
+                                maxlength="18">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="delivrePar">Délivré par</label>
+                            <input type="text" id="delivrePar" placeholder="Délivré par" required maxlength="50">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dateDelivrance">Date de délivrance</label>
+                            <input type="text" id="dateDelivrance" placeholder="Date de délivrance" required
+                                maxlength="50">
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Email"  maxlength="50">
+                        <label for="emailClient">Email</label>
+                        <input type="email" id="emailClient" placeholder="Email" maxlength="50">
                     </div>
 
                     <div class="form-group">
                         <label for="telephone">Telephone</label>
-                        <input type="tel" id="email" placeholder="Telephone"  maxlength="10">
+                        <input type="tel" id="telephone" placeholder="Telephone" maxlength="10">
                     </div>
 
                 </div>
-               
+
                 <button type="submit" class="btn-submit">Enregistrer</button>
             </form>
         </div>
