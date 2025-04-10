@@ -50,6 +50,21 @@ clientForm.addEventListener('submit', (e) => {
     btnAddClient.style.display = 'block';
 });
 
+let i=0;
+
+document.querySelector('.add').addEventListener('click', () => {
+    if (i < 2) {
+        i++;
+        const div = document.createElement('div');
+        const tele = document.createElement('input');
+        div.classList.add('form-group');
+        tele.type = "tel";
+        tele.placeholder = "Telephone "+i;
+        div.appendChild(tele);
+        document.querySelector('.form-row').appendChild(div);
+    }
+
+});
 // Fermer si on clique en dehors (optionnel)
 // document.addEventListener('click', (e) => {
 //     if (!clientFormContainer.contains(e.target) && e.target !== btnAddClient) {

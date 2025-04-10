@@ -1537,15 +1537,17 @@ nav ul li a:hover {
 
 .Identite .form-group {
     margin-inline-end: 15px;
-    align-items:center;
-   
+    align-items: center;
+
 }
+
 .add {
-    font-size:2em;
+    font-size: 2em;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
-.add:hover{
-    transform: rotate(180deg);
-    color:#007bff;
+
+.add:hover {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    color: #007bff;
 }
