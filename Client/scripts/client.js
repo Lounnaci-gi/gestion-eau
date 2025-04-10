@@ -28,8 +28,15 @@ clientForm.addEventListener('submit', (e) => {
     
     // Récupération des données
     const formData = {
-        idDossier: document.getElementById('clientIdDossier').value,
         civilite: document.getElementById('clientStatus').value,
+        raison_sociale: document.getElementById('raisonSociale').value,
+        Adresse_correspondante: document.getElementById('adresscorrespendante').value,
+        Code_postale: document.getElementById('clientAddress').value,
+        commune_correspondante: document.getElementById('commune_correspondante').value,
+        codePostal: document.getElementById('clientZip').value,
+        telephone: document.getElementById('clientPhone').value,
+        email: document.getElementById('clientEmail').value,
+      
         // ... récupérer tous les autres champs ...
     };
 
@@ -48,3 +55,4 @@ clientForm.addEventListener('submit', (e) => {
 //         clientFormContainer.style.display = 'none';
 //     }
 // });
+
