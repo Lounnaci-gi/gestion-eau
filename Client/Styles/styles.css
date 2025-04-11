@@ -1532,22 +1532,28 @@ nav ul li a:hover {
     display: flex;
     gap: 20px;
     width: max-content;
-    align-items: flex-end;
+    align-items: last baseline;
 }
 
 .Identite .form-group {
-    margin-inline-end: 15px;
+    margin-inline-end: 5%;
     align-items: center;
+    justify-content: space-between;
+    width: max-content;
+
 
 }
 
+.remove-btn,
 .add {
-    font-size: 2em;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+
 }
 
+.remove-btn:hover,
 .add:hover {
+    transform: scale(1.5);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     color: #007bff;
 }

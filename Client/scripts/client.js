@@ -50,21 +50,50 @@ clientForm.addEventListener('submit', (e) => {
     btnAddClient.style.display = 'block';
 });
 
-let i=0;
+let i = 0;
 
 document.querySelector('.add').addEventListener('click', () => {
     if (i < 2) {
         i++;
-        const div = document.createElement('div');
-        const tele = document.createElement('input');
-        div.classList.add('form-group');
-        tele.type = "tel";
-        tele.placeholder = "Telephone "+i;
-        div.appendChild(tele);
-        document.querySelector('.form-row').appendChild(div);
-    }
 
+        const identite = document.createElement('div');
+        const formgroup1 = document.createElement('div');
+        const formgroup2 = document.createElement('div');
+        const tele = document.createElement('input');
+        const btn = document.createElement('i');
+
+        // Ajout des classes
+        btn.classList.add('fa-solid', 'fa-minus', 'remove-btn');
+        identite.classList.add('Identite');
+        formgroup1.classList.add('form-group');
+        formgroup2.classList.add('form-group');
+
+        // Configuration de l’input
+        tele.type = "tel";
+        tele.placeholder = "Téléphone " + i;
+
+        // Construction du DOM
+        formgroup1.appendChild(tele);
+        formgroup2.appendChild(btn);
+        identite.appendChild(formgroup1);
+        identite.appendChild(formgroup2);
+
+        document.querySelector('.form-row').appendChild(identite);
+
+        // Suppression à clic sur le bouton "moins"
+        btn.addEventListener('click', () => {
+            identite.remove();
+            i--;
+        });
+    }
 });
+
+btn.addEventListener('click', () => {
+    identite.remove();
+    i--;
+});
+
+
 // Fermer si on clique en dehors (optionnel)
 // document.addEventListener('click', (e) => {
 //     if (!clientFormContainer.contains(e.target) && e.target !== btnAddClient) {
