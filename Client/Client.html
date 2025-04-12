@@ -81,32 +81,32 @@
             </div>
             <form id="clientForm">
                 <div class="form-row">
-
-                    <div class="form-group">
-                        <label for="clientStatus">Civilité</label>
-                        <select id="clientStatus" required>
-                            <option value="Mr">Monsieur</option>
-                            <option value="Mme">Madame</option>
-                        </select>
+                    <div class="Identite">
+                        <div class="form-group">
+                            <label for="clientStatus">Civilité</label>
+                            <select id="clientStatus" required>
+                                <option value="Mr">Monsieur</option>
+                                <option value="Mme">Madame</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientCategorie">Status</label>
+                            <select id="clientCategorie" required>
+                                <option value="proprietaire">Proprietaire</option>
+                                <option value="locataire">Locataire</option>
+                                <option value="mandataire">Mandataire</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientType">Catégorie</label>
+                            <select id="clientType" required>
+                                <option value="particulier">Particulier</option>
+                                <option value="ِCommerciaux">ِCommerciaux</option>
+                                <option value="entreprise">Entreprise</option>
+                                <option value="administration">Administration</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="clientCategorie">Status</label>
-                        <select id="clientCategorie" required>
-                            <option value="proprietaire">Proprietaire</option>
-                            <option value="locataire">Locataire</option>
-                            <option value="mandataire">Mandataire</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientType">Catégorie</label>
-                        <select id="clientType" required>
-                            <option value="particulier">Particulier</option>
-                            <option value="ِCommerciaux">ِCommerciaux</option>
-                            <option value="entreprise">Entreprise</option>
-                            <option value="administration">Administration</option>
-                        </select>
-                    </div>
-
                     <div class="form-group">
                         <label for="raisonSociale">Raison Sociale</label>
                         <input type="text" id="raisonSociale" placeholder="Raison Sociale" required maxlength="60">
@@ -118,14 +118,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="codepostale">Code Postale</label>
-                        <input type="text" id="codepostale" placeholder="Code Postale" required maxlength="5">
+                        <label for="Ville">City</label>
+                        <input type="text" id="City" placeholder="City" required maxlength="60">
                     </div>
 
                     <div class="form-group">
                         <label for="commune_correspondante">Commune</label>
                         <input type="text" id="commune_correspondante" placeholder="Commune" required maxlength="60">
                     </div>
+
+                    <div class="form-group">
+                        <label for="codepostale">Code Postale</label>
+                        <input type="text" id="codepostale" placeholder="Code Postale" required maxlength="5">
+                    </div>
+
 
                     <div class="Identite">
 

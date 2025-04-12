@@ -1535,6 +1535,13 @@ nav ul li a:hover {
     align-items: last baseline;
 }
 
+.Identite>.form-group>select {
+    margin-inline-end: 10%;
+    align-items: center;
+    justify-content: space-between;
+    width: max-content;
+}
+
 .Identite .form-group {
     margin-inline-end: 5%;
     align-items: center;

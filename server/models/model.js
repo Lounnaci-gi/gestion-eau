@@ -5,8 +5,8 @@ const clientSchema = mongoose.Schema(
     {
         Id_Dossier: {
             type: String,
-            required: true,
-            unique: true,
+            required: false,
+            unique: false,
         },
         Civilite: {
             type: String,

@@ -36,13 +36,14 @@ clientForm.addEventListener('submit', (e) => {
         Num_pic_identite: document.getElementById('numPicIdentite').value,
         email: document.getElementById('emailClient').value,
         telephone: document.getElementById('clientStatus').value,
+        telephone1: document.getElementById('telephone1').value,
         type_client: document.getElementById('clientCategorie').value
 
         // ... récupérer tous les autres champs ...
     };
 
     // Logique de sauvegarde (à adapter)
-    console.log('Nouveau client:', formData);
+    alert(formData.telephone1);
 
     // Réinitialisation et fermeture
     clientFormContainer.style.display = 'none';
@@ -71,6 +72,7 @@ document.querySelector('.add').addEventListener('click', () => {
         // Configuration de l’input
         tele.type = "tel";
         tele.placeholder = "Téléphone " + i;
+        tele.id = 'telephone1';
 
         // Construction du DOM
         formgroup1.appendChild(tele);
@@ -88,10 +90,6 @@ document.querySelector('.add').addEventListener('click', () => {
     }
 });
 
-btn.addEventListener('click', () => {
-    identite.remove();
-    i--;
-});
 
 
 // Fermer si on clique en dehors (optionnel)
