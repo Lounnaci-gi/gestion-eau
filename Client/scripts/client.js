@@ -43,7 +43,7 @@ clientForm.addEventListener('submit', (e) => {
     };
 
     // Logique de sauvegarde (à adapter)
-    alert(formData.telephone1);
+
 
     // Réinitialisation et fermeture
     clientFormContainer.style.display = 'none';
@@ -51,47 +51,25 @@ clientForm.addEventListener('submit', (e) => {
     btnAddClient.style.display = 'block';
 });
 
-let i = 0;
 
-document.querySelector('.add').addEventListener('click', () => {
-    if (i < 1) {
-        i++;
 
-        const identite = document.createElement('div');
-        const formgroup1 = document.createElement('div');
-        const formgroup2 = document.createElement('div');
-        const tele = document.createElement('input');
-        const btn = document.createElement('i');
+document.addEventListener('DOMContentLoaded', (e) => {
+    e.preventDefault();
+    const toggleclientType = () => {
 
-        // Ajout des classes
-        btn.classList.add('fa-solid', 'fa-minus', 'remove-btn');
-        identite.classList.add('Identite');
-        formgroup1.classList.add('form-group');
-        formgroup2.classList.add('form-group');
+        if (document.getElementById('clientType').value !== 'particulier') {
+            document.querySelector('.form-group-raison-sociale').style.display = 'block';
+            document.querySelector('.nom').style.display = 'none';
 
-        // Configuration de l’input
-        tele.type = "tel";
-        tele.placeholder = "Téléphone " + i;
-        tele.id = 'telephone1';
-
-        // Construction du DOM
-        formgroup1.appendChild(tele);
-        formgroup2.appendChild(btn);
-        identite.appendChild(formgroup1);
-        identite.appendChild(formgroup2);
-
-        document.querySelector('.form-row').appendChild(identite);
-
-        // Suppression à clic sur le bouton "moins"
-        btn.addEventListener('click', () => {
-            identite.remove();
-            i--;
-        });
+        }
+        else {
+            document.querySelector('.form-group-raison-sociale').style.display = 'none';
+            document.querySelector('.nom').style.display = 'block';
+        }
     }
+    toggleclientType();
+    document.getElementById('clientType').addEventListener('change', toggleclientType);
 });
-
-
-
 // Fermer si on clique en dehors (optionnel)
 // document.addEventListener('click', (e) => {
 //     if (!clientFormContainer.contains(e.target) && e.target !== btnAddClient) {
