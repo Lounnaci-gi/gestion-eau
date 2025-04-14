@@ -7,6 +7,9 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const cookieParser = require('cookie-parser'); // Importez cookie-parser
 const { title } = require('process');
 const errorHandler = require("./middlewares/errorHandler");
+const cors = require('cors');
+app.use(cors());
+
 // Connexion à MongoDB
 connectdb();
 
@@ -40,6 +43,6 @@ app.get("*", (req, res, next) => {
 });
 
 // Démarrage du serveur
-app.listen(port, () => {
+app.listen(port,'0.0.0.0', () => {
     console.log(`Le serveur est lancé sur le port: http://localhost:${port}`);
 });

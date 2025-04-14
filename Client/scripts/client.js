@@ -54,7 +54,7 @@ clientForm.addEventListener('submit', (e) => {
 let i = 0;
 
 document.querySelector('.add').addEventListener('click', () => {
-    if (i < 2) {
+    if (i < 1) {
         i++;
 
         const identite = document.createElement('div');

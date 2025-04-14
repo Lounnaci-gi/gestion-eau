@@ -9,6 +9,7 @@ function showAlert(title, text, icon) {
 }
 
 const API_BASE_URL = "http://localhost:3000"; // Remplacer par l'URL réelle en prod
+// const API_BASE_URL = "https://m4tfftv0-3000.uks1.devtunnels.ms"; // Remplacer par l'URL réelle en prod
 let logoutTimer;
 
 // Fonction pour réinitialiser le timer

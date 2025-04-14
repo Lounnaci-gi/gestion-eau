@@ -1536,7 +1536,7 @@ nav ul li a:hover {
 }
 
 .Identite>.form-group>select {
-    margin-inline-end: 10%;
+    margin-inline-end: max-content;
     align-items: center;
     justify-content: space-between;
     width: max-content;
@@ -1563,4 +1563,7 @@ nav ul li a:hover {
     transform: scale(1.5);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     color: #007bff;
+}
+#codepostale{
+    width: 50%;
 }
