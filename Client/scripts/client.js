@@ -1,3 +1,4 @@
+
 // Références aux éléments DOM
 const btnAddClient = document.getElementById('btnAddClient');
 const clientFormContainer = document.getElementById('clientFormContainer');
@@ -28,19 +29,31 @@ clientForm.addEventListener('submit', (e) => {
 
     // Récupération des données
     const formData = {
-        Civilite: document.getElementById('clientStatus').value,
-        raison_sociale: document.getElementById('raisonSociale').value,
-        Adresse_correspondante: document.getElementById('adresscorrespendante').value,
-        Code_postale: document.getElementById('codepostale').value,
-        commune_correspondante: document.getElementById('commune_correspondante').value,
-        Num_pic_identite: document.getElementById('numPicIdentite').value,
-        email: document.getElementById('emailClient').value,
-        telephone: document.getElementById('clientStatus').value,
-        telephone1: document.getElementById('telephone1').value,
-        type_client: document.getElementById('clientCategorie').value
+        Civilite: document.getElementById('clientStatus').value.trim(),
+        raison_sociale: document.getElementById('raisonSociale').value.trim(),
+        nom: document.getElementById('nom').value.trim(),
+        prenom: document.getElementById('prenom').value.trim(),
+        quartier: document.getElementById('quartier').value.trim(),
+        rue: document.getElementById('rue').value.trim(),
+        commune_correspondante: document.getElementById('commune_correspondante').value.trim(),
+        Code_postale: document.getElementById('codepostale').value.trim(),
+
+        Num_pic_identite: document.getElementById('numPicIdentite').value.trim(),
+        delivrePar: document.getElementById('delivrePar').value.trim(),
+        dateDelivrance: document.getElementById('dateDelivrance').value.trim(),
+
+        email: document.getElementById('emailClient').value.trim(),
+        telephone: [
+            document.getElementById('telephone1').value.trim(),
+            document.getElementById('telephone2').value.trim()
+        ].filter(phone => phone !== ""),
+
+        fax: document.getElementById('fax').value.trim(),
+        type_client: document.getElementById('clientCategorie').value.trim()
 
         // ... récupérer tous les autres champs ...
     };
+    console.log(formData);
 
     // Logique de sauvegarde (à adapter)
 
@@ -59,16 +72,25 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
         if (document.getElementById('clientType').value !== 'particulier') {
             document.querySelector('.form-group-raison-sociale').style.display = 'block';
+            document.getElementById('raisonSociale').setAttribute('required', '');
             document.querySelector('.nom').style.display = 'none';
+            document.getElementById('nom').removeAttribute('required');
+            document.getElementById('prenom').removeAttribute('required');
 
         }
         else {
             document.querySelector('.form-group-raison-sociale').style.display = 'none';
+            document.getElementById('raisonSociale').removeAttribute('required');
             document.querySelector('.nom').style.display = 'block';
+            document.getElementById('nom').setAttribute('required', '');
+            document.getElementById('prenom').setAttribute('required', '');
         }
     }
     toggleclientType();
     document.getElementById('clientType').addEventListener('change', toggleclientType);
+    formatPhoneInput(document.getElementById('telephone1'));
+    formatPhoneInput(document.getElementById('telephone2'));
+    formatPhoneInput(document.getElementById('fax'));
 });
 // Fermer si on clique en dehors (optionnel)
 // document.addEventListener('click', (e) => {

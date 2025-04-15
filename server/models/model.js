@@ -14,19 +14,37 @@ const clientSchema = mongoose.Schema(
         },
         raison_sociale: {
             type: String,
-            required: true,
+            required: false,
+        },
+        nom: {
+            type: String,
+            required: false,
+        },
+        prenom: {
+            type: String,
+            required: false,
         },
         Adresse_correspondante: {
             type: String,
             required: true,
         },
-        Code_postale: {
-            type: Number,
+        quartier: {
+            type: String,
+            required: false,
+        },
+        rue: {
+            type: String,
+            required: false,
         },
         commune_correspondante: {
             type: String,
             required: true,
         },
+
+        Code_postale: {
+            type: Number,
+        },
+
         Num_pic_identite: {
             type: new mongoose.Schema({
                 numero: { type: String, required: false },
@@ -52,7 +70,13 @@ const clientSchema = mongoose.Schema(
             required: false,
             default: []
         },
+        fax: {
+            type: String,
+        },
+        email: {
+            type: String,
 
+        },
         type_client: {
             type: String,
             required: true,
