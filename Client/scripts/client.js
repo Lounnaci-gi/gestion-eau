@@ -24,13 +24,14 @@ closeClientForm.addEventListener('click', () => {
 });
 
 // Gestion de la soumission
-clientForm.addEventListener('submit', (e) => {
+clientForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Récupération des données
     const formData = {
         Civilite: document.getElementById('clientStatus').value.trim(),
         raison_sociale: document.getElementById('raisonSociale').value.trim(),
+        type_client: document.getElementById('clientCategorie').value.trim(),
         nom: document.getElementById('nom').value.trim(),
         prenom: document.getElementById('prenom').value.trim(),
         quartier: document.getElementById('quartier').value.trim(),
@@ -49,12 +50,7 @@ clientForm.addEventListener('submit', (e) => {
         ].filter(phone => phone !== ""),
 
         fax: document.getElementById('fax').value.trim(),
-        type_client: document.getElementById('clientCategorie').value.trim()
-
-        // ... récupérer tous les autres champs ...
     };
-    console.log(formData);
-
     // Logique de sauvegarde (à adapter)
 
 
@@ -62,6 +58,20 @@ clientForm.addEventListener('submit', (e) => {
     clientFormContainer.style.display = 'none';
     clientForm.reset();
     btnAddClient.style.display = 'block';
+
+    const response = await fetch(`${API_BASE_URL}/add_client`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        credentials: 'include', // Inclure les cookies        
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Erreur lors de la connexion");
+    }
+    const data = await response.json();
+    console.log(data.data);
 });
 
 

@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 // Importer les routes
 app.use('/', require("./routes/authRoutes"));
 app.use('/', require("./routes/structureRoutes"));
+app.use('/', require("./routes/clientRoutes"));
 
 app.use(errorHandler);
 
