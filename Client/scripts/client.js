@@ -23,20 +23,28 @@ closeClientForm.addEventListener('click', () => {
     btnAddClient.style.display = 'block';
 });
 
-document.getElementById("numPicIdentite").addEventListener('blur', () => {
-    if (document.getElementById("numPicIdentite").value.trim() !== '') {
-        document.getElementById("delivrePar").setAttribute("required", true);
-        document.getElementById("dateDelivrance").setAttribute("required", true);
-        document.getElementById("delivrePar").removeAttribute("readonly");
-        document.getElementById("dateDelivrance").removeAttribute("readonly");
-    } else {
-        document.getElementById("delivrePar").setAttribute("readonly", true);
-        document.getElementById("dateDelivrance").setAttribute("readonly", true);
-        document.getElementById("delivrePar").value = '';
-        document.getElementById("dateDelivrance").value = '';
-    }
+function verfier (e){
+    e.forEach(element => {
+        element.addEventListener('blur'),()=>{
 
-})
+        }
+    
+});
+}
+// document.getElementById("numPicIdentite").addEventListener('blur', () => {
+//     if (document.getElementById("numPicIdentite").value.trim() !== '') {
+//         document.getElementById("delivrePar").setAttribute("required", true);
+//         document.getElementById("dateDelivrance").setAttribute("required", true);
+//         document.getElementById("delivrePar").removeAttribute("readonly");
+//         document.getElementById("dateDelivrance").removeAttribute("readonly");
+//     } else {
+//         document.getElementById("delivrePar").setAttribute("readonly", true);
+//         document.getElementById("dateDelivrance").setAttribute("readonly", true);
+//         document.getElementById("delivrePar").value = '';
+//         document.getElementById("dateDelivrance").value = '';
+//     }
+
+// })
 
 // Gestion de la soumission
 clientForm.addEventListener('submit', async (e) => {
@@ -119,6 +127,26 @@ document.addEventListener('DOMContentLoaded', (e) => {
     formatPhoneInput(document.getElementById('telephone2'));
     formatPhoneInput(document.getElementById('fax'));
     formatDateInput(document.getElementById('dateDelivrance'));
+
+//------------------------------------
+const numPicIdentite = document.getElementById("numPicIdentite");
+        const delivrePar = document.getElementById("delivrePar");
+        const dateDelivrance = document.getElementById("dateDelivrance");
+
+        function updateReadonlyState() {
+            const isEmpty = numPicIdentite.value.trim() === "";
+            delivrePar.readOnly = isEmpty;
+            dateDelivrance.readOnly = isEmpty;
+
+            delivrePar.required = !isEmpty;
+            dateDelivrance.required = !isEmpty;
+        }
+
+        // Vérifie au chargement initial
+        updateReadonlyState();
+
+        // Met à jour en temps réel si l'utilisateur tape dans numPicIdentite
+        numPicIdentite.addEventListener("input", updateReadonlyState);
 });
 // Fermer si on clique en dehors (optionnel)
 // document.addEventListener('click', (e) => {
