@@ -23,6 +23,21 @@ closeClientForm.addEventListener('click', () => {
     btnAddClient.style.display = 'block';
 });
 
+document.getElementById("numPicIdentite").addEventListener('blur', () => {
+    if (document.getElementById("numPicIdentite").value.trim() !== '') {
+        document.getElementById("delivrePar").setAttribute("required", true);
+        document.getElementById("dateDelivrance").setAttribute("required", true);
+        document.getElementById("delivrePar").removeAttribute("readonly");
+        document.getElementById("dateDelivrance").removeAttribute("readonly");
+    } else {
+        document.getElementById("delivrePar").setAttribute("readonly", true);
+        document.getElementById("dateDelivrance").setAttribute("readonly", true);
+        document.getElementById("delivrePar").value = '';
+        document.getElementById("dateDelivrance").value = '';
+    }
+
+})
+
 // Gestion de la soumission
 clientForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -39,9 +54,11 @@ clientForm.addEventListener('submit', async (e) => {
         commune_correspondante: document.getElementById('commune_correspondante').value.trim(),
         Code_postale: document.getElementById('codepostale').value.trim(),
 
-        Num_pic_identite: document.getElementById('numPicIdentite').value.trim(),
-        delivrePar: document.getElementById('delivrePar').value.trim(),
-        dateDelivrance: document.getElementById('dateDelivrance').value.trim(),
+        Num_pic_identite: {
+            numero: document.getElementById('numPicIdentite').value.trim(),
+            delivrePar: document.getElementById('delivrePar').value.trim(),
+            dateDelivrance: document.getElementById('dateDelivrance').value.trim() || null
+        },
 
         email: document.getElementById('emailClient').value.trim(),
         telephone: [
@@ -101,6 +118,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
     formatPhoneInput(document.getElementById('telephone1'));
     formatPhoneInput(document.getElementById('telephone2'));
     formatPhoneInput(document.getElementById('fax'));
+    formatDateInput(document.getElementById('dateDelivrance'));
 });
 // Fermer si on clique en dehors (optionnel)
 // document.addEventListener('click', (e) => {

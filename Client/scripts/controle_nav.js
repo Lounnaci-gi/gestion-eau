@@ -120,3 +120,93 @@ function restrictToNumbers(inputElement) {
         e.target.value = e.target.value.replace(/\D/g, '');
     });
 }
+
+// Fonction pour restreindre la saisie des dates uniquement
+function formatDateInput(inputElement) {
+    inputElement.addEventListener('input', function() {
+        let value = this.value.replace(/[^0-9]/g, ''); // Supprime tout caractère non numérique
+        let formattedValue = '';
+        
+        // Gestion du jour
+        if (value.length >= 1) {
+            let jour = value.substring(0, Math.min(2, value.length));
+            // Si on a saisi 2 chiffres et qu'ils dépassent 31
+            if (jour.length === 2 && parseInt(jour) > 31) {
+                jour = '31'; // Limite à 31
+            } else if (jour.length === 2 && parseInt(jour) === 0) {
+                jour = '01'; // Minimum à 01
+            }
+            formattedValue += jour;
+            
+            // Ajout automatique du séparateur après le jour
+            if (jour.length === 2 && value.length > 2) {
+                formattedValue += '/';
+            }
+        }
+        
+        // Gestion du mois
+        if (value.length > 2) {
+            let mois = value.substring(2, Math.min(4, value.length));
+            // Si on a saisi 2 chiffres pour le mois et qu'ils dépassent 12
+            if (mois.length === 2 && parseInt(mois) > 12) {
+                mois = '12'; // Limite à 12
+            } else if (mois.length === 2 && parseInt(mois) === 0) {
+                mois = '01'; // Minimum à 01
+            }
+            
+            // Si le jour a déjà 2 chiffres
+            if (formattedValue.length === 2) {
+                formattedValue += '/';
+            }
+            formattedValue += mois;
+            
+            // Ajout automatique du séparateur après le mois
+            if (mois.length === 2 && value.length > 4) {
+                formattedValue += '/';
+            }
+        }
+        
+        // Gestion de l'année
+        if (value.length > 4) {
+            let annee = value.substring(4, Math.min(8, value.length));
+            
+            // Si le jour et le mois ont déjà 2 chiffres chacun
+            if (formattedValue.length === 5) {
+                formattedValue += '/';
+            }
+            formattedValue += annee;
+        }
+        
+        this.value = formattedValue; // Met à jour le champ avec le bon format
+    });
+    
+    // Vérification complète de la validité de la date après perte de focus
+    inputElement.addEventListener('blur', function() {
+        let parts = this.value.split('/');
+        if (parts.length === 3) {
+            let jour = parseInt(parts[0]);
+            let mois = parseInt(parts[1]);
+            let annee = parseInt(parts[2]);
+            let anneeActuelle = new Date().getFullYear();
+            
+            // Vérification de l'année
+            if (annee < 1900 || annee > anneeActuelle) {
+                showAlert('Date invalide', 'l`année introduite ne peut pas dépasser l`année actuel.', 'error');
+                annee = anneeActuelle; // Corrige l'année
+            }
+            
+            // Vérification de la validité globale de la date
+            const date = new Date(annee, mois - 1, jour);
+            if (date.getFullYear() !== annee || 
+                date.getMonth() !== mois - 1 || 
+                date.getDate() !== jour) {
+                // Date invalide, ajuster au dernier jour du mois
+                const dernierJourDuMois = new Date(annee, mois, 0).getDate();
+                jour = Math.min(jour, dernierJourDuMois);
+            }
+            
+            // Formatage final avec padding
+            this.value = `${jour.toString().padStart(2, '0')}/${mois.toString().padStart(2, '0')}/${annee}`;
+        }
+    });
+}
